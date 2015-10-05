@@ -165,7 +165,7 @@ void file::close()
 
 int64_t file::size() const
 {
-	int64_t ret = err;
+	int64_t ret = -1;
 
 	struct stat buf;
 	if (!fstat(fd_, &buf)) {
