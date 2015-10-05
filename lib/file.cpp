@@ -11,9 +11,6 @@
 
 namespace fz {
 
-static_assert(sizeof(file::ssize_t) >= 8, "Need 64bit support.");
-static_assert(sizeof(file::ssize_t) == sizeof(size_t), "Sizes of size_t and ssize_t should match.");
-
 file::file()
 {
 }
@@ -64,20 +61,20 @@ void file::close()
 	}
 }
 
-size_t file::size() const
+int64_t file::size() const
 {
-	size_t ret = err;
+	int64_t ret = -1;
 
 	LARGE_INTEGER size{};
 	if (GetFileSizeEx(hFile_, &size)) {
-		ret = static_cast<size_t>(size.QuadPart);
+		ret = static_cast<int64_t>(size.QuadPart);
 	}
 	return ret;
 }
 
-file::ssize_t file::seek(ssize_t offset, seek_mode m)
+int64_t file::seek(int64_t offset, seek_mode m)
 {
-	file::ssize_t ret = -1;
+	int64_t ret = -1;
 
 	LARGE_INTEGER dist{};
 	dist.QuadPart = offset;
@@ -102,25 +99,25 @@ bool file::truncate()
 	return !!SetEndOfFile(hFile_);
 }
 
-size_t file::read(void *buf, size_t count)
+int64_t file::read(void *buf, int64_t count)
 {
-	size_t ret = -1;
+	int64_t ret = -1;
 
 	DWORD read = 0;
-	if (ReadFile(hFile_, buf, count, &read, 0)) {
-		ret = static_cast<size_t>(read);
+	if (ReadFile(hFile_, buf, static_cast<DWORD>(count), &read, 0)) {
+		ret = static_cast<int64_t>(read);
 	}
 
 	return ret;
 }
 
-size_t file::write(void const* buf, size_t count)
+int64_t file::write(void const* buf, int64_t count)
 {
-	size_t ret = err;
+	int64_t ret = -1;
 
 	DWORD written = 0;
-	if (WriteFile(hFile_, buf, count, &written, 0)) {
-		ret = static_cast<size_t>(written);
+	if (WriteFile(hFile_, buf, static_cast<DWORD>(count), &written, 0)) {
+		ret = static_cast<int64_t>(written);
 	}
 
 	return ret;
@@ -166,9 +163,9 @@ void file::close()
 	}
 }
 
-size_t file::size() const
+int64_t file::size() const
 {
-	size_t ret = err;
+	int64_t ret = err;
 
 	struct stat buf;
 	if (!fstat(fd_, &buf)) {
@@ -178,9 +175,9 @@ size_t file::size() const
 	return ret;
 }
 
-file::ssize_t file::seek(ssize_t offset, seek_mode m)
+int64_t file::seek(int64_t offset, seek_mode m)
 {
-	ssize_t ret = -1;
+	int64_t ret = -1;
 
 	int whence = SEEK_SET;
 	if (m == current) {
@@ -212,24 +209,24 @@ bool file::truncate()
 	return ret;
 }
 
-size_t file::read(void *buf, size_t count)
+int64_t file::read(void *buf, int64_t count)
 {
-	ssize_t ret;
+	int64_t ret;
 	do {
 		ret = ::read(fd_, buf, count);
 	} while (ret == -1 && (errno == EAGAIN || errno == EINTR));
 
-	return static_cast<size_t>(ret);
+	return ret;
 }
 
-size_t file::write(void const* buf, size_t count)
+int64_t file::write(void const* buf, int64_t count)
 {
-	ssize_t ret;
+	int64_t ret;
 	do {
 		ret = ::write(fd_, buf, count);
 	} while (ret == -1 && (errno == EAGAIN || errno == EINTR));
 
-	return static_cast<size_t>(ret);
+	return ret;
 }
 
 bool file::opened() const
