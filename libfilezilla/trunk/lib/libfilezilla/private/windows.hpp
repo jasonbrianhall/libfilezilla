@@ -38,10 +38,12 @@
 #define WINVER 0x0600
 #endif
 
-#ifdef FZ_WINDOWS
 #ifndef _UNICODE
 #define _UNICODE
 #endif
+
+#ifndef UNICODE
+#define UNICODE
 #endif
 
 #include <windows.h>
