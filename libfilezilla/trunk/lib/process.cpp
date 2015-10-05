@@ -2,7 +2,7 @@
 
 #ifdef FZ_WINDOWS
 
-#include "private/windows.hpp"
+#include "libfilezilla/private/windows.hpp"
 
 namespace fz {
 
