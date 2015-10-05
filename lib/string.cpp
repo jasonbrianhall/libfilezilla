@@ -3,7 +3,7 @@
 #ifdef FZ_WINDOWS
 #include <string.h>
 
-#include "private/windows.hpp"
+#include "libfilezilla/private/windows.hpp"
 #else
 #include <iconv.h>
 #include <strings.h>

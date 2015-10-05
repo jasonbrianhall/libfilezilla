@@ -7,7 +7,7 @@
 #include <time.h>
 
 #if defined(FZ_WINDOWS) && !defined(_MSC_VER)
-#include "private/windows.hpp"
+#include "libfilezilla/private/windows.hpp"
 #include <wincrypt.h>
 #endif
 
