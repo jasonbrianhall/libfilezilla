@@ -27,6 +27,9 @@ nobase_include_HEADERS = \
 	libfilezilla/private/defs.hpp \
 	libfilezilla/private/windows.hpp
 
+libfilezilla_la_LDFLAGS = $(AM_LDFLAGS)
+libfilezilla_la_LDFLAGS += -no-undefined
+
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libfilezilla.pc
 
