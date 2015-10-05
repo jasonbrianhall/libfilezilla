@@ -59,31 +59,31 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="fz_event_handler.cpp" />
-    <ClCompile Include="fz_event_loop.cpp" />
-    <ClCompile Include="fz_file.cpp" />
-    <ClCompile Include="fz_mutex.cpp" />
-    <ClCompile Include="fz_process.cpp" />
-    <ClCompile Include="fz_string.cpp" />
-    <ClCompile Include="fz_thread.cpp" />
-    <ClCompile Include="fz_time.cpp" />
-    <ClCompile Include="fz_util.cpp" />
+    <ClCompile Include="event_handler.cpp" />
+    <ClCompile Include="event_loop.cpp" />
+    <ClCompile Include="file.cpp" />
+    <ClCompile Include="mutex.cpp" />
+    <ClCompile Include="process.cpp" />
+    <ClCompile Include="string.cpp" />
+    <ClCompile Include="thread.cpp" />
+    <ClCompile Include="time.cpp" />
+    <ClCompile Include="util.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="fz_apply.hpp" />
-    <ClInclude Include="fz_config.hpp" />
-    <ClInclude Include="fz_event.hpp" />
-    <ClInclude Include="fz_event_handler.hpp" />
-    <ClInclude Include="fz_event_loop.hpp" />
-    <ClInclude Include="fz_file.hpp" />
-    <ClInclude Include="fz_mutex.hpp" />
-    <ClInclude Include="fz_process.hpp" />
-    <ClInclude Include="fz_string.hpp" />
-    <ClInclude Include="fz_thread.hpp" />
-    <ClInclude Include="fz_time.hpp" />
-    <ClInclude Include="fz_util.hpp" />
+    <ClInclude Include="libfilezilla\apply.hpp" />
+    <ClInclude Include="libfilezilla\private\defs.hpp" />
+    <ClInclude Include="libfilezilla\event.hpp" />
+    <ClInclude Include="libfilezilla\event_handler.hpp" />
+    <ClInclude Include="libfilezilla\event_loop.hpp" />
+    <ClInclude Include="libfilezilla\file.hpp" />
+    <ClInclude Include="libfilezilla\mutex.hpp" />
+    <ClInclude Include="libfilezilla\process.hpp" />
+    <ClInclude Include="libfilezilla\string.hpp" />
+    <ClInclude Include="libfilezilla\thread.hpp" />
+    <ClInclude Include="libfilezilla\time.hpp" />
+    <ClInclude Include="libfilezilla\util.hpp" />
     <ClInclude Include="libfilezilla.hpp" />
-    <ClInclude Include="private\windows.hpp" />
+    <ClInclude Include="libfilezilla\private\windows.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>
