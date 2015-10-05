@@ -7,14 +7,14 @@
 #include "private/windows.hpp"
 #endif
 
+#include <stdint.h>
+
 namespace fz {
 
 // Lean replacement of wxFile that is implemented in terms of CreateFile instead of _open on Windows.
 class file final
 {
 public:
-	typedef std::streamsize ssize_t;
-
 	enum mode {
 		reading,
 		writing
@@ -48,25 +48,23 @@ public:
 		end
 	};
 
-	static size_t const err{static_cast<size_t>(-1)};
-
 	// Gets size of file
-	// Returns err on error
-	size_t size() const;
+	// Returns -1 on error
+	int64_t size() const;
 
 	// Relative seek based on seek mode
 	// Returns -1 on error, otherwise new absolute offset in file
 	// On failure, the new position in the file is undefined.
-	ssize_t seek(ssize_t offset, seek_mode m);
+	int64_t seek(int64_t offset, seek_mode m);
 
 	// Truncate the file to the current position of the file pointer.
 	bool truncate();
 
-	// Returns number of bytes read or err on error
-	size_t read(void *buf, size_t count);
+	// Returns number of bytes read or -1 on error
+	int64_t read(void *buf, int64_t count);
 
-	// Returns number of bytes written or err on error
-	size_t write(void const* buf, size_t count);
+	// Returns number of bytes written or -1 on error
+	int64_t write(void const* buf, int64_t count);
 
 protected:
 #ifdef FZ_WINDOWS
