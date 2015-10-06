@@ -24,7 +24,7 @@ struct timer_data final
 
 // Timers have precedence over queued events. Too many or too frequent timers can starve processing queued events.
 // If the deadline of multiple timers have expired, they get processed in an unspecified order
-class event_loop final : private thread
+class FZ_PUBLIC_SYMBOL event_loop final : private thread
 {
 public:
 	typedef std::deque<std::pair<event_handler*, event_base*>> Events;
@@ -42,20 +42,23 @@ public:
 	// gets removed.
 	void filter_events(std::function<bool (Events::value_type&)> const& filter);
 
-protected:
+private:
 	friend class event_handler;
 
-	void remove_handler(event_handler* handler);
+	void FZ_PRIVATE_SYMBOL remove_handler(event_handler* handler);
 
-	timer_id add_timer(event_handler* handler, duration const& interval, bool one_shot);
-	void stop_timer(timer_id id);
+	timer_id FZ_PRIVATE_SYMBOL add_timer(event_handler* handler, duration const& interval, bool one_shot);
+	void FZ_PRIVATE_SYMBOL stop_timer(timer_id id);
 
 	void send_event(event_handler* handler, event_base* evt);
 
-	// Process timers. Returns true if a timer has been triggered
-	bool process_timers(scoped_lock & l, monotonic_clock const& now);
+	// Process the next (if any) event. Returns true if an event has been processed
+	bool FZ_PRIVATE_SYMBOL process_event(scoped_lock & l);
 
-	virtual void entry();
+	// Process timers. Returns true if a timer has been triggered
+	bool FZ_PRIVATE_SYMBOL process_timers(scoped_lock & l, monotonic_clock const& now);
+
+	virtual void FZ_PRIVATE_SYMBOL entry();
 
 	typedef std::vector<timer_data> Timers;
 
@@ -69,8 +72,6 @@ protected:
 
 	event_handler * active_handler_{};
 
-	// Process the next (if any) event. Returns true if an event has been processed
-	bool process_event(scoped_lock & l);
 
 	monotonic_clock deadline_;
 

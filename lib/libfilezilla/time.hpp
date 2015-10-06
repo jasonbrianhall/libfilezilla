@@ -26,7 +26,7 @@ class duration;
 // as if naively comparing both timestamps after truncating them to the most common accuracy.
 //
 // [*] underlying type may be TAI on some *nix, we pretend there is no difference
-class datetime final
+class FZ_PUBLIC_SYMBOL datetime final
 {
 public:
 	enum accuracy : char {
@@ -120,9 +120,9 @@ public:
 #endif
 
 private:
-	int compare_slow(datetime const& op) const;
+	int FZ_PRIVATE_SYMBOL compare_slow(datetime const& op) const;
 
-	bool clamped();
+	bool FZ_PRIVATE_SYMBOL clamped();
 
 	enum invalid_t : int64_t {
 		invalid = std::numeric_limits<int64_t>::min()
@@ -132,7 +132,7 @@ private:
 	accuracy a_{days};
 };
 
-class duration final
+class FZ_PUBLIC_SYMBOL duration final
 {
 public:
 	duration() = default;
@@ -184,9 +184,9 @@ inline duration operator-(duration const& a, duration const& b)
 }
 
 
-duration operator-(datetime const& a, datetime const& b);
+duration FZ_PUBLIC_SYMBOL operator-(datetime const& a, datetime const& b);
 
-class monotonic_clock final
+class FZ_PUBLIC_SYMBOL monotonic_clock final
 {
 public:
 	monotonic_clock() = default;

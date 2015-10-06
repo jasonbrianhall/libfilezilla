@@ -45,7 +45,7 @@ Usage example:
 */
 
 namespace fz {
-class event_handler
+class FZ_PUBLIC_SYMBOL event_handler
 {
 public:
 	event_handler() = delete;
@@ -78,7 +78,7 @@ public:
 	template<typename T, typename... Args>
 	void send_event(Args&&... args) {
 		event_loop_.send_event(this, new T(std::forward<Args>(args)...));
-	};
+	}
 
 	// Adds a timer, returns the timer id.
 	// One-shot timers are deleted automatically

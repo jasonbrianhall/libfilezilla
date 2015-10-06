@@ -25,7 +25,14 @@ nobase_include_HEADERS = \
 	libfilezilla/util.hpp \
 	libfilezilla/libfilezilla.hpp \
 	libfilezilla/private/defs.hpp \
+	libfilezilla/private/visibility.hpp \
 	libfilezilla/private/windows.hpp
+
+libfilezilla_la_CPPFLAGS = $(AM_CPPFLAGS)
+libfilezilla_la_CPPFLAGS += -DBUILDING_LIBFILEZILLA
+
+libfilezilla_la_CXXFLAGS = $(AM_CXXFLAGS)
+libfilezilla_la_CXXFLAGS = -fvisibility=hidden
 
 libfilezilla_la_LDFLAGS = $(AM_LDFLAGS)
 libfilezilla_la_LDFLAGS += -no-undefined

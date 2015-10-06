@@ -12,7 +12,7 @@
 namespace fz {
 
 // Lean replacement of wxFile that is implemented in terms of CreateFile instead of _open on Windows.
-class file final
+class FZ_PUBLIC_SYMBOL file final
 {
 public:
 	enum mode {
