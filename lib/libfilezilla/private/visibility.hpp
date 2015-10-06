@@ -9,7 +9,7 @@
   #ifdef FZ_WINDOWS
  
     // Under Windows we can either use Visual Studio or a proper compiler
-    #ifdef (_MSC_VER)
+    #ifdef _MSC_VER
       #ifdef DLL_EXPORT
         #define FZ_PUBLIC_SYMBOL __declspec(dllexport)
       #endif
@@ -18,8 +18,8 @@
         #define FZ_PUBLIC_SYMBOL __declspec(dllexport)
       #else
         #define FZ_PUBLIC_SYMBOL __attribute__((visibility("default")))
+        #define FZ_PRIVATE_SYMBOL __attribute__((visibility("hidden")))
       #endif
-      #define FZ_PRIVATE_SYMBOL __attribute__((visibility("hidden")))
     #endif
 
   #else
@@ -32,7 +32,7 @@
 #else
 
   // Under MSW it makes a difference whether we use a static library or a DLL
-  #ifdef FZ_WINDOWS && defined(FZ_USING_DLL)
+  #if defined(FZ_WINDOWS) && defined(FZ_USING_DLL)
     #define FZ_PUBLIC_SYMBOL __declspec(dllimport)
   #endif
 
