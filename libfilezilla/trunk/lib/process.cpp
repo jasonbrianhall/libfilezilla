@@ -243,6 +243,9 @@ private:
 #include <string.h>
 #include <unistd.h>
 
+#include <memory>
+#include <vector>
+
 namespace fz {
 
 namespace {
