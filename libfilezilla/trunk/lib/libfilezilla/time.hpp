@@ -14,7 +14,7 @@
 
 namespace fz {
 
-class duration;
+class FZ_PUBLIC_SYMBOL duration;
 
 // Represents a point of time in wallclock.
 // Internal representation is in milliseconds since 1970-01-01 00:00:00.000 UTC [*]
