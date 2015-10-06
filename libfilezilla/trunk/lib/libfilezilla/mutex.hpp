@@ -16,7 +16,7 @@
 
 namespace fz {
 
-class mutex final
+class FZ_PUBLIC_SYMBOL mutex final
 {
 public:
 	explicit mutex(bool recursive = true);
@@ -40,7 +40,7 @@ private:
 #endif
 };
 
-class scoped_lock final
+class FZ_PUBLIC_SYMBOL scoped_lock final
 {
 public:
 	explicit scoped_lock(mutex& m)
@@ -99,7 +99,7 @@ private:
 	bool locked_{true};
 };
 
-class condition final
+class FZ_PUBLIC_SYMBOL condition final
 {
 public:
 	condition();

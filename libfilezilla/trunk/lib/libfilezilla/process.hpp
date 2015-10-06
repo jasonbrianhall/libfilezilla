@@ -15,7 +15,7 @@ To use, spawn the process and, since it's blocking, call read from a different t
 
 namespace fz {
 
-class process final
+class FZ_PUBLIC_SYMBOL process final
 {
 public:
 	process();

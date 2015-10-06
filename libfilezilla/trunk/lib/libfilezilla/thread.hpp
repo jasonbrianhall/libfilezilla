@@ -23,7 +23,7 @@ so that you can finish initialization. Call the run method.
 
 namespace fz {
 
-class thread
+class FZ_PUBLIC_SYMBOL thread
 {
 public:
 	thread();

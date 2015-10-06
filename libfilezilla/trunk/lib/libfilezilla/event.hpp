@@ -1,6 +1,8 @@
 #ifndef LIBFILEZILLA_EVENT_HEADER
 #define LIBFILEZILLA_EVENT_HEADER
 
+#include "libfilezilla.hpp"
+
 namespace fz {
 
 /*
@@ -10,7 +12,7 @@ If possible, use simple_event<> below instead of deriving from event_base direct
 
 Keep events as simple as possible. Avoid mutexes in your events.
 */
-class event_base
+class FZ_PUBLIC_SYMBOL event_base
 {
 public:
 	event_base() = default;
