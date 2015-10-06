@@ -447,13 +447,13 @@ public:
 
 
 process::process()
-	: impl_(std::make_unique<impl>())
+	: impl_(new impl)
 {
 }
 
 process::~process()
 {
-	impl_.reset();
+	delete impl_;
 }
 
 bool process::spawn(native_string const& cmd, std::vector<native_string> const& args)

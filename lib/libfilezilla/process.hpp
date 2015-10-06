@@ -10,7 +10,6 @@ No console window is being created.
 To use, spawn the process and, since it's blocking, call read from a different thread.
 */
 
-#include <memory>
 #include <vector>
 
 namespace fz {
@@ -36,7 +35,7 @@ public:
 
 private:
 	class impl;
-	std::unique_ptr<impl> impl_;
+	impl* impl_;
 };
 
 }
