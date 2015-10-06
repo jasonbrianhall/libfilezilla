@@ -161,6 +161,11 @@ fi
 AM_PATH_CPPUNIT([1.10.2], [has_cppunit="yes"])
 
 
+# Doxygen
+# -------
+
+DX_PS_FEATURE(OFF)
+DX_INIT_DOXYGEN(libfilezilla, Doxyfile)
 
 # Output automake conditionals
 # ----------------------------
@@ -172,6 +177,8 @@ AC_CONFIG_FILES(
   Makefile
   lib/Makefile
   lib/libfilezilla.pc
+  doc/Doxyfile
+  doc/Makefile
   tests/Makefile
 )
 
