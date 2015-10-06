@@ -46,6 +46,19 @@ CHECK_INVERSE_GMTIME
 AC_CHECK_FUNCS([clock_gettime])
 AC_CHECK_DECLS([pthread_condattr_setclock], [], [], [[#include <pthread.h>]])
 
+# Check if we're on Windows
+if echo $host_os | grep 'cygwin\|mingw\|-msys$' > /dev/null 2>&1; then
+  windows=1
+else
+  windows=0
+fi
+
+if test "$windows" = "1"; then
+  libdeps=
+else
+  libdeps=-lpthread
+fi
+AC_SUBST([libdeps])
 
 
 # Add build information to config.hpp
@@ -72,7 +85,7 @@ fi
 WINDRESFLAGS=
 use_resourcefile=
 AC_MSG_CHECKING([whether to use windres])
-if echo $host_os | grep "cygwin\|mingw" > /dev/null 2>&1; then
+if test "$windows" = "1"; then
   AC_MSG_RESULT([yes])
   AC_CHECK_TOOL([WINDRES], [windres])
   if test "x$WINDRES" = "x"; then
@@ -128,7 +141,7 @@ AX_CHECK_LINK_FLAG([-Wl,--nxcompat], [LDFLAGS="$LDFLAGS -Wl,--nxcompat"])
 
 # Set Windows-specific linker flags
 # ---------------------------------
-if echo $host_os | grep "cygwin\|mingw" > /dev/null 2>&1; then
+if test "$windows" = 1 > /dev/null 2>&1; then
   # We currently require Vista minimum.
   AX_CHECK_LINK_FLAG([-Wl,--major-subsystem-version -Wl,6], [LDFLAGS="$LDFLAGS -Wl,--major-subsystem-version -Wl,6"])
   AX_CHECK_LINK_FLAG([-Wl,--minor-subsystem-version -Wl,0], [LDFLAGS="$LDFLAGS -Wl,--minor-subsystem-version -Wl,0"])
@@ -159,6 +172,7 @@ AC_CONFIG_FILES(
   Makefile
   lib/Makefile
   lib/libfilezilla.pc
+  tests/Makefile
 )
 
 AC_OUTPUT
