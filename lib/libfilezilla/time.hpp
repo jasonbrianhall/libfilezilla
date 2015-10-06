@@ -16,16 +16,22 @@ namespace fz {
 
 class FZ_PUBLIC_SYMBOL duration;
 
-// Represents a point of time in wallclock.
-// Internal representation is in milliseconds since 1970-01-01 00:00:00.000 UTC [*]
-//
-// As time may come from different sources that have different accuracy/precision,
-// this class keeps track of accuracy information.
-//
-// The Compare function can be used for accuracy-aware comparisons. Conceptually it works
-// as if naively comparing both timestamps after truncating them to the most common accuracy.
-//
-// [*] underlying type may be TAI on some *nix, we pretend there is no difference
+/**
+\brief Represents a point of time in wallclock with the given accuracy/precision.
+
+As time may come from different sources that have different accuracy/precision,
+this class keeps track of accuracy information.
+
+The \ref compare function can be used for accuracy-aware comparisons. Conceptually it works
+as if naively comparing both timestamps after truncating/clamping them to the least common accuracy.
+
+Internal representation is in milliseconds since 1970-01-01 00:00:00.000 UTC. While datetime
+supports negative times (i.e. earlier than 1970-01-01 00:00:00.000 UTC), the underlying plaform
+may not support it.
+
+\remark Some *nix systems base their time on TAI instead of UTC, though we pretend there
+is no difference, as the latter is the default on every modern distribution.
+*/
 class FZ_PUBLIC_SYMBOL datetime final
 {
 public:
@@ -37,6 +43,10 @@ public:
 		milliseconds
 	};
 
+	/**
+	 * \brief When importing or exporting a timestamp, zone is used to explicitly specify whether the
+	 * conversion is to/from localtime or UTC.
+	 */
 	enum zone {
 		utc,
 		local
@@ -67,6 +77,7 @@ public:
 
 	accuracy get_accuracy() const { return a_; }
 
+	/// Returns the current date/time
 	static datetime now();
 
 	bool operator==(datetime const& op) const;
@@ -75,9 +86,9 @@ public:
 	bool operator<=(datetime const& op) const;
 	bool operator>(datetime const& op) const { return op < *this; }
 
-	int Compare(datetime const& op) const;
-	bool IsEarlierThan(datetime const& op) const { return Compare(op) < 0; };
-	bool IsLaterThan(datetime const& op) const { return Compare(op) > 0; };
+	int compare(datetime const& op) const;
+	bool earlier_than(datetime const& op) const { return compare(op) < 0; };
+	bool later_than(datetime const& op) const { return compare(op) > 0; };
 
 	datetime& operator+=(duration const& op);
 	datetime operator+(duration const& op) const { datetime t(*this); t += op; return t; }
@@ -94,10 +105,15 @@ public:
 	bool set(std::wstring const& str, zone z);
 
 #ifdef FZ_WINDOWS
+	/// Windows-only: Get set timestamp base on FILETIME
 	bool set(FILETIME const& ft, accuracy a);
+	/// Windows-only: Get set timestamp base on FILETIME
 	bool set(SYSTEMTIME const& ft, accuracy a, zone z);
 #else
-	// Careful: modifies passed structure
+	/** Sets timestamp from struct tm.
+	 * \warning modifies passed structure
+	 * \returns \c true on success, \c false on failure. The object's value is undefined after failure.
+	 */
 	bool set(tm & t, accuracy a, zone z);
 #endif
 

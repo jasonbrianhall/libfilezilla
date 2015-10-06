@@ -213,7 +213,7 @@ bool datetime::clamped()
 	return ret;
 }
 
-int datetime::Compare(datetime const& op) const
+int datetime::compare(datetime const& op) const
 {
 	if (t_ == invalid) {
 		return (op.t_ == invalid) ? 0 : -1;
