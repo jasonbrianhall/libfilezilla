@@ -8,4 +8,4 @@ Description:
 URL: https://lib.filezilla-project.org/
 Version: @PACKAGE_VERSION@
 CFlags: -I${includedir}
-Libs: -L${libdir} -lfilezilla
+Libs: -L${libdir} -lfilezilla @libdeps@
