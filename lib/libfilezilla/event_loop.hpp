@@ -14,13 +14,6 @@
 namespace fz {
 
 class event_handler;
-struct timer_data final
-{
-	event_handler* handler_{};
-	timer_id id_{};
-	monotonic_clock deadline_;
-	duration interval_{};
-};
 
 // Timers have precedence over queued events. Too many or too frequent timers can starve processing queued events.
 // If the deadline of multiple timers have expired, they get processed in an unspecified order
@@ -60,6 +53,14 @@ private:
 
 	virtual void FZ_PRIVATE_SYMBOL entry();
 
+	struct timer_data final
+	{
+		event_handler* handler_{};
+		timer_id id_{};
+		monotonic_clock deadline_;
+		duration interval_{};
+	};
+
 	typedef std::vector<timer_data> Timers;
 
 	Events pending_events_;
@@ -79,7 +80,8 @@ private:
 };
 
 
-// Dispatch for simple_event<> based events. See event_handler.h for usage example
+/// Dispatch for simple_event<> based events.
+/// \see event_handler for additional information.
 template<typename T, typename H, typename F>
 bool dispatch(event_base const& ev, F&& f)
 {
