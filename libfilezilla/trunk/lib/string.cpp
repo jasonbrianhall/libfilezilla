@@ -87,8 +87,6 @@ std::wstring to_wstring(std::string const& in)
 	return ret;
 }
 
-// Converts from UTF-8 into wstring
-// Undefined behavior if input string is not valid UTF-8.
 std::wstring to_wstring_from_utf8(std::string const& in)
 {
 	std::wstring ret;

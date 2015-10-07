@@ -3,7 +3,9 @@
 
 #include "event_loop.hpp"
 
-/*
+namespace fz {
+
+/**
 Simple handler for asynchronous event processing.
 
 Usage example:
@@ -43,8 +45,6 @@ Usage example:
 	my_handler h(loop);
 	h.SendEvent<foo_event>(42, "Don't Panic");
 */
-
-namespace fz {
 class FZ_PUBLIC_SYMBOL event_handler
 {
 public:

@@ -5,7 +5,7 @@
 
 namespace fz {
 
-/*
+/**
 Common base class for all events.
 
 If possible, use simple_event<> below instead of deriving from event_base directly.
@@ -21,7 +21,7 @@ public:
 	event_base(event_base const&) = delete;
 	event_base& operator=(event_base const&) = delete;
 
-	/*
+	/**
 	The returned pointer must be unique for the derived type such that:
 		event_base& a = ...
 		event_base& b = ...
@@ -35,7 +35,7 @@ public:
 	virtual void const* derived_type() const = 0;
 };
 
-/*
+/**
 This is the recommended event class.
 
 Instanciate the template with a unique type to identify the type of the event and a number of types for the values.
@@ -75,7 +75,8 @@ public:
 	tuple_type v_;
 };
 
-// Returns true iff T& t = ...; t.derived_type() == ev.derived_type()
+/// Used as lightweight RTTI alternative during \ref dispatch
+/// \return true iff T& t = ...; t.derived_type() == ev.derived_type()
 template<typename T>
 bool same_type(event_base const& ev)
 {
