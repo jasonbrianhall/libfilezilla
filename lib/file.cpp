@@ -15,7 +15,7 @@ file::file()
 {
 }
 
-file::file(native_string const& f, mode m, disposition d)
+file::file(native_string const& f, mode m, creation_flags d)
 {
 	open(f, m, d);
 }
@@ -26,7 +26,7 @@ file::~file()
 }
 
 #ifdef FZ_WINDOWS
-bool file::open(native_string const& f, mode m, disposition d)
+bool file::open(native_string const& f, mode m, creation_flags d)
 {
 	close();
 
@@ -130,7 +130,7 @@ bool file::opened() const
 
 #else
 
-bool file::open(native_string const& f, mode m, disposition d)
+bool file::open(native_string const& f, mode m, creation_flags d)
 {
 	close();
 
