@@ -2,6 +2,7 @@
 #define LIBFILEZILLA_UTIL_HEADER
 
 #include "libfilezilla.hpp"
+#include "time.hpp"
 
 #include <cstdint>
 
@@ -10,8 +11,6 @@
  */
 
 namespace fz {
-
-class FZ_PUBLIC_SYMBOL duration;
 
 /** \brief Sleep current thread for the specified \ref duration.
  *

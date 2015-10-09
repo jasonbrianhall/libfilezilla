@@ -102,7 +102,9 @@ public:
 
 	bool spawn(native_string const& cmd, std::vector<native_string> const& args)
 	{
-		DWORD flags = CREATE_UNICODE_ENVIRONMENT | CREATE_DEFAULT_ERROR_MODE | CREATE_NO_WINDOW;
+		if (process_ != INVALID_HANDLE_VALUE) {
+			return false;
+		}
 
 		if (!create_pipes()) {
 			return false;
@@ -121,6 +123,7 @@ public:
 
 		auto cmdline_buf = &cmdline[0];
 
+		DWORD const flags = CREATE_UNICODE_ENVIRONMENT | CREATE_DEFAULT_ERROR_MODE | CREATE_NO_WINDOW;
 		BOOL res = CreateProcess(cmd.c_str(), cmdline_buf, 0, 0, TRUE, flags, 0, 0, &si, &pi);
 		if (!res) {
 			return false;
@@ -345,6 +348,10 @@ public:
 
 	bool spawn(native_string const& cmd, std::vector<native_string> const& args)
 	{
+		if (pid_ != -1) {
+			return false;
+		}
+
 		if (!create_pipes()) {
 			return false;
 		}

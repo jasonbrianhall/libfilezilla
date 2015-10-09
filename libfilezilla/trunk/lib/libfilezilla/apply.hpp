@@ -5,35 +5,76 @@
 #include <tuple>
 #include <type_traits>
 
-// apply takes a function and a tuple as argument
-// and calls the function with the tuple's elements as argument
+/** \file
+ * \brief Template helper to call a function with its arguments extracted from a tuple.
+ *
+ * Similar to like std::experimental::apply
+ */
 
 namespace fz {
 
-// Apply tuple to ordinary functor
-template<typename F, typename T, size_t... I>
-auto apply_(F&& f, T&& t, std::index_sequence<I...> const&) -> decltype(std::forward<F>(f)(std::get<I>(std::forward<T>(t))...))
+/** \private
+ * Apply tuple to ordinary functor
+ */
+template<typename F, typename Tuple, size_t... I>
+auto apply_(F&& f, Tuple&& t, std::index_sequence<I...> const&) -> decltype(std::forward<F>(f)(std::get<I>(std::forward<Tuple>(t))...))
 {
-	return std::forward<F>(f)(std::get<I>(std::forward<T>(t))...);
+	return std::forward<F>(f)(std::get<I>(std::forward<Tuple>(t))...);
 }
 
-template<typename F, typename T, typename Seq = typename std::make_index_sequence<std::tuple_size<typename std::remove_reference<T>::type>::value>>
-auto apply(F && f, T&& args) -> decltype(apply_(std::forward<F>(f), std::forward<T>(args), Seq()))
+/**
+ * \brief Apply tuple to ordinary functor
+ *
+ * Example:
+ *
+ * \code
+ *
+ * int f(int value, std::string const& str) { return value + str.size(); }
+ *
+ * auto t = std::make_tuple(5, std::string("Hello!"));
+ *
+ * int v = fz::apply(&f, t);
+ * // v is now 11
+ * \endcode
+ */
+template<typename F, typename Tuple, typename Seq = typename std::make_index_sequence<std::tuple_size<typename std::remove_reference<Tuple>::type>::value>>
+auto apply(F && f, Tuple&& args) -> decltype(apply_(std::forward<F>(f), std::forward<Tuple>(args), Seq()))
 {
-	return apply_(std::forward<F>(f), std::forward<T>(args), Seq());
+	return apply_(std::forward<F>(f), std::forward<Tuple>(args), Seq());
 }
 
-// Apply tuple to pointer to member function
-template<typename Obj, typename F, typename T, size_t... I>
-auto apply_(Obj&& obj, F&& f, T&& t, std::index_sequence<I...> const&) -> decltype((std::forward<Obj>(obj)->*std::forward<F>(f))(std::get<I>(std::forward<T>(t))...))
+/** \private
+ * Apply tuple to pointer to member
+ */
+template<typename Obj, typename F, typename Tuple, size_t... I>
+auto apply_(Obj&& obj, F&& f, Tuple&& t, std::index_sequence<I...> const&) -> decltype((std::forward<Obj>(obj)->*std::forward<F>(f))(std::get<I>(std::forward<Tuple>(t))...))
 {
-	return (std::forward<Obj>(obj)->*std::forward<F>(f))(std::get<I>(std::forward<T>(t))...);
+	return (std::forward<Obj>(obj)->*std::forward<F>(f))(std::get<I>(std::forward<Tuple>(t))...);
 }
 
-template<typename Obj, typename F, typename T, typename Seq = typename std::make_index_sequence<std::tuple_size<typename std::remove_reference<T>::type>::value>>
-auto apply(Obj&& obj, F && f, T&& args) -> decltype(apply_(std::forward<Obj>(obj), std::forward<F>(f), std::forward<T>(args), Seq()))
+/**
+ * \brief Apply tuple to pointer to member
+ *
+ * Example:
+ *
+ * \code
+ *
+ * struct object {
+ *	 int f(int value, std::string const& str) const { return value + str.size(); }
+ * };
+ *
+ *
+ * object o;
+ * auto t = std::make_tuple(5, std::string("Hello!"));
+ *
+ * int v = fz::apply(&o, &object::f, t);
+ * // v is now 11
+ * \endcode
+ */
+template<typename Obj, typename F, typename Tuple, typename Seq = typename std::make_index_sequence<std::tuple_size<typename std::remove_reference<Tuple>::type>::value>>
+auto apply(Obj&& obj, F && f, Tuple&& args) -> decltype(apply_(std::forward<Obj>(obj), std::forward<F>(f), std::forward<Tuple>(args), Seq()))
 {
-	return apply_(std::forward<Obj>(obj), std::forward<F>(f), std::forward<T>(args), Seq());
+	return apply_(std::forward<Obj>(obj), std::forward<F>(f), std::forward<Tuple>(args), Seq());
 }
 
 }
