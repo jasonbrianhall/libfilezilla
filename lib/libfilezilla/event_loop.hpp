@@ -11,28 +11,47 @@
 #include <functional>
 #include <vector>
 
+/** \file
+ * \brief A simple threaded event loop for the typesafe event system
+ */
+
 namespace fz {
 
 class event_handler;
 
-// Timers have precedence over queued events. Too many or too frequent timers can starve processing queued events.
-// If the deadline of multiple timers have expired, they get processed in an unspecified order
+/** \brief A threaded event loop that supports sending events and timers
+ *
+ * Timers have precedence over queued events. Too many or too frequent timers can starve processing queued events.
+ *
+ * If the deadlines of multiple timers have expired, they get processed in an unspecified order.
+ *
+ * \sa event_handler for a complete usage example.
+ */
 class FZ_PUBLIC_SYMBOL event_loop final : private thread
 {
 public:
 	typedef std::deque<std::pair<event_handler*, event_base*>> Events;
 
-	// Spawns a thread
+	/// Spawns a thread and starts the loop
 	event_loop();
+
+	/// Stops the thread
 	virtual ~event_loop();
 
 	event_loop(event_loop const&) = delete;
 	event_loop& operator=(event_loop const&) = delete;
 
-	// Puts all queued events through the filter function.
-	// The filter function can freely change the passed events.
-	// If the filter function returns true, the corresponding event
-	// gets removed.
+	/** \brief Allows filtering of queued events
+	 *
+	 * Puts all queued events through the filter function.
+	 * The filter function can freely change the passed events.
+	 * If the filter function returns true, the corresponding event
+	 * gets removed.
+	 *
+	 * The filter function must not call any function of event_loop.
+	 *
+	 * Filtering events is a blocking operation and temporarily pauses the loop.
+	 */
 	void filter_events(std::function<bool (Events::value_type&)> const& filter);
 
 private:
@@ -78,42 +97,6 @@ private:
 
 	timer_id next_timer_id_{};
 };
-
-
-/// Dispatch for simple_event<> based events.
-/// \see event_handler for additional information.
-template<typename T, typename H, typename F>
-bool dispatch(event_base const& ev, F&& f)
-{
-	bool const same = same_type<T>(ev);
-	if (same) {
-		T const* e = static_cast<T const*>(&ev);
-		apply(std::forward<F>(f), e->v_);
-	}
-	return same;
-}
-
-
-template<typename T, typename H, typename F>
-bool dispatch(event_base const& ev, H* h, F&& f)
-{
-	bool const same = same_type<T>(ev);
-	if (same) {
-		T const* e = static_cast<T const*>(&ev);
-		apply(h, std::forward<F>(f), e->v_);
-	}
-	return same;
-}
-
-template<typename T, typename ... Ts, typename H, typename F, typename ... Fs>
-bool dispatch(event_base const& ev, H* h, F&& f, Fs&& ... fs)
-{
-	if (dispatch<T>(ev, h, std::forward<F>(f))) {
-		return true;
-	}
-
-	return dispatch<Ts...>(ev, h, std::forward<Fs>(fs)...);
-}
 
 }
 #endif

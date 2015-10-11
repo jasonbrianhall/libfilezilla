@@ -97,7 +97,7 @@ void EventloopTest::testSimple()
 	t.send_event<T3>();
 
 	fz::scoped_lock l(t.m_);
-	CPPUNIT_ASSERT(t.cond_.wait(l, 1000));
+	CPPUNIT_ASSERT(t.cond_.wait(l, fz::duration::from_seconds(1)));
 
 	CPPUNIT_ASSERT_EQUAL(t.a_, 1000);
 	CPPUNIT_ASSERT_EQUAL(t.b_, 1000);
@@ -120,7 +120,7 @@ public:
 	{
 		{
 			fz::scoped_lock l(m_);
-			CPPUNIT_ASSERT(cond2_.wait(l, 1000));
+			CPPUNIT_ASSERT(cond2_.wait(l, fz::duration::from_seconds(1)));
 		}
 
 		auto f = [&](fz::event_loop::Events::value_type& ev) -> bool {
@@ -183,7 +183,7 @@ void EventloopTest::testFilter()
 	fz::scoped_lock l(t.m_);
 	t.cond2_.signal(l);
 
-	CPPUNIT_ASSERT(t.cond_.wait(l, 1000));
+	CPPUNIT_ASSERT(t.cond_.wait(l, fz::duration::from_seconds(1)));
 
 	CPPUNIT_ASSERT_EQUAL(t.a_, 1);
 	CPPUNIT_ASSERT_EQUAL(t.b_, 16);
@@ -201,7 +201,7 @@ void EventloopTest::testCondition()
 	fz::condition c;
 
 	fz::scoped_lock l(m);
-	CPPUNIT_ASSERT(!c.wait(l, 200));
+	CPPUNIT_ASSERT(!c.wait(l, fz::duration::from_milliseconds(200)));
 
 	auto const t2 = fz::monotonic_clock::now();
 

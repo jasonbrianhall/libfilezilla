@@ -115,14 +115,14 @@ void condition::wait(scoped_lock& l)
 	signalled_ = false;
 }
 
-bool condition::wait(scoped_lock& l, int timeout_ms)
+bool condition::wait(scoped_lock& l, duration const& timeout)
 {
 	if (signalled_) {
 		signalled_ = false;
 		return true;
 	}
 #ifdef FZ_WINDOWS
-	bool const success = SleepConditionVariableCS(&cond_, l.m_, timeout_ms) != 0;
+	bool const success = SleepConditionVariableCS(&cond_, l.m_, timeout.get_milliseconds()) != 0;
 #else
 	int res;
 	timespec ts;
@@ -135,8 +135,8 @@ bool condition::wait(scoped_lock& l, int timeout_ms)
 	ts.tv_nsec = tv.tv_usec * 1000;
 #endif
 
-	ts.tv_sec += timeout_ms / 1000;
-	ts.tv_nsec += (timeout_ms % 1000) * 1000 * 1000;
+	ts.tv_sec += timeout.get_milliseconds() / 1000;
+	ts.tv_nsec += (timeout.get_milliseconds() % 1000) * 1000 * 1000;
 	if (ts.tv_nsec > 1000000000ll) {
 		++ts.tv_sec;
 		ts.tv_nsec -= 1000000000ll;
