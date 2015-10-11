@@ -180,8 +180,7 @@ void event_loop::entry()
 
 		// Nothing to do, now we wait
 		if (deadline_) {
-			int wait = static_cast<int>((deadline_ - now).get_milliseconds());
-			cond_.wait(l, wait);
+			cond_.wait(l, deadline_ - now);
 		}
 		else {
 			cond_.wait(l);

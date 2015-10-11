@@ -1,4 +1,4 @@
-#include "libfilezilla/event_loop.hpp"
+#include "libfilezilla/event_handler.hpp"
 
 #include <cppunit/extensions/HelperMacros.h>
 

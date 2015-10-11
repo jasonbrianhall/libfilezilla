@@ -3,10 +3,14 @@
 
 #include "libfilezilla.hpp"
 
+/** \file
+ * \brief Declares event_base and simple_event<>
+ */
+
 namespace fz {
 
 /**
-Common base class for all events.
+\brief Common base class for all events.
 
 If possible, use simple_event<> below instead of deriving from event_base directly.
 
@@ -27,10 +31,14 @@ public:
 		event_base& b = ...
 		assert((a.derived_type() == b.derived_type()) == (typeid(a) == typeid(b)));
 
-	Beware: Using &typeid is tempting, but unspecifined (sic)
+	\warning Using &typeid is tempting, but unspecifined (sic)
 
+	\warning According to the C++ standard, the address of a static member function is unique
+		 for each type. Unfortunately this does not prevent optimizing compilers to pool identical
+		 functions.
 
-	Best solution is to have your derived type return the address of a static data member of it
+	Best solution is to have your derived type return the address of a static data member of it, as
+	done in \ref fz::simple_event "simple_event".
 	*/
 	virtual void const* derived_type() const = 0;
 };
@@ -42,7 +50,7 @@ Instanciate the template with a unique type to identify the type of the event an
 
 Keep the values simple, in particular avoid mutexes in your values.
 
-See event_handler.h for usage example.
+\see event_handler for usage example.
 */
 template<typename UniqueType, typename...Values>
 class simple_event final : public event_base
@@ -62,12 +70,13 @@ public:
 	simple_event(simple_event const& op) = default;
 	simple_event& operator=(simple_event const& op) = default;
 
-	// Returns a unique pointer for the type such that can be used directly in derived_type. 
+	/// \brief Returns a unique pointer for the type such that can be used directly in derived_type.
 	static void const* type() {
 		static const char* f = 0;
 		return &f;
 	}
 
+	/// \brief Simply returns \ref type()
 	virtual void const* derived_type() const {
 		return type();
 	}
