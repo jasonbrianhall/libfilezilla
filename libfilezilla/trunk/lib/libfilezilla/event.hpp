@@ -44,7 +44,7 @@ public:
 };
 
 /**
-This is the recommended event class.
+\brief This is the recommended event class.
 
 Instanciate the template with a unique type to identify the type of the event and a number of types for the values.
 
@@ -93,7 +93,14 @@ bool same_type(event_base const& ev)
 }
 
 typedef unsigned long long timer_id;
+
+/// \private
 struct timer_event_type{};
+
+/** \brief All timer events have this type.
+ *
+ * All timer events have one arguments of type \c timer_id which is the id of the timer that triggered.
+ */
 typedef simple_event<timer_event_type, timer_id> timer_event;
 
 }
