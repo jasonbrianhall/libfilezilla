@@ -103,6 +103,10 @@ struct timer_event_type{};
  */
 typedef simple_event<timer_event_type, timer_id> timer_event;
 
+/// \private
+/// This instantiation must be a public symbol
+template class FZ_PUBLIC_SYMBOL simple_event<timer_event_type, timer_id>;
+
 }
 
 #endif
