@@ -34,8 +34,11 @@ public:
 	 *
 	 * \param cmd The path of the program to execute
 	 * \param args The command-line arguments for the process.
+	 *
+	 * \note May return \c true even if the process cannot be started. In that case, trying to read from the process
+	 * will fail with an error or EOF.
 	 */
-	bool spawn(native_string const& cmd, std::vector<native_string> const& args);
+	bool spawn(native_string const& cmd, std::vector<native_string> const& args = std::vector<native_string>());
 
 	/** \brief Stops the spawned process
 	 *
@@ -49,7 +52,7 @@ public:
 	 *
 	 * This function blocks
 	 *
-	 * \return >0 Number of bytes read, can be less than requested
+	 * \return >0 Number of octets read, can be less than requested
 	 * \return 0 on EOF
 	 * \return -1 on error.
 	 */
@@ -59,8 +62,8 @@ public:
 	 *
 	 * This function blocks
 	 *
-	 * \return >=0 Number of bytes written, can be less than requested
-	 * \return -1 on error.
+	 * \return true if all octets have been written.
+	 * \return false on error.
 	 */
 	bool write(char const* buffer, unsigned int len);
 
