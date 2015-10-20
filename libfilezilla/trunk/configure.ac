@@ -177,6 +177,7 @@ AC_CONFIG_FILES(
   Makefile
   lib/Makefile
   lib/libfilezilla.pc
+  demos/Makefile
   doc/Doxyfile
   doc/Makefile
   tests/Makefile
