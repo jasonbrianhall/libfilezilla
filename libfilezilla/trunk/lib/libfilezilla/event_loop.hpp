@@ -54,6 +54,12 @@ public:
 	 */
 	void filter_events(std::function<bool (Events::value_type&)> const& filter);
 
+	/** \brief Stops the loop
+	 *
+	 * Stops the event loop. It is automatically called by the destructor.
+	 */
+	void stop();
+
 private:
 	friend class event_handler;
 

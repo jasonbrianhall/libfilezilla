@@ -16,11 +16,7 @@ event_loop::event_loop()
 
 event_loop::~event_loop()
 {
-	{
-		scoped_lock lock(sync_);
-		quit_ = true;
-		cond_.signal(lock);
-	}
+	stop();
 
 	join();
 
@@ -246,6 +242,13 @@ bool event_loop::process_timers(scoped_lock & l, monotonic_clock const& now)
 	}
 
 	return false;
+}
+
+void event_loop::stop()
+{
+	scoped_lock l(sync_);
+	quit_ = true;
+	cond_.signal(l);
 }
 
 }
