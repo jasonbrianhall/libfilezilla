@@ -1,1 +1,36 @@
-Standard GNU autotools magic.
+-------------------------
+Installation instructions
+-------------------------
+
+1. Requirements
+---------------
+
+To compile libfilezilla, the following tools need to be installed:
+- A C++14 compiler, e.g. a recent GCC or Clang
+- GNU make
+
+Optional tools:
+- recent automake, autoconf, libtool if you plan to change configure.in or 
+  any of the Makefile.am files
+- CppUnit if you want to run the tests
+
+2. Compilation
+--------------
+
+If using source from the project's Subversion repository,
+execute autoreconf -i first to generate configure. This step is
+not necessary for source distributions.
+
+Assuming you are in the top source directory, execute the following commands:
+
+mkdir compile
+cd compile
+../configure
+make
+make install
+
+3. The exotic Windows platform
+------------------------------
+
+There are project files for Visual Studio 2015 you can use to compile
+libfilezilla.
