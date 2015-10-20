@@ -1,0 +1,51 @@
+                                 libfilezilla
+                                 -------------
+
+                         Copyright (C) 2015  Tim Kosse
+                       https://lib.filezilla-project.org/
+
+Overview
+--------
+
+libfilezilla is a free, open source C++ library, offering some basic
+functionality to build high-performing, platform-independent programs. Some
+of the highlights include:
+
+- A typesafe, multi-threaded event system that's very simple to use yet extremely efficient
+- Timers for periodic events
+- A datetime class that not only tracks timestamp but also their accuracy, which simplifies dealing with timestamps originating from different sources
+- Simple process handling for spawning child processes with redirected I/O
+
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+Documentation
+-------------
+
+Documentation is available at https://lib.filezilla-project.org/doc/
+
+Supported systems
+-----------------
+
+libfilezilla has been tested on the following platforms:
+- Several major Linux distributions
+- FreeBSD and other BSD variants
+- Mac OS X
+- Windows Vista, 7, 8.1 and 10 (9x/ME/NT4/2000/XP are not supported)
+
+Tested architectures:
+- x86
+- x86-64 / amd64
+
+FileZilla may be able to run on additional systems and architectures.
+
+Contact
+-------
+
+Project website: https://lib.filezilla-project.org/
+IRC:             #filezilla on chat.freenode.net
+Project leader:  mailto:tim.kosse@filezilla-project.org (Support requests per
+                 mail will be ignored)
