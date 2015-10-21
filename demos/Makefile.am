@@ -1,4 +1,4 @@
-noinst_PROGRAMS = timer_fizzbuzz process
+noinst_PROGRAMS = timer_fizzbuzz process events
 
 timer_fizzbuzz_SOURCES = timer_fizzbuzz.cpp
 
@@ -26,3 +26,18 @@ process_LDADD = ../lib/libfilezilla.la
 process_LDADD += $(libdeps)
 
 process_DEPENDENCIES = ../lib/libfilezilla.la
+
+
+
+events_SOURCES = events.cpp
+
+events_CPPFLAGS = $(AM_CPPFLAGS)
+events_CPPFLAGS += -I$(top_srcdir)/lib
+
+events_LDFLAGS = $(AM_LDFLAGS)
+events_LDFLAGS += -no-install
+
+events_LDADD = ../lib/libfilezilla.la
+events_LDADD += $(libdeps)
+
+events_DEPENDENCIES = ../lib/libfilezilla.la
