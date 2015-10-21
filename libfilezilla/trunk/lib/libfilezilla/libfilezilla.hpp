@@ -44,6 +44,10 @@
  *
  * libfilezilla works on most modern platforms that have a C++14 compiler, including, but not limited to, Linux, *BSD, OS X and Windows.
  *
+ * \section License
+ *
+ * libfilezilla is distributed under the terms and conditions of the GNU General Public License version 2 or higher.
+ *
  */
 #endif
 
