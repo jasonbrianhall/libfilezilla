@@ -42,4 +42,4 @@ pkgconfig_DATA = libfilezilla.pc
 
 DISTCLEANFILES = libfilezilla.pc
 
-#dist_noinst_DATA = libfilezilla.vcxproj
+dist_noinst_DATA = libfilezilla.vcxproj
