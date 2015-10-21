@@ -5,11 +5,38 @@
 
 /// \file
 /// \brief A simple demonstration of using fz::process
+///
+/// This example spawns the timer_fizzbuzz demo and controls it
+/// via the redirected IO.
 
-int main()
+// Helper function to extract a directory from argv[0] so that the
+// demos can be run independent of the current working directory.
+fz::native_string get_program_dir(int argc, char ** argv)
 {
+	std::string path;
+	if (argc > 0) {
+		path = argv[0];
+#if FZ_WINDOWS
+		auto delim = path.find_last_of("/\\");
+#else
+		auto delim = path.find_last_of("/");
+#endif
+		if (delim == std::string::npos) {
+			path.clear();
+		}
+		else {
+			path = path.substr(0, delim + 1);
+		}
+	}
+
+	return fz::to_native(path);
+}
+
+int main(int argc, char *argv[])
+{
+	// Start the timer_fizzbuzz demo which should be in the same directory as the process demo
 	fz::process p;
-	if (!p.spawn(fzT("timer_fizzbuzz"))) {
+	if (!p.spawn(get_program_dir(argc, argv) + fzT("timer_fizzbuzz"))) {
 		std::cerr << "Could not spawn process" << std::endl;
 		return 1;
 	}
@@ -42,6 +69,7 @@ int main()
 
 		input += std::string(buf, r);
 
+		// Extract complete lines from the input
 		auto delim = input.find_first_of("\r\n");
 		while (delim != std::string::npos) {
 			std::string line = input.substr(0, delim);

@@ -6,6 +6,11 @@
 
 /// \file
 /// \brief A simple demonstration of using timers
+///
+/// This example creates and event loop and starts two timers to
+/// print fizz and buzz every 3 respective 5 seconds.
+///
+/// The user can also configure a third timer via stdin to print woof.
 
 struct interval_change_type;
 typedef fz::simple_event<interval_change_type, fz::duration> interval_change;
