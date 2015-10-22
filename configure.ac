@@ -57,7 +57,9 @@ if test "$windows" = "1"; then
   libdeps=
 else
   libdeps=-lpthread
+  CHECK_ICONV([libdeps="$libdeps -liconv"])
 fi
+
 AC_SUBST([libdeps])
 
 
