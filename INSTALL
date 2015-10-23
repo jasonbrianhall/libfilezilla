@@ -13,6 +13,7 @@ Optional tools:
 - recent automake, autoconf, libtool if you plan to change configure.in or 
   any of the Makefile.am files
 - CppUnit if you want to run the tests
+- Doxygen to build the documentation
 
 2. Compilation
 --------------
