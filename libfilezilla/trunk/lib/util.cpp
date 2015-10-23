@@ -19,7 +19,8 @@ void sleep(duration const& d)
 	Sleep(static_cast<DWORD>(d.get_milliseconds()));
 #else
 	timespec ts{};
-	ts.tv_sec = 2;
+	ts.tv_sec = d.get_seconds();
+	ts.tv_nsec = (d.get_milliseconds() % 1000) * 1000000;
 	nanosleep(&ts, 0);
 #endif
 }
