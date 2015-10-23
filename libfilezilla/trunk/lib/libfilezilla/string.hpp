@@ -122,6 +122,12 @@ std::string FZ_PUBLIC_SYMBOL to_string(std::wstring const& in);
 
 /// Returns identity, that way to_string can be called with native_string.
 inline std::string FZ_PUBLIC_SYMBOL to_string(std::string const& in) { return in; }
+
+/// Returns length of 0-terminated character sequence. Works with both narrow and wide-characters.
+template<typename Char>
+size_t strlen(Char const* str) {
+	return std::char_traits<Char>::length(str);
+}
 }
 
 #if !defined(fzT) || defined(DOXYGEN)
