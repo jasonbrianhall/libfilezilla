@@ -134,7 +134,7 @@ public:
 	datetime operator-(duration const& op) const { datetime t(*this); t -= op; return t; }
 	/// \}
 
-	friend duration operator-(datetime const& a, datetime const& b);
+	friend duration FZ_PUBLIC_SYMBOL operator-(datetime const& a, datetime const& b);
 
 	/** \brief Sets the timestamp
 	 * \param month 1-indexed as on a calender, e.g. February is 2
@@ -281,7 +281,7 @@ public:
 	bool operator>(duration const& op) const { return ms_ > op.ms_; }
 	bool operator>=(duration const& op) const { return ms_ >= op.ms_; }
 
-	friend duration operator-(duration const& a, duration const& b);
+	friend duration FZ_PUBLIC_SYMBOL operator-(duration const& a, duration const& b);
 private:
 	explicit duration(int64_t ms) : ms_(ms) {}
 
