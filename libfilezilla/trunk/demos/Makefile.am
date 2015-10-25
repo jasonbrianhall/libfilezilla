@@ -41,3 +41,6 @@ events_LDADD = ../lib/libfilezilla.la
 events_LDADD += $(libdeps)
 
 events_DEPENDENCIES = ../lib/libfilezilla.la
+
+
+dist_noinst_DATA = demo_events.vcxproj
