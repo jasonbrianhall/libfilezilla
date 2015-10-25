@@ -94,7 +94,7 @@ std::wstring to_wstring_from_utf8(std::string const& in)
 	if (!in.empty()) {
 #if FZ_WINDOWS
 		char const* const in_p = in.c_str();
-		int len = MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, in_p, in.size(), 0, 0);
+		int len = MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, in_p, static_cast<int>(in.size()), 0, 0);
 		if (len > 0) {
 			ret.resize(len);
 			wchar_t* out_p = &ret[0];

@@ -16,4 +16,15 @@
 #include "config.hpp"
 #endif
 
+#if defined(FZ_WINDOWS) && defined(_MSC_VER)
+// Incredibly noisy warning, disable it.
+#pragma warning(disable:4251)
+
+// Useless warnings
+#if defined(BUILDING_LIBFILEZILLA) && !defined(_CRT_SECURE_NO_WARNINGS)
+#define _CRT_SECURE_NO_WARNINGS
+#endif
+
+#endif //defined(FZ_WINDOWS) && defined(_MSC_VER)
+
 #endif
