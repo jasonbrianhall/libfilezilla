@@ -122,7 +122,11 @@ bool condition::wait(scoped_lock& l, duration const& timeout)
 		return true;
 	}
 #ifdef FZ_WINDOWS
-	bool const success = SleepConditionVariableCS(&cond_, l.m_, timeout.get_milliseconds()) != 0;
+	auto ms = timeout.get_milliseconds();
+	if (ms < 0) {
+		ms = 0;
+	}
+	bool const success = SleepConditionVariableCS(&cond_, l.m_, static_cast<DWORD>(timeout.get_milliseconds())) != 0;
 #else
 	int res;
 	timespec ts;
