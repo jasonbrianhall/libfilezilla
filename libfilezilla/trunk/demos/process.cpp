@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
 
 	// Send a line to the process
 	std::string cmd = "6\n";
-	if (!p.write(cmd.c_str(), cmd.size())) {
+	if (!p.write(cmd.c_str(), static_cast<unsigned int>(cmd.size()))) {
 		std::cerr << "Sending data to the process failed. Looks like it could not be started or has quit early." << std::endl;
 		return 1;
 	}
@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
 
 	// Send a line to the process
 	cmd = "0\n";
-	if (!p.write(cmd.c_str(), cmd.size())) {
+	if (!p.write(cmd.c_str(), static_cast<unsigned int>(cmd.size()))) {
 		std::cerr << "Sending data to the process failed. Looks like it could not be started or has quit early." << std::endl;
 		return 1;
 	}
