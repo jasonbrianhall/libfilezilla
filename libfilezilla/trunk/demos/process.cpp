@@ -9,6 +9,7 @@
 /// This example spawns the timer_fizzbuzz demo and controls it
 /// via the redirected IO.
 
+namespace {
 // Helper function to extract a directory from argv[0] so that the
 // demos can be run independent of the current working directory.
 fz::native_string get_program_dir(int argc, char ** argv)
@@ -16,7 +17,7 @@ fz::native_string get_program_dir(int argc, char ** argv)
 	std::string path;
 	if (argc > 0) {
 		path = argv[0];
-#if FZ_WINDOWS
+#ifdef FZ_WINDOWS
 		auto delim = path.find_last_of("/\\");
 #else
 		auto delim = path.find_last_of("/");
@@ -32,11 +33,18 @@ fz::native_string get_program_dir(int argc, char ** argv)
 	return fz::to_native(path);
 }
 
+#ifdef FZ_WINDOWS
+auto suffix = fzT(".exe");
+#else
+auto suffix = fzT("");
+#endif
+}
+
 int main(int argc, char *argv[])
 {
 	// Start the timer_fizzbuzz demo which should be in the same directory as the process demo
 	fz::process p;
-	if (!p.spawn(get_program_dir(argc, argv) + fzT("timer_fizzbuzz"))) {
+	if (!p.spawn(get_program_dir(argc, argv) + fzT("timer_fizzbuzz") + suffix)) {
 		std::cerr << "Could not spawn process" << std::endl;
 		return 1;
 	}
