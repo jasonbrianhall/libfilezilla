@@ -74,11 +74,11 @@ int main()
 	int seconds;
 	do {
 		std::cin >> seconds;
-		if (seconds > 0) {
+		if (std::cin.good() && seconds > 0) {
 			fb.send_event<interval_change>(fz::duration::from_seconds(seconds));
 		}
 	}
-	while (seconds != 0);
+	while (std::cin.good() && seconds != 0);
 
 	return 0;
 }
