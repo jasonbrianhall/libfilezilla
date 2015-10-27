@@ -35,9 +35,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{59E51CBA-EA1F-448F-9DF5-955EECAB8ACD}</ProjectGuid>
+    <ProjectGuid>{3ea8235d-c77a-4a9c-9435-00cceda69aa5}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>demo_events</RootNamespace>
+    <RootNamespace>demo_process</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -308,7 +308,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="events.cpp" />
+    <ClCompile Include="process.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
