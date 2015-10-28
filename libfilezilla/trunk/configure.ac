@@ -47,7 +47,7 @@ AC_CHECK_FUNCS([clock_gettime])
 AC_CHECK_DECLS([pthread_condattr_setclock], [], [], [[#include <pthread.h>]])
 
 # Check if we're on Windows
-if echo $host_os | grep 'cygwin\|mingw\|-msys$' > /dev/null 2>&1; then
+if echo $host_os | grep 'cygwin\|mingw\|^msys$' > /dev/null 2>&1; then
   windows=1
 else
   windows=0
