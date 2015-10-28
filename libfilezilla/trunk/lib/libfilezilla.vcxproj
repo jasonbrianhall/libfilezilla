@@ -187,23 +187,25 @@
     <ClCompile Include="thread.cpp" />
     <ClCompile Include="time.cpp" />
     <ClCompile Include="util.cpp" />
+    <ClCompile Include="version.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libfilezilla\apply.hpp" />
-    <ClInclude Include="libfilezilla\private\defs.hpp" />
     <ClInclude Include="libfilezilla\event.hpp" />
     <ClInclude Include="libfilezilla\event_handler.hpp" />
     <ClInclude Include="libfilezilla\event_loop.hpp" />
     <ClInclude Include="libfilezilla\file.hpp" />
+    <ClInclude Include="libfilezilla\libfilezilla.hpp" />
     <ClInclude Include="libfilezilla\mutex.hpp" />
+    <ClInclude Include="libfilezilla\private\defs.hpp" />
     <ClInclude Include="libfilezilla\private\visibility.hpp" />
+    <ClInclude Include="libfilezilla\private\windows.hpp" />
     <ClInclude Include="libfilezilla\process.hpp" />
     <ClInclude Include="libfilezilla\string.hpp" />
     <ClInclude Include="libfilezilla\thread.hpp" />
     <ClInclude Include="libfilezilla\time.hpp" />
     <ClInclude Include="libfilezilla\util.hpp" />
-    <ClInclude Include="libfilezilla.hpp" />
-    <ClInclude Include="libfilezilla\private\windows.hpp" />
+    <ClInclude Include="libfilezilla\version.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>

@@ -105,6 +105,7 @@ AC_SUBST(WINDRES)
 # ------------------
 
 # version.rc.in needs a major, minor and micro version number
+PACKAGE_VERSION_SUFFIX=${PACKAGE_VERSION##*-}
 vnumber=${PACKAGE_VERSION%-*}
 PACKAGE_VERSION_MAJOR=${vnumber%%.*}
 vnumber=${vnumber#$PACKAGE_VERSION_MAJOR}
@@ -134,6 +135,7 @@ AC_SUBST(PACKAGE_VERSION_MAJOR)
 AC_SUBST(PACKAGE_VERSION_MINOR)
 AC_SUBST(PACKAGE_VERSION_MICRO)
 AC_SUBST(PACKAGE_VERSION_NANO)
+AC_SUBST(PACKAGE_VERSION_SUFFIX)
 
 # Enable DEP and ASLR linker flags
 # --------------------------------
@@ -179,6 +181,7 @@ AC_CONFIG_FILES(
   Makefile
   lib/Makefile
   lib/libfilezilla.pc
+  lib/libfilezilla/version.hpp
   demos/Makefile
   doc/Doxyfile
   doc/Makefile

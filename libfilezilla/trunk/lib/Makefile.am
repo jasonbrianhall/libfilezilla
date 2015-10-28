@@ -9,7 +9,8 @@ libfilezilla_la_SOURCES = \
 	string.cpp \
 	thread.cpp \
 	time.cpp \
-	util.cpp
+	util.cpp \
+	version.cpp
 
 nobase_include_HEADERS = \
 	libfilezilla/apply.hpp \
@@ -17,13 +18,14 @@ nobase_include_HEADERS = \
 	libfilezilla/event_handler.hpp \
 	libfilezilla/event_loop.hpp \
 	libfilezilla/file.hpp \
+	libfilezilla/libfilezilla.hpp \
 	libfilezilla/mutex.hpp \
 	libfilezilla/process.hpp \
 	libfilezilla/string.hpp \
 	libfilezilla/thread.hpp \
 	libfilezilla/time.hpp \
 	libfilezilla/util.hpp \
-	libfilezilla/libfilezilla.hpp \
+	libfilezilla/version.hpp \
 	libfilezilla/private/defs.hpp \
 	libfilezilla/private/visibility.hpp \
 	libfilezilla/private/windows.hpp
