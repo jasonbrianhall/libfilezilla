@@ -1,0 +1,29 @@
+#ifndef LIBFILEZILLA_VERSION_HEADER
+#define LIBFILEZILLA_VERSION_HEADER
+
+/** \file
+ * \brief Macros and functions to get the version of the headers and the library
+ */
+
+#include "libfilezilla.hpp"
+
+#include <tuple>
+/// \brief Version string of the libfilezilla headers
+#define LIBFILEZILLA_VERSION "@PACKAGE_VERSION@"
+
+#define LIBFILEZILLA_VERSION_MAJOR  @PACKAGE_VERSION_MAJOR@
+#define LIBFILEZILLA_VERSION_MINOR  @PACKAGE_VERSION_MINOR@
+#define LIBFILEZILLA_VERSION_MICRO  @PACKAGE_VERSION_MICRO@
+#define LIBFILEZILLA_VERSION_NANO   @PACKAGE_VERSION_NANO@
+
+/// \brief Suffix string, e.g. "rc1"
+#define LIBFILEZILLA_VERSION_SUFFIX "@PACKAGE_VERSION_SUFFIX@"
+
+namespace fz {
+/// \brief Get version string of libfilezilla
+std::string FZ_PUBLIC_SYMBOL get_version_string();
+
+/// \brief Get version of libfilezilla broken down into components major, minor, micro, nano and suffix
+std::tuple<int, int, int, int, std::string> FZ_PUBLIC_SYMBOL get_version();
+}
+#endif
