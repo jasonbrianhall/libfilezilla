@@ -51,7 +51,7 @@ dnl We need an inverse for gmtime, either timegm or _mkgmtime
 AC_DEFUN([CHECK_INVERSE_GMTIME], [
   # We need an inverse for gmtime, either timegm or _mkgmtime
   AC_CHECK_FUNCS(timegm, [], [
-    if ! echo "${host_os}" | grep "cygwin\|mingw" > /dev/null 2>&1; then
+    if ! echo "${host_os}" | grep 'cygwin\|mingw\|^msys$' > /dev/null 2>&1; then
       AC_MSG_ERROR([No inverse function for gmtime was found])
     fi
   ])
