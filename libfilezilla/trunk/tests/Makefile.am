@@ -10,6 +10,7 @@ test_SOURCES =  test.cpp \
 
 test_CPPFLAGS = $(AM_CPPFLAGS)
 test_CPPFLAGS += -I$(top_srcdir)/lib
+test_CPPFLAGS += $(CPPUNIT_CFLAGS)
 
 test_LDFLAGS = $(AM_LDFLAGS)
 test_LDFLAGS += -no-install
