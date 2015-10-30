@@ -30,6 +30,9 @@ cd compile
 make
 make install
 
+For a list of available options to customize your build you can
+call ../configure --help
+
 3. The exotic Windows platform
 ------------------------------
 
