@@ -33,8 +33,25 @@ make install
 For a list of available options to customize your build you can
 call ../configure --help
 
-3. The exotic Windows platform
+3. Using
+--------
+
+To use libfilezilla in your project, you can use pkg-config to add the
+required compiler and linker flags.
+
+If your compiler does not enable C++14 (or higher) by default, you may need
+to add -std=c++14 or similar to your compiler flags. Check your compiler's
+manual for details.
+ 
+
+4. The exotic Windows platform
 ------------------------------
 
 There are project files for Visual Studio 2015 you can use to compile
 libfilezilla.
+
+To use libfilezilla in your own project, add libfilezilla to the include and
+library directories and link against libfilezilla.lib
+
+If you want to link against the DLL version of libfilezilla you must also add
+FZ_USING_DLL to your preprocessor defines.
