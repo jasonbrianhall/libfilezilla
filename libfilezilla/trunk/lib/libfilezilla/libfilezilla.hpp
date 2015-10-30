@@ -48,6 +48,24 @@
  *
  * libfilezilla is distributed under the terms and conditions of the GNU General Public License version 2 or higher.
  *
+ * \section using Using libfilezilla
+ *
+ * libfilezilla uses the GNU autotools as build system. See the INSTALL file for details.
+ *
+ * To use libfilezilla in your project, you can use <a href="http://www.freedesktop.org/wiki/Software/pkg-config/">pkg-config</a> to add the required compiler and linker flags.
+ *
+ * If your compiler does not enable C++14 (or higher) by default, you may need to add -std=c++14 or similar to your compiler flags. Check your compiler's manual for details.
+ *
+ * \subsection using_vs Using libfilezilla with Visual Studio
+ *
+ * You can compile libefilezilla using the provided Visual Studio solution.
+ *
+ * To use libfilezilla in your own project, add libfilezilla to the include and library directories and link against libfilezilla.lib
+ * If you want to link against the DLL version of libfilezilla you must also add FZ_USING_DLL to your preprocessor defines.
+ *
+ * \section Examples
+ *
+ * Have a look at the demos directory for a couple of simple demonstation programs.
  */
 #endif
 
