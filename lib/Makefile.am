@@ -33,6 +33,9 @@ nobase_include_HEADERS = \
 libfilezilla_la_CPPFLAGS = $(AM_CPPFLAGS)
 libfilezilla_la_CPPFLAGS += -DBUILDING_LIBFILEZILLA
 
+# Needed for version.hpp in out-of-tree builds
+libfilezilla_la_CPPFLAGS += -I$(srcdir)/libfilezilla
+
 libfilezilla_la_CXXFLAGS = $(AM_CXXFLAGS)
 libfilezilla_la_CXXFLAGS += -fvisibility=hidden
 
