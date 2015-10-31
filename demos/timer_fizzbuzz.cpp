@@ -4,14 +4,6 @@
 #include <iostream>
 #include <string>
 
-/// \file
-/// \brief A simple demonstration of using timers
-///
-/// This example creates and event loop and starts two timers to
-/// print fizz and buzz every 3 respective 5 seconds.
-///
-/// The user can also configure a third timer via stdin to print woof.
-
 struct interval_change_type;
 typedef fz::simple_event<interval_change_type, fz::duration> interval_change;
 
@@ -41,6 +33,7 @@ private:
 
 	void on_interval_change(fz::duration interval)
 	{
+		// We got told to change the woof interval.
 		stop_timer(woof_);
 		woof_ = add_timer(interval, false);
 	}
@@ -71,10 +64,12 @@ int main()
 
 	std::cout << "Enter interval in seconds for the woof timer or 0 to stop program." << std::endl;
 
+	// Read numbers from stdin until reading fails or a 0 is entered
 	int seconds;
 	do {
 		std::cin >> seconds;
 		if (std::cin.good() && seconds > 0) {
+			// Got a new interval, send to handler
 			fb.send_event<interval_change>(fz::duration::from_seconds(seconds));
 		}
 	}
