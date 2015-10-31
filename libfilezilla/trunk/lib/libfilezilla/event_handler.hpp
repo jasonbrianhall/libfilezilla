@@ -128,6 +128,9 @@ private:
  * \param ev the received event
  * \param f functor that should be called if the event matches the passed type.
  *
+ * If the passed event is of the type passed as template argument, the passed function is called with the contents of the event
+ * unpacked as arguments.
+ *
  * \return true iff event matches passed type.
  *
  * \sa event_handler for complete usage example.
@@ -150,6 +153,9 @@ bool dispatch(event_base const& ev, F&& f)
  * \param ev the received event.
  * \param h object whose member gets called if the event matches the passed type.
  * \param f pointer to member of \c h that should be called if the event matches the passed type.
+ *
+ * If the passed event is of the type passed as template argument, the passed function is called with the contents of the event
+ * unpacked as arguments.
  *
  * \return true iff event matches passed type.
  *
