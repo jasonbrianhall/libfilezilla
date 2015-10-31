@@ -1,0 +1,18 @@
+/// \example events.cpp
+/// \brief A simple demonstration of using the event system
+
+/// \example timer_fizzbuzz.cpp
+/// \brief A simple demonstration of using timers.
+///
+/// This example creates and event loop and starts two timers to
+/// print fizz and buzz every 3 respective 5 seconds.
+///
+/// The user can also configure a third timer via stdin to print woof.
+///
+/// This example assumes you already understand the \ref events.cpp example.
+
+/// \example process.cpp
+/// \brief A simple demonstration of using fz::process
+///
+/// This example spawns the \ref timer_fizzbuzz.cpp demo and controls it
+/// via the redirected IO.

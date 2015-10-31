@@ -3,12 +3,6 @@
 #include <iostream>
 #include <string>
 
-/// \file
-/// \brief A simple demonstration of using fz::process
-///
-/// This example spawns the timer_fizzbuzz demo and controls it
-/// via the redirected IO.
-
 namespace {
 // Helper function to extract a directory from argv[0] so that the
 // demos can be run independent of the current working directory.
@@ -51,8 +45,7 @@ int main(int argc, char *argv[])
 	std::cout << "Spawned process" << std::endl;
 
 	// Send a line to the process
-	std::string cmd = "6\n";
-	if (!p.write(cmd.c_str(), static_cast<unsigned int>(cmd.size()))) {
+	if (!p.write("6\n")) {
 		std::cerr << "Sending data to the process failed. Looks like it could not be started or has quit early." << std::endl;
 		return 1;
 	}
@@ -94,8 +87,7 @@ int main(int argc, char *argv[])
 	}
 
 	// Send a line to the process
-	cmd = "0\n";
-	if (!p.write(cmd.c_str(), static_cast<unsigned int>(cmd.size()))) {
+	if (!p.write("0\n")) {
 		std::cerr << "Sending data to the process failed. Looks like it could not be started or has quit early." << std::endl;
 		return 1;
 	}

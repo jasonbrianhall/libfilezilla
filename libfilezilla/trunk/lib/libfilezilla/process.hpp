@@ -67,6 +67,10 @@ public:
 	 */
 	bool write(char const* buffer, unsigned int len);
 
+	inline bool write(std::string const& s) {
+		return write(s.c_str(), static_cast<unsigned int>(s.size()));
+	}
+
 private:
 	class impl;
 	impl* impl_;

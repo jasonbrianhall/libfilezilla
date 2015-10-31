@@ -4,10 +4,6 @@
 #include <string>
 #include <vector>
 
-/// \file
-/// \brief A simple demonstration of using the event system
-
-
 // A condition that we'll use in this example to signal the main
 // thread that the worker has processed the event.
 fz::condition c;
@@ -15,9 +11,12 @@ fz::mutex m;
 
 
 // Define a new event.
+// The event is uniquely identified via the incomplete my_event_type struct and
+// has two arguments: A string and a vector of ints.
 struct my_event_type;
 typedef fz::simple_event<my_event_type, std::string, std::vector<int>> my_event;
 
+// A simple event handler
 class handler final : public fz::event_handler
 {
 public:
@@ -32,6 +31,7 @@ public:
 	}
 
 private:
+	// The event loop calls this function for every event sent to this handler.
 	virtual void operator()(fz::event_base const& ev)
 	{
 		// Dispatch the event to the correct function.
