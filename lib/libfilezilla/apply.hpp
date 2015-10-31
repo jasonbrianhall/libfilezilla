@@ -8,6 +8,8 @@
 /** \file
  * \brief Template helper to call a function with its arguments extracted from a tuple.
  *
+ * This helper is used for the event \ref fz::dispatch "dispatch"
+ *
  * Similar to like std::experimental::apply
  */
 
