@@ -62,10 +62,6 @@
  *
  * To use libfilezilla in your own project, add libfilezilla to the include and library directories and link against libfilezilla.lib
  * If you want to link against the DLL version of libfilezilla you must also add FZ_USING_DLL to your preprocessor defines.
- *
- * \section Examples
- *
- * Have a look at the demos directory for a couple of simple demonstation programs.
  */
 #endif
 
