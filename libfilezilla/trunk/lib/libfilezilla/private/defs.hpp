@@ -1,12 +1,14 @@
 #ifndef LIBFILEZILLA_PRIVATE_DEFS_HEADER
 #define LIBFILEZILLA_PRIVATE_DEFS_HEADER
 
-#if defined(__cplusplus) && (__cplusplus < 201300) // For some reason GCC 4.9 thinks the correct value is 2013000 :(
 #if defined(_MSC_VER)
-#error You need to use a C++14 compiler, such as Visual Studio 2015 or higher.
+	#if _MSC_VER < 1900)
+		#error You need to use a C++14 compiler, such as Visual Studio 2015 or higher.
+	#endif
 #else
-#error You need to use a C++14 compiler. Try passing -std=c++14 as compiler flag.
-#endif
+	#if defined(__cplusplus) && (__cplusplus < 201300) // For some reason GCC 4.9 thinks the correct value is 2013000 :(
+		#error You need to use a C++14 compiler. Try passing -std=c++14 as compiler flag.
+	#endif
 #endif
 
 // Set some mandatory defines which are used to select platform implementations
