@@ -28,7 +28,8 @@ nobase_include_HEADERS = \
 	libfilezilla/version.hpp \
 	libfilezilla/private/defs.hpp \
 	libfilezilla/private/visibility.hpp \
-	libfilezilla/private/windows.hpp
+	libfilezilla/private/windows.hpp \
+	libfilezilla/glue/wx.hpp
 
 libfilezilla_la_CPPFLAGS = $(AM_CPPFLAGS)
 libfilezilla_la_CPPFLAGS += -DBUILDING_LIBFILEZILLA
