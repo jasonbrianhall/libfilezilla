@@ -2,7 +2,7 @@
 #define LIBFILEZILLA_PRIVATE_DEFS_HEADER
 
 #if defined(_MSC_VER)
-	#if _MSC_VER < 1900)
+	#if _MSC_VER < 1900
 		#error You need to use a C++14 compiler, such as Visual Studio 2015 or higher.
 	#endif
 #else
