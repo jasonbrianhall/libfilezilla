@@ -128,6 +128,23 @@ template<typename Char>
 size_t strlen(Char const* str) {
 	return std::char_traits<Char>::length(str);
 }
+
+
+/** \brief Converts from std::string in native encoding into std::string in UTF-8
+*
+* \return the converted string on success. On failure an empty string is returned.
+*
+* \note Does not handle embedded nulls
+*/
+std::string FZ_PUBLIC_SYMBOL to_utf8(std::string const& in);
+
+/** \brief Converts from std::wstring in native encoding into std::string in UTF-8
+*
+* \return the converted string on success. On failure an empty string is returned.
+*
+* \note Does not handle embedded nulls
+*/
+std::string FZ_PUBLIC_SYMBOL to_utf8(std::wstring const& in);
 }
 
 #if !defined(fzT) || defined(DOXYGEN)
