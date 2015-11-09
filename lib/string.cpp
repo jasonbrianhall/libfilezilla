@@ -145,4 +145,50 @@ std::string to_string(std::wstring const& in)
 	return ret;
 }
 
+std::string FZ_PUBLIC_SYMBOL to_utf8(std::string const& in)
+{
+	return to_utf8(to_wstring(in));
+}
+
+std::string FZ_PUBLIC_SYMBOL to_utf8(std::wstring const& in)
+{
+	std::string ret;
+
+	if (!in.empty()) {
+#if FZ_WINDOWS
+		wchar_t const* const in_p = in.c_str();
+		int len = WideCharToMultiByte(CP_UTF8, WC_ERR_INVALID_CHARS, in_p, static_cast<int>(in.size()), 0, 0, 0, 0);
+		if (len > 0) {
+			ret.resize(len);
+			char* out_p = &ret[0];
+			WideCharToMultiByte(CP_UTF8, WC_ERR_INVALID_CHARS, in_p, len, out_p, len, 0, 0);
+		}
+#else
+		iconv_t cd = iconv_open("UTF-8", "WCHAR_T");
+		if (cd != reinterpret_cast<iconv_t>(-1)) {
+			char * in_p = const_cast<char*>(in.c_str());
+			size_t in_len = in.size() * sizeof(wchar_t);
+
+			size_t out_len = in.size() * 4;
+			char* out_buf = new char[out_len];
+			char* out_p = out_buf;
+
+			size_t r = iconv(cd, &in_p, &in_len, &out_p, &out_len);
+
+			if (r != static_cast<size_t>(-1)) {
+				ret.assign(out_buf, out_p);
+			}
+
+			// Our buffer should big enough as well, so we can ignore errors such as E2BIG.
+
+			delete[] out_buf;
+
+			iconv_close(cd);
+		}
+#endif
+	}
+
+	return ret;
+}
+
 }
