@@ -166,7 +166,7 @@ std::string FZ_PUBLIC_SYMBOL to_utf8(std::wstring const& in)
 #else
 		iconv_t cd = iconv_open("UTF-8", "WCHAR_T");
 		if (cd != reinterpret_cast<iconv_t>(-1)) {
-			char * in_p = const_cast<char*>(in.c_str());
+			char * in_p = reinterpret_cast<char*>(const_cast<wchar_t*>(in.c_str()));
 			size_t in_len = in.size() * sizeof(wchar_t);
 
 			size_t out_len = in.size() * 4;
