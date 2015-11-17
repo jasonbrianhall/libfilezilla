@@ -11,7 +11,7 @@
 
 namespace fz {
 
-class recursive_remove
+class FZ_PUBLIC_SYMBOL recursive_remove
 {
 public:
 	recursive_remove() = default;
