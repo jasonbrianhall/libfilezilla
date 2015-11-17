@@ -47,5 +47,6 @@
 #endif
 
 #include <windows.h>
+#include <shellapi.h>
 
 #endif

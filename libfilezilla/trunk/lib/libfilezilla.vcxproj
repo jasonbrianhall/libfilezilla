@@ -83,6 +83,7 @@
       <BufferSecurityCheck>true</BufferSecurityCheck>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Lib />
   </ItemDefinitionGroup>
@@ -96,6 +97,7 @@
       <BufferSecurityCheck>true</BufferSecurityCheck>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Lib />
   </ItemDefinitionGroup>
@@ -109,6 +111,7 @@
       <BufferSecurityCheck>true</BufferSecurityCheck>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Lib />
   </ItemDefinitionGroup>
@@ -122,6 +125,7 @@
       <BufferSecurityCheck>true</BufferSecurityCheck>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Lib />
   </ItemDefinitionGroup>
@@ -136,6 +140,7 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='dll_release|Win32'">
@@ -149,6 +154,7 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='static_release|x64'">
@@ -162,6 +168,7 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='dll_release|x64'">
@@ -175,14 +182,17 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="event_handler.cpp" />
     <ClCompile Include="event_loop.cpp" />
     <ClCompile Include="file.cpp" />
+    <ClCompile Include="local_filesys.cpp" />
     <ClCompile Include="mutex.cpp" />
     <ClCompile Include="process.cpp" />
+    <ClCompile Include="recursive_remove.cpp" />
     <ClCompile Include="string.cpp" />
     <ClCompile Include="thread.cpp" />
     <ClCompile Include="time.cpp" />
@@ -196,11 +206,13 @@
     <ClInclude Include="libfilezilla\event_loop.hpp" />
     <ClInclude Include="libfilezilla\file.hpp" />
     <ClInclude Include="libfilezilla\libfilezilla.hpp" />
+    <ClInclude Include="libfilezilla\local_filesys.hpp" />
     <ClInclude Include="libfilezilla\mutex.hpp" />
     <ClInclude Include="libfilezilla\private\defs.hpp" />
     <ClInclude Include="libfilezilla\private\visibility.hpp" />
     <ClInclude Include="libfilezilla\private\windows.hpp" />
     <ClInclude Include="libfilezilla\process.hpp" />
+    <ClInclude Include="libfilezilla\recursive_remove.hpp" />
     <ClInclude Include="libfilezilla\string.hpp" />
     <ClInclude Include="libfilezilla\thread.hpp" />
     <ClInclude Include="libfilezilla\time.hpp" />

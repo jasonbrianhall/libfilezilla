@@ -4,8 +4,10 @@ libfilezilla_la_SOURCES = \
 	event_handler.cpp \
 	event_loop.cpp \
 	file.cpp \
+	local_filesys.cpp \
 	mutex.cpp \
 	process.cpp \
+	recursive_remove.cpp \
 	string.cpp \
 	thread.cpp \
 	time.cpp \
@@ -19,8 +21,10 @@ nobase_include_HEADERS = \
 	libfilezilla/event_loop.hpp \
 	libfilezilla/file.hpp \
 	libfilezilla/libfilezilla.hpp \
+	libfilezilla/local_filesys.hpp \
 	libfilezilla/mutex.hpp \
 	libfilezilla/process.hpp \
+	libfilezilla/recursive_remove.hpp \
 	libfilezilla/string.hpp \
 	libfilezilla/thread.hpp \
 	libfilezilla/time.hpp \
