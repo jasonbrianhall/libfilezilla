@@ -1,6 +1,10 @@
 #include "libfilezilla/recursive_remove.hpp"
 #include "libfilezilla/local_filesys.hpp"
 
+#ifndef FZ_WINDOWS
+#include <unistd.h>
+#endif
+
 namespace fz {
 
 bool recursive_remove::remove(const native_string& path)
@@ -78,7 +82,7 @@ bool recursive_remove::remove(std::list<native_string> dirsToVisit)
 		auto const iter = dirsToVisit.begin();
 		native_string const& path = *iter;
 
-		if (fz.get_file_type(path) != dir) {
+		if (fs.get_file_type(path) != local_filesys::dir) {
 			unlink(path.c_str());
 			dirsToVisit.erase(iter);
 			continue;
@@ -105,7 +109,7 @@ bool recursive_remove::remove(std::list<native_string> dirsToVisit)
 
 			native_string const fullName = path + fzT("/") + file;
 
-			if (local_filesys::GetFileType(fullName) == local_filesys::dir)
+			if (local_filesys::get_file_type(fullName) == local_filesys::dir)
 				dirsToVisit.push_back(fullName);
 			else
 				filesToDelete.push_back(fullName);

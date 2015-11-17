@@ -3,6 +3,8 @@
 #ifndef FZ_WINDOWS
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <unistd.h>
+#include <string.h>
 #include <utime.h>
 #endif
 
@@ -46,7 +48,7 @@ local_filesys::type local_filesys::get_file_type(native_string const& path)
 	if (path.size() > 1 && path.back() == '/') {
 		native_string tmp = path;
 		tmp.pop_back();
-		return GetFileType(tmp);
+		return get_file_type(tmp);
 	}
 
 	struct stat buf;
@@ -175,9 +177,8 @@ local_filesys::type local_filesys::get_file_info(native_string const& path, bool
 #ifdef S_ISLNK
 	if (S_ISLNK(buf.st_mode)) {
 		is_link = true;
-		int result = stat(path, &buf);
-		if (result)
-		{
+		int result = stat(path.c_str(), &buf);
+		if (result) {
 			if (size)
 				*size = -1;
 			if (mode)
@@ -247,7 +248,7 @@ bool local_filesys::begin_find_files(native_string path, bool dirs_only)
 
 	m_raw_path = new char[path.size() + 2048 + 2];
 	m_buffer_length = path.size() + 2048 + 2;
-	strcpy(m_raw_path, p.c_str());
+	strcpy(m_raw_path, path.c_str());
 	if (path.size() > 1) {
 		m_raw_path[path.size()] = '/';
 		m_file_part = m_raw_path + path.size() + 1;
@@ -463,7 +464,7 @@ bool local_filesys::get_next_file(native_string& name, bool &is_link, bool &is_d
 
 		alloc_path_buffer(entry->d_name);
 		strcpy(m_file_part, entry->d_name);
-		local_fileType t = get_file_info(m_raw_path, is_link, size, modification_time, mode);
+		type t = get_file_info(m_raw_path, is_link, size, modification_time, mode);
 
 		if (t == unknown) { // Happens for example in case of permission denied
 #if HAVE_STRUCT_DIRENT_D_TYPE
@@ -541,7 +542,7 @@ bool local_filesys::set_modification_time(native_string const& path, datetime co
 	return ret;
 #else
 	utimbuf utm{};
-	utm.actime = t.get_timefzT();
+	utm.actime = t.get_time_t();
 	utm.modtime = utm.actime;
 	return utime(path.c_str(), &utm) == 0;
 #endif
@@ -578,7 +579,7 @@ native_string local_filesys::get_link_target(native_string const& path)
 	size_t const size = 1024;
 	char out[size];
 
-	ssize_t res = readlink(p.c_str(), out, size);
+	ssize_t res = readlink(path.c_str(), out, size);
 	if (res > 0 && static_cast<size_t>(res) < size) {
 		out[res] = 0;
 		target = out;
