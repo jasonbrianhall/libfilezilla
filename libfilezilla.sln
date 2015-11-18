@@ -21,6 +21,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo_timer_fizzbuzz", "demo
 		{E1BC2AC0-F3DD-4892-8CF2-1041A63F7C9C} = {E1BC2AC0-F3DD-4892-8CF2-1041A63F7C9C}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo_list", "demos\demo_list.vcxproj", "{C9F9E856-FC6B-4D16-8236-AB1016620345}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E1BC2AC0-F3DD-4892-8CF2-1041A63F7C9C} = {E1BC2AC0-F3DD-4892-8CF2-1041A63F7C9C}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		dll_debug|x64 = dll_debug|x64
@@ -97,6 +102,22 @@ Global
 		{306B18D9-E2FB-4674-80D0-C3D33530F21E}.static_release|x64.Build.0 = static_release|x64
 		{306B18D9-E2FB-4674-80D0-C3D33530F21E}.static_release|x86.ActiveCfg = static_release|Win32
 		{306B18D9-E2FB-4674-80D0-C3D33530F21E}.static_release|x86.Build.0 = static_release|Win32
+		{C9F9E856-FC6B-4D16-8236-AB1016620345}.dll_debug|x64.ActiveCfg = dll_debug|x64
+		{C9F9E856-FC6B-4D16-8236-AB1016620345}.dll_debug|x64.Build.0 = dll_debug|x64
+		{C9F9E856-FC6B-4D16-8236-AB1016620345}.dll_debug|x86.ActiveCfg = dll_debug|Win32
+		{C9F9E856-FC6B-4D16-8236-AB1016620345}.dll_debug|x86.Build.0 = dll_debug|Win32
+		{C9F9E856-FC6B-4D16-8236-AB1016620345}.dll_release|x64.ActiveCfg = dll_release|x64
+		{C9F9E856-FC6B-4D16-8236-AB1016620345}.dll_release|x64.Build.0 = dll_release|x64
+		{C9F9E856-FC6B-4D16-8236-AB1016620345}.dll_release|x86.ActiveCfg = dll_release|Win32
+		{C9F9E856-FC6B-4D16-8236-AB1016620345}.dll_release|x86.Build.0 = dll_release|Win32
+		{C9F9E856-FC6B-4D16-8236-AB1016620345}.static_debug|x64.ActiveCfg = static_debug|x64
+		{C9F9E856-FC6B-4D16-8236-AB1016620345}.static_debug|x64.Build.0 = static_debug|x64
+		{C9F9E856-FC6B-4D16-8236-AB1016620345}.static_debug|x86.ActiveCfg = static_debug|Win32
+		{C9F9E856-FC6B-4D16-8236-AB1016620345}.static_debug|x86.Build.0 = static_debug|Win32
+		{C9F9E856-FC6B-4D16-8236-AB1016620345}.static_release|x64.ActiveCfg = static_release|x64
+		{C9F9E856-FC6B-4D16-8236-AB1016620345}.static_release|x64.Build.0 = static_release|x64
+		{C9F9E856-FC6B-4D16-8236-AB1016620345}.static_release|x86.ActiveCfg = static_release|Win32
+		{C9F9E856-FC6B-4D16-8236-AB1016620345}.static_release|x86.Build.0 = static_release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
