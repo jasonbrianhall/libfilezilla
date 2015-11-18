@@ -1,4 +1,4 @@
-noinst_PROGRAMS = timer_fizzbuzz process events
+noinst_PROGRAMS = timer_fizzbuzz process events list
 
 timer_fizzbuzz_SOURCES = timer_fizzbuzz.cpp
 
@@ -28,7 +28,6 @@ process_LDADD += $(libdeps)
 process_DEPENDENCIES = ../lib/libfilezilla.la
 
 
-
 events_SOURCES = events.cpp
 
 events_CPPFLAGS = $(AM_CPPFLAGS)
@@ -43,4 +42,18 @@ events_LDADD += $(libdeps)
 events_DEPENDENCIES = ../lib/libfilezilla.la
 
 
-dist_noinst_DATA = demo_events.vcxproj examples.txt
+list_SOURCES = list.cpp
+
+list_CPPFLAGS = $(AM_CPPFLAGS)
+list_CPPFLAGS += -I$(top_srcdir)/lib
+
+list_LDFLAGS = $(AM_LDFLAGS)
+list_LDFLAGS += -no-install
+
+list_LDADD = ../lib/libfilezilla.la
+list_LDADD += $(libdeps)
+
+list_DEPENDENCIES = ../lib/libfilezilla.la
+
+
+dist_noinst_DATA = demo_timer_fizzbuzz.vcxproj demo_process.vcxproj demo_events.vcxproj examples.txt

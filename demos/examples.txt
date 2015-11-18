@@ -16,3 +16,9 @@
 ///
 /// This example spawns the \ref timer_fizzbuzz.cpp demo and controls it
 /// via the redirected IO.
+
+/// \example list.cpp
+/// \brief A simple demonstration of using fz::local_filesys
+///
+/// This example lists the contents of the directory given as argument
+/// to the program, or the current working directory if no argument is given.
