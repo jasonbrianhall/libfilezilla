@@ -58,6 +58,7 @@ bool recursive_remove::remove(std::list<native_string> dirsToVisit)
 
 		if (SHFileOperation(&op) != 0) {
 			success = false;
+		}
 	}
 	delete [] pBuffer;
 #else
@@ -135,9 +136,9 @@ bool recursive_remove::remove(std::list<native_string> dirsToVisit)
 			success = false;
 		}
 	}
+#endif
 
 	return success;
-#endif
 }
 
 #ifdef FZ_WINDOWS

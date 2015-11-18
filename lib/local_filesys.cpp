@@ -43,7 +43,7 @@ local_filesys::type local_filesys::get_file_type(native_string const& path, bool
 	if (result == INVALID_FILE_ATTRIBUTES)
 		return unknown;
 
-	bool is_dir = (attributes.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0;
+	bool is_dir = (result & FILE_ATTRIBUTE_DIRECTORY) != 0;
 
 	if (result & FILE_ATTRIBUTE_REPARSE_POINT) {
 		if (!follow_links) {
@@ -60,7 +60,7 @@ local_filesys::type local_filesys::get_file_type(native_string const& path, bool
 		int ret = GetFileInformationByHandle(hFile, &info);
 		CloseHandle(hFile);
 		if (!ret || (info.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT)) {
-			return unknownl
+			return unknown;
 		}
 
 		is_dir = (info.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0;
