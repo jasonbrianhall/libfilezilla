@@ -14,11 +14,11 @@ int main(int argc, char *argv[])
 
 	// Begin listing
 	if (!fs.begin_find_files(path)) {
-		std::cerr << "Cannot list " << path << std::endl;
+		std::cerr << "Cannot list " << fz::to_string(path) << std::endl;
 		return 1;
 	}
 
-	std::cout << "Listing " << path << "\n\n";
+	std::cout << "Listing " << fz::to_string(path) << "\n\n";
 	std::cout << "Name Link? Type Size Modified Mode\n";
 	std::cout << "----------------------------------\n";
 
@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
 	while (fs.get_next_file(name, is_link, is_dir, &size, &time, &mode)) {
 
 		// Print results
-		std::cout << name << "\n";
+		std::cout << fz::to_string(name) << "\n";
 		std::cout << "    Type: " << (is_link ? "symlinked" : "regular") << (is_dir ? " directory" : " file") << "\n";
 		if (!is_dir) {
 			if (size >= 0) {
