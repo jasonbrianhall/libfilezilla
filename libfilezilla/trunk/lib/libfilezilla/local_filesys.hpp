@@ -67,7 +67,7 @@ public:
 	/// \brief Begins enumerating a directory.
 	///
 	/// \param dirs_only If true, only directories are enumerated.
-	bool begin_find_files(native_string path, bool dirs_only);
+	bool begin_find_files(native_string path, bool dirs_only = false);
 
 	/// Gets the next file in the directory. Call until it returns false.
 	bool get_next_file(native_string& name);

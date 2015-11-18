@@ -275,7 +275,7 @@ bool local_filesys::begin_find_files(native_string path, bool dirs_only)
 	m_raw_path = new char[path.size() + 2048 + 2];
 	m_buffer_length = path.size() + 2048 + 2;
 	strcpy(m_raw_path, path.c_str());
-	if (path.size() > 1) {
+	if (path != fzT("/")) {
 		m_raw_path[path.size()] = '/';
 		m_file_part = m_raw_path + path.size() + 1;
 	}
@@ -494,7 +494,7 @@ bool local_filesys::get_next_file(native_string& name, bool &is_link, bool &is_d
 
 		if (t == unknown) { // Happens for example in case of permission denied
 #if HAVE_STRUCT_DIRENT_D_TYPE
-			t = entry->d_type == DT_DIR ? dir : file;
+			t = (entry->d_type == DT_DIR) ? dir : file;
 #else
 			t = file;
 #endif
