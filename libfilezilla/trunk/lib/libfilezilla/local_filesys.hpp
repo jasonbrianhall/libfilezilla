@@ -10,13 +10,17 @@
 #include <dirent.h>
 #endif
 
+/** \file
+ * \brief Declares local_filesys class to enumerate local files and query their metadata such as type, size and modification time.
+ */
 namespace fz {
 
-// This class adds an abstraction layer for the local filesystem.
-// Although wxWidgets provides functions for this, they are in
-// general too slow.
-// This class offers exactly what's needed by FileZilla and
-// exploits some platform-specific features.
+/**
+ * \brief This class can be used to enumerate the contents of local directories and to query
+ * the metadata of files.
+ *
+ * This class is aware of symbolic links. Under Windows it can handle reparse points as well.
+ */
 class FZ_PUBLIC_SYMBOL local_filesys final
 {
 public:
@@ -26,6 +30,7 @@ public:
 	local_filesys(local_filesys const&) = delete;
 	local_filesys& operator=(local_filesys const&) = delete;
 
+	/// Types of files. While 'everything is a file', a filename can refer to a file proper, a directory or a symbolic link.
 	enum type {
 		unknown = -1,
 		file,
@@ -33,8 +38,12 @@ public:
 		link
 	};
 
+	/// The system's preferred path separator
 	static char const path_separator;
 
+	/// \brief Checks whether given character is a path separator.
+	///
+	/// On most systems, the forward slash is the only separator. The exception is Windows where both forward and backward slashes are separators, with the latter being preferred.
 	static inline bool is_separator(wchar_t c) {
 #ifdef FZ_WINDOWS
 		return c == '/' || c == '\\';
@@ -43,19 +52,32 @@ public:
 #endif
 	}
 
-	// GetFileType return the type of the passed path. Does not follow symbolic links
-	static type get_file_type(native_string const& path);
+	/// \brief GetFileType return the type of the passed path.
+	///
+	/// Can optionally follow symbolic links.
+	static type get_file_type(native_string const& path, bool follow_links = false);
 
-	// Gets the info for the passed arguments. Follows symbolic links and stats the target, sets is_link to true if path was
-	// a link.
+	/// Gets the info for the passed arguments. Follows symbolic links and stats the target, sets is_link to true if path was
+	/// a link.
 	static type get_file_info(native_string const& path, bool &is_link, int64_t* size, datetime* modification_time, int* mode);
 
-	// Shortcut, returns -1 on error.
+	/// Gets size of file, returns -1 on error.
 	static int64_t get_size(native_string const& path, bool *is_link = 0);
 
+	/// \brief Begins enumerating a directory.
+	///
+	/// \param dirs_only If true, only directories are enumerated.
 	bool begin_find_files(native_string path, bool dirs_only);
+
+	/// Gets the next file in the directory. Call until it returns false.
 	bool get_next_file(native_string& name);
+
+	/// Gets the next file in the directory. Call until it returns false.
+	///
+	/// Stores the metadata in any non-null arguments.
 	bool get_next_file(native_string& name, bool &is_link, bool &is_dir, int64_t* size, datetime* modification_time, int* mode);
+
+	/// Ends enumerating files. Automatically called in the destructor.
 	void end_find_files();
 
 	static datetime get_modification_time(native_string const& path);
