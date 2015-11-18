@@ -127,7 +127,7 @@
     <LinkIncremental>true</LinkIncremental>
     <LibraryPath>$(ProjectDir)..\lib\$(Configuration);$(LibraryPath)</LibraryPath>
     <OutDir>$(ProjectDir)$(Platform)_$(Configuration)\</OutDir>
-    <IntDir>$(OutDir)</IntDir>
+    <IntDir>$(OutDir)$(ProjectName)/</IntDir>
     <IncludePath>$(ProjectDir)..\lib\;$(IncludePath)</IncludePath>
     <ExecutablePath>$(ProjectDir)..\lib\$(Platform)_$(Configuration);$(ExecutablePath)</ExecutablePath>
     <TargetName>timer_fizzbuzz</TargetName>
@@ -136,7 +136,7 @@
     <LinkIncremental>true</LinkIncremental>
     <LibraryPath>$(ProjectDir)..\lib\$(Configuration);$(LibraryPath)</LibraryPath>
     <OutDir>$(ProjectDir)$(Platform)_$(Configuration)\</OutDir>
-    <IntDir>$(OutDir)</IntDir>
+    <IntDir>$(OutDir)$(ProjectName)/</IntDir>
     <IncludePath>$(ProjectDir)..\lib\;$(IncludePath)</IncludePath>
     <ExecutablePath>$(ProjectDir)..\lib\$(Platform)_$(Configuration);$(ExecutablePath)</ExecutablePath>
     <TargetName>timer_fizzbuzz</TargetName>
@@ -144,7 +144,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='dll_debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(ProjectDir)$(Platform)_$(Configuration)\</OutDir>
-    <IntDir>$(OutDir)</IntDir>
+    <IntDir>$(OutDir)$(ProjectName)/</IntDir>
     <IncludePath>$(ProjectDir)..\lib\;$(IncludePath)</IncludePath>
     <ExecutablePath>$(ProjectDir)..\lib\$(Platform)_$(Configuration);$(ExecutablePath)</ExecutablePath>
     <TargetName>timer_fizzbuzz</TargetName>
@@ -152,7 +152,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='static_debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(ProjectDir)$(Platform)_$(Configuration)\</OutDir>
-    <IntDir>$(OutDir)</IntDir>
+    <IntDir>$(OutDir)$(ProjectName)/</IntDir>
     <IncludePath>$(ProjectDir)..\lib\;$(IncludePath)</IncludePath>
     <ExecutablePath>$(ProjectDir)..\lib\$(Platform)_$(Configuration);$(ExecutablePath)</ExecutablePath>
     <TargetName>timer_fizzbuzz</TargetName>
@@ -161,7 +161,7 @@
     <LinkIncremental>false</LinkIncremental>
     <LibraryPath>$(ProjectDir)..\lib\$(Configuration);$(LibraryPath)</LibraryPath>
     <OutDir>$(ProjectDir)$(Platform)_$(Configuration)\</OutDir>
-    <IntDir>$(OutDir)</IntDir>
+    <IntDir>$(OutDir)$(ProjectName)/</IntDir>
     <IncludePath>$(ProjectDir)..\lib\;$(IncludePath)</IncludePath>
     <ExecutablePath>$(ProjectDir)..\lib\$(Platform)_$(Configuration);$(ExecutablePath)</ExecutablePath>
     <TargetName>timer_fizzbuzz</TargetName>
@@ -170,7 +170,7 @@
     <LinkIncremental>false</LinkIncremental>
     <LibraryPath>$(ProjectDir)..\lib\$(Configuration);$(LibraryPath)</LibraryPath>
     <OutDir>$(ProjectDir)$(Platform)_$(Configuration)\</OutDir>
-    <IntDir>$(OutDir)</IntDir>
+    <IntDir>$(OutDir)$(ProjectName)/</IntDir>
     <IncludePath>$(ProjectDir)..\lib\;$(IncludePath)</IncludePath>
     <ExecutablePath>$(ProjectDir)..\lib\$(Platform)_$(Configuration);$(ExecutablePath)</ExecutablePath>
     <TargetName>timer_fizzbuzz</TargetName>
@@ -178,7 +178,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='dll_release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(ProjectDir)$(Platform)_$(Configuration)\</OutDir>
-    <IntDir>$(OutDir)</IntDir>
+    <IntDir>$(OutDir)$(ProjectName)/</IntDir>
     <IncludePath>$(ProjectDir)..\lib\;$(IncludePath)</IncludePath>
     <ExecutablePath>$(ProjectDir)..\lib\$(Platform)_$(Configuration);$(ExecutablePath)</ExecutablePath>
     <TargetName>timer_fizzbuzz</TargetName>
@@ -186,7 +186,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='static_release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(ProjectDir)$(Platform)_$(Configuration)\</OutDir>
-    <IntDir>$(OutDir)</IntDir>
+    <IntDir>$(OutDir)$(ProjectName)/</IntDir>
     <IncludePath>$(ProjectDir)..\lib\;$(IncludePath)</IncludePath>
     <ExecutablePath>$(ProjectDir)..\lib\$(Platform)_$(Configuration);$(ExecutablePath)</ExecutablePath>
     <TargetName>timer_fizzbuzz</TargetName>
