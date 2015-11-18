@@ -30,35 +30,61 @@ local_filesys::~local_filesys()
 	end_find_files();
 }
 
-local_filesys::type local_filesys::get_file_type(native_string const& path)
+local_filesys::type local_filesys::get_file_type(native_string const& path, bool follow_links)
 {
-#ifdef FZ_WINDOWS
-	DWORD result = GetFileAttributes(path.c_str());
-	if (result == INVALID_FILE_ATTRIBUTES)
-		return unknown;
-
-	if (result & FILE_ATTRIBUTE_REPARSE_POINT)
-		return link;
-
-	if (result & FILE_ATTRIBUTE_DIRECTORY)
-		return dir;
-
-	return file;
-#else
 	if (path.size() > 1 && path.back() == '/') {
 		native_string tmp = path;
 		tmp.pop_back();
 		return get_file_type(tmp);
 	}
 
-	struct stat buf;
-	int result = lstat(path.c_str(), &buf);
-	if (result)
+#ifdef FZ_WINDOWS
+	DWORD result = GetFileAttributes(path.c_str());
+	if (result == INVALID_FILE_ATTRIBUTES)
 		return unknown;
 
+	bool is_dir = (attributes.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0;
+
+	if (result & FILE_ATTRIBUTE_REPARSE_POINT) {
+		if (!follow_links) {
+			return link;
+		}
+
+		// Follow the reparse point
+		HANDLE hFile = is_dir ? INVALID_HANDLE_VALUE : CreateFile(path.c_str(), FILE_READ_ATTRIBUTES | FILE_READ_EA, FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+		if (hFile == INVALID_HANDLE_VALUE) {
+			return unknown;
+		}
+
+		BY_HANDLE_FILE_INFORMATION info{};
+		int ret = GetFileInformationByHandle(hFile, &info);
+		CloseHandle(hFile);
+		if (!ret || (info.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT)) {
+			return unknownl
+		}
+
+		is_dir = (info.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0;
+	}
+
+	return is_dir ? dir : file;
+#else
+	struct stat buf;
+	int result = lstat(path.c_str(), &buf);
+	if (result) {
+		return unknown;
+	}
+
 #ifdef S_ISLNK
-	if (S_ISLNK(buf.st_mode))
-		return link;
+	if (S_ISLNK(buf.st_mode)) {
+		if (!follow_links) {
+			return link;
+		}
+
+		int result = stat(path.c_str(), &buf);
+		if (result) {
+			return unknown;
+		}
+	}
 #endif
 
 	if (S_ISDIR(buf.st_mode))

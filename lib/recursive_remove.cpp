@@ -16,6 +16,8 @@ bool recursive_remove::remove(const native_string& path)
 
 bool recursive_remove::remove(std::list<native_string> dirsToVisit)
 {
+	bool success = true;
+
 	// Under Windows use SHFileOperation to delete files and directories.
 	// Under other systems, we have to recurse into subdirectories manually
 	// to delete all contents.
@@ -54,14 +56,13 @@ bool recursive_remove::remove(std::list<native_string> dirsToVisit)
 
 		adjust_shfileop(op);
 
-		SHFileOperation(&op);
+		if (SHFileOperation(&op) != 0) {
+			success = false;
 	}
-	delete[] pBuffer;
-
-	return true;
+	delete [] pBuffer;
 #else
 	if (!confirm()) {
-		return true;
+		return false;
 	}
 
 	for (auto& dir : dirsToVisit) {
@@ -69,8 +70,6 @@ bool recursive_remove::remove(std::list<native_string> dirsToVisit)
 			dir.pop_back();
 		}
 	}
-
-	bool encoding_error = false;
 
 	// Remember the directories to delete after recursing into them
 	std::list<native_string> dirsToDelete;
@@ -82,8 +81,15 @@ bool recursive_remove::remove(std::list<native_string> dirsToVisit)
 		auto const iter = dirsToVisit.begin();
 		native_string const& path = *iter;
 
+		if (path.empty()) {
+			dirsToVisit.erase(iter);
+			continue;
+		}
+
 		if (fs.get_file_type(path) != local_filesys::dir) {
-			unlink(path.c_str());
+			if (unlink(path.c_str()) != 0) {
+				success = false;
+			}
 			dirsToVisit.erase(iter);
 			continue;
 		}
@@ -103,7 +109,6 @@ bool recursive_remove::remove(std::list<native_string> dirsToVisit)
 		native_string file;
 		while (fs.get_next_file(file)) {
 			if (file.empty()) {
-				encoding_error = true;
 				continue;
 			}
 
@@ -118,23 +123,27 @@ bool recursive_remove::remove(std::list<native_string> dirsToVisit)
 
 		// Delete all files and links in current directory enumerated before
 		for (auto const& file : filesToDelete) {
-			unlink(file.c_str());
+			if (unlink(file.c_str()) != 0) {
+				success = false;
+			}
 		}
 	}
 
 	// Delete the now empty directories
 	for (auto const& dir : dirsToDelete) {
-		rmdir(dir.c_str());
+		if (rmdir(dir.c_str()) != 0) {
+			success = false;
+		}
 	}
 
-	return !encoding_error;
+	return success;
 #endif
 }
 
 #ifdef FZ_WINDOWS
 void recursive_remove::adjust_shfileop(SHFILEOPSTRUCT & op)
 {
-	op.fFlags = FOF_NO_UI;
+	op.fFlags = FOF_NO_UI | FOF_ALLOWUNDO;
 }
 #endif
 
