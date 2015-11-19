@@ -221,7 +221,7 @@ bool event_loop::process_timers(scoped_lock & l, monotonic_clock const& now)
 			timers_.erase(it);
 		}
 		else {
-			it->deadline_ = std::move(now + it->interval_);
+			it->deadline_ = now + it->interval_;
 			if (!deadline_ || it->deadline_ < deadline_) {
 				deadline_ = it->deadline_;
 			}
