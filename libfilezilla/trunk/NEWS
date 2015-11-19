@@ -1,3 +1,11 @@
+0.2.0 (2015-11-19)
+
++ Added local_filesys class
++ Added recursive_remove class
++ Added to_utf8 function to string.hpp as counterpart to the to_(w)string_from_utf8 functions
++ Added missing libfilezilla/glue/wx.hpp header mentioned in the FAQ
+- Fixed compile errors
+
 0.1.0 (2015-11-02)
 
 + First public release of libfilezilla
