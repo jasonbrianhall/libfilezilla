@@ -6,6 +6,7 @@ check_PROGRAMS = $(TESTS)
 test_SOURCES =  test.cpp \
 		dispatch.cpp \
 		eventloop.cpp \
+		iputils.cpp \
 		time.cpp
 
 test_CPPFLAGS = $(AM_CPPFLAGS)

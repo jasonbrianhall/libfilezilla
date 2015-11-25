@@ -15,8 +15,8 @@ namespace fz {
  *
  * Returns an empty string if the passed string isn't a valid IPv6 address.
  */
-std::string get_ipv6_long_form(std::string const& short_address);
-std::wstring get_ipv6_long_form(std::wstring const& short_address);
+std::string FZ_PUBLIC_SYMBOL get_ipv6_long_form(std::string const& short_address);
+std::wstring FZ_PUBLIC_SYMBOL get_ipv6_long_form(std::wstring const& short_address);
 
 enum class address_type
 {
@@ -25,11 +25,11 @@ enum class address_type
 	ipv6
 };
 
-bool is_routable_address(std::string const& address);
-bool is_routable_address(std::wstring const& address);
+bool FZ_PUBLIC_SYMBOL is_routable_address(std::string const& address);
+bool FZ_PUBLIC_SYMBOL is_routable_address(std::wstring const& address);
 
-address_type get_address_type(std::string const& address);
-address_type get_address_type(std::wstring const& address);
+address_type FZ_PUBLIC_SYMBOL get_address_type(std::string const& address);
+address_type FZ_PUBLIC_SYMBOL get_address_type(std::wstring const& address);
 
 }
 

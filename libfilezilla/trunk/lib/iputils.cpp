@@ -135,12 +135,12 @@ String do_get_ipv6_long_form(String short_address)
 	return buffer;
 }
 
-std::string get_ipv6_long_form(std::string short_address)
+std::string get_ipv6_long_form(std::string const& short_address)
 {
 	return do_get_ipv6_long_form(short_address);
 }
 
-std::wstring get_ipv6_long_form(std::wstring short_address)
+std::wstring get_ipv6_long_form(std::wstring const& short_address)
 {
 	return do_get_ipv6_long_form(short_address);
 }
@@ -148,7 +148,7 @@ std::wstring get_ipv6_long_form(std::wstring short_address)
 template<typename String, typename Char = typename String::value_type>
 bool do_is_routable_address(String const& address)
 {
-	auto type = get_address_type(address);
+	auto const type = get_address_type(address);
 
 	if (type == address_type::ipv6) {
 		String long_address = do_get_ipv6_long_form(address);
@@ -194,7 +194,6 @@ bool do_is_routable_address(String const& address)
 		return true;
 	}
 	else if (type == address_type::ipv4) {
-
 		if (address.size() < 7) {
 			return false;
 		}
@@ -216,7 +215,6 @@ bool do_is_routable_address(String const& address)
 			}
 
 			int segment = std::stoi(middle.substr(0, pos)); // Cannot throw as we have verified it to be a valid IPv4
-
 			if (segment >= 16 && segment <= 31) {
 				return false;
 			}
