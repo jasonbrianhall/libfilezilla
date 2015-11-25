@@ -1,7 +1,7 @@
 #include "libfilezilla/iputils.hpp"
 
 namespace fz {
-template<typename String>
+template<typename String, typename Char = typename String::value_type>
 String do_get_ipv6_long_form(String short_address)
 {
 	if (!short_address.empty() && short_address[0] == '[') {
@@ -12,7 +12,7 @@ String do_get_ipv6_long_form(String short_address)
 	}
 	short_address = str_tolower_ascii(short_address);
 
-	String::value_type buffer[40] = { '0', '0', '0', '0', ':',
+	Char buffer[40] = { '0', '0', '0', '0', ':',
 		'0', '0', '0', '0', ':',
 		'0', '0', '0', '0', ':',
 		'0', '0', '0', '0', ':',
@@ -22,7 +22,7 @@ String do_get_ipv6_long_form(String short_address)
 		'0', '0', '0', '0', 0
 	};
 
-	String::value_type* out = buffer;
+	Char* out = buffer;
 
 	const unsigned int len = short_address.size();
 	if (len > 39)
@@ -32,9 +32,9 @@ String do_get_ipv6_long_form(String short_address)
 	unsigned int i = 0;
 	unsigned int grouplength = 0;
 
-	String::value_type const* s = short_address.c_str();
+	Char const* s = short_address.c_str();
 	for (i = 0; i < len + 1; ++i) {
-		String::value_type const& c = s[i];
+		Char const& c = s[i];
 		if (c == ':' || !c) {
 			if (!grouplength) {
 				// Empty group length, not valid
@@ -87,7 +87,7 @@ String do_get_ipv6_long_form(String short_address)
 
 	// Second half after ::
 
-	String::value_type* end_first = out;
+	Char* end_first = out;
 	out = &buffer[38];
 	unsigned int stop = i;
 	for (i = len - 1; i > stop; --i) {
@@ -96,7 +96,7 @@ String do_get_ipv6_long_form(String short_address)
 			return String();
 		}
 
-		String::value_type const& c = s[i];
+		Char const& c = s[i];
 		if (c == ':') {
 			if (!grouplength) {
 				// Empty group length, not valid
@@ -145,7 +145,7 @@ std::wstring get_ipv6_long_form(std::wstring short_address)
 	return do_get_ipv6_long_form(short_address);
 }
 
-template<typename String>
+template<typename String, typename Char = typename String::value_type>
 bool do_is_routable_address(String const& address)
 {
 	auto type = get_address_type(address);
@@ -157,16 +157,16 @@ bool do_is_routable_address(String const& address)
 		}
 		if (long_address[0] == '0') {
 			// ::/128
-			if (long_address == fzS(String::value_type, "0000:0000:0000:0000:0000:0000:0000:0000")) {
+			if (long_address == fzS(Char, "0000:0000:0000:0000:0000:0000:0000:0000")) {
 				return false;
 			}
 			// ::1/128
-			if (long_address == fzS(String::value_type, "0000:0000:0000:0000:0000:0000:0000:0001")) {
+			if (long_address == fzS(Char, "0000:0000:0000:0000:0000:0000:0000:0001")) {
 				return false;
 			}
 
-			if (long_address.substr(0, 30) == fzS(String::value_type, "0000:0000:0000:0000:0000:ffff:")) {
-				String::value_type const dot = '.';
+			if (long_address.substr(0, 30) == fzS(Char, "0000:0000:0000:0000:0000:ffff:")) {
+				Char const dot = '.';
 				// IPv4 mapped
 				String ipv4 =
 					convert<String>(hex_char_to_int(long_address[30]) * 16 + hex_char_to_int(long_address[31])) + dot +
@@ -200,15 +200,15 @@ bool do_is_routable_address(String const& address)
 		}
 
 		// Assumes address is already a valid IP address
-		if (address.substr(0, 3) == fzS(String::value_type, "127") ||
-			address.substr(0, 3) == fzS(String::value_type, "10.") ||
-			address.substr(0, 7) == fzS(String::value_type, "192.168") ||
-			address.substr(0, 7) == fzS(String::value_type, "169.254"))
+		if (address.substr(0, 3) == fzS(Char, "127") ||
+			address.substr(0, 3) == fzS(Char, "10.") ||
+			address.substr(0, 7) == fzS(Char, "192.168") ||
+			address.substr(0, 7) == fzS(Char, "169.254"))
 		{
 			return false;
 		}
 
-		if (address.substr(0, 3) == fzS(String::value_type, "172")) {
+		if (address.substr(0, 3) == fzS(Char, "172")) {
 			auto middle = address.substr(4);
 			auto pos = middle.find('.');
 			if (pos == String::npos || pos > 3) {
