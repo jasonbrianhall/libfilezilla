@@ -165,10 +165,12 @@ int hex_char_to_int(Char c)
 }
 
 template<typename String, typename Int>
-String convert(Int i);
+inline typename std::enable_if<std::is_same<String, std::string>::value, std::string>::type
+convert(Int i) { return std::to_string(i); };
 
-template<typename Int> inline std::string convert(Int i) { return std::to_string(i); }
-template<typename Int> inline std::wstring convert(Int i) { return std::to_wstring(i); }
+template<typename String, typename Int>
+inline typename std::enable_if<std::is_same<String, std::wstring>::value, std::wstring>::type
+convert(Int i) { return std::to_wstring(i); };
 
 #if !defined(fzT) || defined(DOXYGEN)
 #ifdef FZ_WINDOWS
@@ -205,7 +207,7 @@ template<> inline wchar_t const* choose_string(char const*, wchar_t const* w) { 
  *   }
  * \endcode
  */
-#define fzS(Char, s) choose_string<Char>(#s, L ## #s)
+#define fzS(Char, s) choose_string<Char>(s, L ## s)
 #endif
 }
 
