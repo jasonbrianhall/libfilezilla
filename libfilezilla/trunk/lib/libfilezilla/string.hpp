@@ -27,10 +27,10 @@ namespace fz {
  */
 
 #ifdef FZ_WINDOWS
-	typedef std::wstring native_string;
+typedef std::wstring native_string;
 #endif
 #if defined(FZ_UNIX) || defined(FZ_MAC)
-	typedef std::string native_string;
+typedef std::string native_string;
 #endif
 
 /** \brief Converts std::string to native_string.
@@ -84,7 +84,7 @@ std::wstring::value_type FZ_PUBLIC_SYMBOL tolower_ascii(std::wstring::value_type
 
 /** \brief tr_tolower_ascii does for strings what tolower_ascii does for individual characters
  */
-// Note: For UTF-8 strings it works on individual octets!
+ // Note: For UTF-8 strings it works on individual octets!
 template<typename String>
 String str_tolower_ascii(String const& s)
 {
@@ -131,21 +131,44 @@ size_t strlen(Char const* str) {
 
 
 /** \brief Converts from std::string in native encoding into std::string in UTF-8
-*
-* \return the converted string on success. On failure an empty string is returned.
-*
-* \note Does not handle embedded nulls
-*/
+ *
+ * \return the converted string on success. On failure an empty string is returned.
+ *
+ * \note Does not handle embedded nulls
+ */
 std::string FZ_PUBLIC_SYMBOL to_utf8(std::string const& in);
 
 /** \brief Converts from std::wstring in native encoding into std::string in UTF-8
-*
-* \return the converted string on success. On failure an empty string is returned.
-*
-* \note Does not handle embedded nulls
-*/
+ *
+ * \return the converted string on success. On failure an empty string is returned.
+ *
+ * \note Does not handle embedded nulls
+ */
 std::string FZ_PUBLIC_SYMBOL to_utf8(std::wstring const& in);
+
+
+/** \brief Converts a hex digit to decimal int
+ *
+ * Example: '9' becomes 9, 'b' becomes 11, 'D' becomes 13
+ *
+ * Undefined output if input is not a valid hex digit.
+ */
+template<typename Char>
+int hex_char_to_int(Char c)
+{
+	if (c >= 'a')
+		return c - 'a' + 10;
+	if (c >= 'A')
+		return c - 'A' + 10;
+	else
+		return c - '0';
 }
+
+template<typename String, typename Int>
+String convert(Int i);
+
+template<typename Int> inline std::string convert(Int i) { return std::to_string(i); }
+template<typename Int> inline std::wstring convert(Int i) { return std::to_wstring(i); }
 
 #if !defined(fzT) || defined(DOXYGEN)
 #ifdef FZ_WINDOWS
@@ -162,5 +185,28 @@ std::string FZ_PUBLIC_SYMBOL to_utf8(std::wstring const& in);
 #define fzT(x) x
 #endif
 #endif
+
+/// Returns the function argument of the type matching the template argument. \sa fzS
+template<typename Char>
+Char const* choose_string(char const* c, wchar_t const* w);
+
+template<> inline char const* choose_string(char const* c, wchar_t const*) { return c; }
+template<> inline wchar_t const* choose_string(char const*, wchar_t const* w) { return w; }
+
+#if !defined(fzS) || defined(DOXYGEN)
+/** \brief Macro to get const pointer to a string of the corresponding type
+ *
+ * Useful when using string literals in templates where the type of string
+ * is a template argument:
+ * \code
+ *   template<typename String>
+ *   String append_foo(String const& s) {
+ *       s += fzS(String::value_type, "foo");
+ *   }
+ * \endcode
+ */
+#define fzS(Char, s) choose_string<Char>(#s, L ## #s)
+#endif
+}
 
 #endif

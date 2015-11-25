@@ -189,6 +189,7 @@
     <ClCompile Include="event_handler.cpp" />
     <ClCompile Include="event_loop.cpp" />
     <ClCompile Include="file.cpp" />
+    <ClCompile Include="iputils.cpp" />
     <ClCompile Include="local_filesys.cpp" />
     <ClCompile Include="mutex.cpp" />
     <ClCompile Include="process.cpp" />
@@ -205,6 +206,7 @@
     <ClInclude Include="libfilezilla\event_handler.hpp" />
     <ClInclude Include="libfilezilla\event_loop.hpp" />
     <ClInclude Include="libfilezilla\file.hpp" />
+    <ClInclude Include="libfilezilla\iputils.hpp" />
     <ClInclude Include="libfilezilla\libfilezilla.hpp" />
     <ClInclude Include="libfilezilla\local_filesys.hpp" />
     <ClInclude Include="libfilezilla\mutex.hpp" />

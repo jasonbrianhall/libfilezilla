@@ -4,6 +4,7 @@ libfilezilla_la_SOURCES = \
 	event_handler.cpp \
 	event_loop.cpp \
 	file.cpp \
+	iputils.cpp \
 	local_filesys.cpp \
 	mutex.cpp \
 	process.cpp \
@@ -20,6 +21,7 @@ nobase_include_HEADERS = \
 	libfilezilla/event_handler.hpp \
 	libfilezilla/event_loop.hpp \
 	libfilezilla/file.hpp \
+	libfilezilla/iputils.hpp \
 	libfilezilla/libfilezilla.hpp \
 	libfilezilla/local_filesys.hpp \
 	libfilezilla/mutex.hpp \
