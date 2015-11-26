@@ -21,3 +21,5 @@ test_LDADD += $(CPPUNIT_LIBS)
 test_LDADD += $(libdeps)
 
 test_DEPENDENCIES = ../lib/libfilezilla.la
+
+noinst_HEADERS = test_utils.hpp
