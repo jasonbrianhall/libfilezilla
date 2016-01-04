@@ -28,10 +28,15 @@ template<typename V, typename D>
 void inline assert_equal_data(V const& expected, V const& actual, std::string const& func, D const& data, CppUnit::SourceLine line)
 {
 	if (expected != actual) {
-		CppUnit::Asserter::failNotEqual(value_to_string(expected), value_to_string(actual), line, func + " with " + value_to_string(data));
+		std::string loc = func;
+		if (!data.empty()) {
+			loc += " with " + value_to_string(data);
+		}
+		CppUnit::Asserter::failNotEqual(value_to_string(expected), value_to_string(actual), line, loc);
 	}
 }
 
 #define ASSERT_EQUAL_DATA(expected, actual, data) assert_equal_data((expected), (actual), #actual, data, CPPUNIT_SOURCELINE())
+#define ASSERT_EQUAL(expected, actual) assert_equal_data((expected), (actual), #actual, std::string(), CPPUNIT_SOURCELINE())
 
 #endif

@@ -7,6 +7,7 @@ test_SOURCES =  test.cpp \
 		dispatch.cpp \
 		eventloop.cpp \
 		iputils.cpp \
+		string.cpp \
 		time.cpp
 
 test_CPPFLAGS = $(AM_CPPFLAGS)
