@@ -1,3 +1,8 @@
+0.3.0 (2016-01-12)
+
++ Added functions to deal with IP address strings
+- Added testcase to verify string conversion functions. Some MinGW installations have broken wcsrtombs and mbsrtowcs implementations.
+
 0.2.0 (2015-11-19)
 
 + Added local_filesys class
