@@ -164,6 +164,7 @@ int hex_char_to_int(Char c)
 		return c - '0';
 }
 
+/** \brief Convert integer to string. */
 template<typename String, typename Int>
 inline typename std::enable_if<std::is_same<String, std::string>::value, std::string>::type
 convert(Int i) { return std::to_string(i); };
