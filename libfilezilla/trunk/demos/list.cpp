@@ -6,7 +6,7 @@ int main(int argc, char *argv[])
 {
 	fz::native_string path = fzT(".");
 
-	if (argc > 1 && argv[1] && *argv[1]) {
+	if (argc > 1 && argv[1] && *argv[1] && strlen(argv[1]) < 1000) {
 		path = fz::to_native(std::string(argv[1]));
 	}
 
