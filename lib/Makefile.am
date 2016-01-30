@@ -1,6 +1,7 @@
 lib_LTLIBRARIES = libfilezilla.la
 
 libfilezilla_la_SOURCES = \
+	event.cpp \
 	event_handler.cpp \
 	event_loop.cpp \
 	file.cpp \
