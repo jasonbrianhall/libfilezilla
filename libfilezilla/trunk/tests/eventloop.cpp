@@ -9,6 +9,7 @@ class EventloopTest : public CppUnit::TestFixture
 	CPPUNIT_TEST(testSimple);
 	CPPUNIT_TEST(testFilter);
 	CPPUNIT_TEST(testCondition);
+	CPPUNIT_TEST(testTimer);
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -18,6 +19,7 @@ public:
 	void testSimple();
 	void testFilter();
 	void testCondition();
+	void testTimer();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(EventloopTest);
@@ -207,4 +209,48 @@ void EventloopTest::testCondition()
 
 	// Due to rounding errors things can be off for one millisecond, allow it.
 	CPPUNIT_ASSERT((t2 - t1) >= fz::duration::from_milliseconds(199));
+}
+
+namespace {
+class timer_handler final : public fz::event_handler
+{
+public:
+	timer_handler(fz::event_loop & l)
+	: fz::event_handler(l)
+	{}
+
+	virtual ~timer_handler()
+	{
+		remove_handler();
+	}
+
+	virtual void operator()(fz::event_base const& ev) override {
+		CPPUNIT_ASSERT(fz::dispatch<fz::timer_event>(ev, this, &timer_handler::on_timer));
+	}
+
+	void on_timer(fz::timer_id const& id)
+	{
+		CPPUNIT_ASSERT_EQUAL(id, id_);
+
+		fz::scoped_lock l(m_);
+		cond_.signal(l);
+	}
+
+	fz::mutex m_;
+	fz::condition cond_;
+
+	fz::timer_id id_;
+};
+}
+
+void EventloopTest::testTimer()
+{
+	fz::event_loop loop;
+
+	timer_handler handler(loop);
+
+	fz::scoped_lock l(handler.m_);
+	handler.id_ = handler.add_timer(fz::duration::from_milliseconds(1), true);
+
+	CPPUNIT_ASSERT(handler.cond_.wait(l, fz::duration::from_seconds(1)));
 }
