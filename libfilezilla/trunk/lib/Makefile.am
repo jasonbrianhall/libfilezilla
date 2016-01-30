@@ -48,6 +48,7 @@ libfilezilla_la_CXXFLAGS += -fvisibility=hidden
 
 libfilezilla_la_LDFLAGS = $(AM_LDFLAGS)
 libfilezilla_la_LDFLAGS += -no-undefined
+libfilezilla_la_LIBADD = $(libdeps)
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libfilezilla.pc
