@@ -16,7 +16,7 @@ namespace fz {
  * have std::thread.
  *
  * This class only supports joinable threads (see remark). You _MUST_ join threads
- * in the destructor of the outermost derived class. \ref ~thread calls std::abort()
+ * in the destructor of the outermost derived class. ~thread() calls std::abort()
  * if \c join has not previously been called.
  *
  * \remark Detached threads aren't implemented since they essentially race conditions

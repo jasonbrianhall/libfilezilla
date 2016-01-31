@@ -84,7 +84,10 @@ public:
 	datetime& operator=(datetime const& op) = default;
 	datetime& operator=(datetime && op) noexcept = default;
 
+	/// \return \c true if no timestamp has been set
 	bool empty() const;
+
+	/// Resulting timestamp is empty()
 	void clear();
 
 	accuracy get_accuracy() const { return a_; }
@@ -190,7 +193,7 @@ public:
 
 	/** Verify format strings
 	 *
-	 * \param format the string that is to be tested
+	 * \param fmt the string that is to be tested
 	 * \return whether the passed string is a format string understood by ::strftime
 	 */
 	static bool verify_format(std::string const& fmt);

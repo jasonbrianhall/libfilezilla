@@ -83,6 +83,10 @@ public:
 		return type();
 	}
 
+	/** \brief The event value, gets built from the arguments passed in the constructur.
+	 *
+	 * You don't need to access this member directly if you use the \ref dispatch mechanism.
+	 */
 	tuple_type v_;
 };
 
