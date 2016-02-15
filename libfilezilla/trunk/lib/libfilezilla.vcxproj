@@ -210,6 +210,7 @@
     <ClInclude Include="libfilezilla\libfilezilla.hpp" />
     <ClInclude Include="libfilezilla\local_filesys.hpp" />
     <ClInclude Include="libfilezilla\mutex.hpp" />
+    <ClInclude Include="libfilezilla\optional.hpp" />
     <ClInclude Include="libfilezilla\private\defs.hpp" />
     <ClInclude Include="libfilezilla\private\visibility.hpp" />
     <ClInclude Include="libfilezilla\private\windows.hpp" />
