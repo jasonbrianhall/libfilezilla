@@ -13,8 +13,6 @@ namespace fz {
 template<typename T>
 class sparse_optional final
 {
-	static_assert(sizeof(T) > sizeof(T*), "Trying to use sparse_optional with a small type. Use a regular optional instead for small types.");
-
 public:
 	sparse_optional();
 	explicit sparse_optional(T const& v);
