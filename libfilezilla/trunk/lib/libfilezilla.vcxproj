@@ -215,6 +215,7 @@
     <ClInclude Include="libfilezilla\private\windows.hpp" />
     <ClInclude Include="libfilezilla\process.hpp" />
     <ClInclude Include="libfilezilla\recursive_remove.hpp" />
+    <ClInclude Include="libfilezilla\shared.hpp" />
     <ClInclude Include="libfilezilla\string.hpp" />
     <ClInclude Include="libfilezilla\thread.hpp" />
     <ClInclude Include="libfilezilla\time.hpp" />

@@ -28,6 +28,7 @@ nobase_include_HEADERS = \
 	libfilezilla/mutex.hpp \
 	libfilezilla/process.hpp \
 	libfilezilla/recursive_remove.hpp \
+	libfilezilla/shared.hpp \
 	libfilezilla/string.hpp \
 	libfilezilla/thread.hpp \
 	libfilezilla/time.hpp \
