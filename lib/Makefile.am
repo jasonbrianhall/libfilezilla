@@ -26,6 +26,7 @@ nobase_include_HEADERS = \
 	libfilezilla/libfilezilla.hpp \
 	libfilezilla/local_filesys.hpp \
 	libfilezilla/mutex.hpp \
+	libfilezilla/optional.hpp \
 	libfilezilla/process.hpp \
 	libfilezilla/recursive_remove.hpp \
 	libfilezilla/shared.hpp \
