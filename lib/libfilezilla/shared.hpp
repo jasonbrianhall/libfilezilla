@@ -37,9 +37,14 @@ public:
 	const T& operator*() const;
 	const T* operator->() const;
 
-	// Comparison operators are deep. If two instances point to
-	// different objects, those objects are compared.
-	// Empty instances are less than non-empty instances.
+	/**
+	 * \name Deep relational operators
+	 *
+	 * If two instances point to
+	 * different objects, those objects are compared.
+	 * Empty instances are less than non-empty instances.
+	 * \{
+	 */
 	bool operator==(shared_optional<T, Init> const& cmp) const;
 	bool operator==(T const& cmp) const;
 	bool operator<(shared_optional<T, Init> const& cmp) const;
@@ -47,6 +52,7 @@ public:
 
 	inline bool operator!=(const shared_optional<T, Init>& cmp) const { return !(*this == cmp); }
 	inline bool operator!=(T const& cmp) const { return !(*this == cmp); }
+	/// \}
 
 	shared_optional<T, Init>& operator=(shared_optional<T, Init> const& v) = default;
 	shared_optional<T, Init>& operator=(shared_optional<T, Init> && v) noexcept = default;

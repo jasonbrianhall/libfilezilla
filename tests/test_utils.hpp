@@ -1,6 +1,8 @@
 #ifndef LIBFILEZILLA_TEST_UTILS_HEADER
 #define LIBFILEZILLA_TEST_UTILS_HEADER
 
+#include "libfilezilla/string.hpp"
+
 #include <cppunit/TestAssert.h>
 #include <cppunit/extensions/HelperMacros.h>
 

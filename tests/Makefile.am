@@ -7,6 +7,7 @@ test_SOURCES =  test.cpp \
 		dispatch.cpp \
 		eventloop.cpp \
 		iputils.cpp \
+		smart_pointer.cpp \
 		string.cpp \
 		time.cpp
 
