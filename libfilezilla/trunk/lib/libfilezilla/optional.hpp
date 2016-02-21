@@ -1,6 +1,11 @@
 #ifndef LIBFILEZILLA_OPTIONAL_HEADER
 #define LIBFILEZILLA_OPTIONAL_HEADER
 
+
+/** \file
+* \brief Header for the \ref fz::sparse_optional "sparse_optional" template class
+*/
+
 namespace fz {
 
 /** \brief Similar to C++17's std::optional, but stores the data in

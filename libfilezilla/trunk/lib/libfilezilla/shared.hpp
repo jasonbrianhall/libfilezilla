@@ -31,6 +31,7 @@ public:
 
 	void clear();
 
+	/// Gets a reference to the stored object. A new object is created it if is not set.
 	T& get();
 
 	const T& operator*() const;
