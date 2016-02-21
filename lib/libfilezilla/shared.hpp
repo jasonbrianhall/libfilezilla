@@ -54,7 +54,7 @@ public:
 	explicit operator bool() const { return static_cast<bool>(data_); }
 
 	bool empty() const { return !data_; }
-protected:
+private:
 	std::shared_ptr<T> data_;
 };
 

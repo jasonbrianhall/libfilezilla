@@ -41,7 +41,7 @@ public:
 
 	sparse_optional<T>& operator=(sparse_optional<T> const& v);
 	sparse_optional<T>& operator=(sparse_optional<T> && v) noexcept;
-protected:
+private:
 	T* v_;
 };
 
