@@ -24,9 +24,9 @@ public:
 
 CPPUNIT_TEST_SUITE_REGISTRATION(smart_pointer_test);
 
-namespace {
+namespace fz {
 template<typename T>
-std::ostream& operator<<(std::ostream& s, fz::sparse_optional<T> const& t) {
+std::ostream& operator<<(std::ostream& s, sparse_optional<T> const& t) {
 	if (!t) {
 		s << "null";
 	}
@@ -37,7 +37,7 @@ std::ostream& operator<<(std::ostream& s, fz::sparse_optional<T> const& t) {
 }
 
 template<typename T>
-std::ostream& operator<<(std::ostream& s, fz::shared_optional<T> const& t) {
+std::ostream& operator<<(std::ostream& s, shared_optional<T> const& t) {
 	if (!t) {
 		s << "null";
 	}
