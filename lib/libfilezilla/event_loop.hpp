@@ -74,7 +74,7 @@ private:
 	bool FZ_PRIVATE_SYMBOL process_event(scoped_lock & l);
 
 	// Process timers. Returns true if a timer has been triggered
-	bool FZ_PRIVATE_SYMBOL process_timers(scoped_lock & l, monotonic_clock const& now);
+	bool FZ_PRIVATE_SYMBOL process_timers(scoped_lock & l, monotonic_clock& now);
 
 	virtual void FZ_PRIVATE_SYMBOL entry();
 

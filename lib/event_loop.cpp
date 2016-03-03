@@ -164,9 +164,10 @@ bool event_loop::process_event(scoped_lock & l)
 
 void event_loop::entry()
 {
+	monotonic_clock now;
+
 	scoped_lock l(sync_);
 	while (!quit_) {
-		monotonic_clock const now(monotonic_clock::now());
 		if (process_timers(l, now)) {
 			continue;
 		}
@@ -184,10 +185,16 @@ void event_loop::entry()
 	}
 }
 
-bool event_loop::process_timers(scoped_lock & l, monotonic_clock const& now)
+bool event_loop::process_timers(scoped_lock & l, monotonic_clock & now)
 {
-	if (!deadline_ || now < deadline_) {
-		// There's no deadline or deadline has not yet expired
+	if (!deadline_) {
+		// There's no deadline
+		return false;
+	}
+
+	now = monotonic_clock::now();
+	if (now < deadline_) {
+		// Deadline has not yet expired
 		return false;
 	}
 
