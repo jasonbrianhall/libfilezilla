@@ -19,8 +19,7 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	std::cout << "Listing " << fz::to_string(path) << "\n\n";
-	std::cout << "Name Link? Type Size Modified Mode\n";
+	std::cout << "Listing " << fz::to_string(path) << "\n";
 	std::cout << "----------------------------------\n";
 
 	fz::native_string name;
