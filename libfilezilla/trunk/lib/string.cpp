@@ -81,7 +81,8 @@ std::wstring to_wstring(std::string const& in)
 		ret.resize(len);
 		wchar_t* out_p = &ret[0];
 
-		std::mbsrtowcs(out_p, &in_p, len + 1, &ps);
+		in_p = in.c_str(); // Some implementations of mbsrtowcs change src even on null dst
+		len = std::mbsrtowcs(out_p, &in_p, len + 1, &ps);
 	}
 
 	return ret;
@@ -139,6 +140,7 @@ std::string to_string(std::wstring const& in)
 		ret.resize(len);
 		char* out_p = &ret[0];
 
+		in_p = in.c_str(); // Some implementations of wcsrtombs change src even on null dst
 		std::wcsrtombs(out_p, &in_p, len + 1, &ps);
 	}
 
