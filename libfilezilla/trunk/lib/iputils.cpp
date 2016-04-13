@@ -24,13 +24,13 @@ String do_get_ipv6_long_form(String short_address)
 
 	Char* out = buffer;
 
-	const unsigned int len = short_address.size();
+	const size_t len = short_address.size();
 	if (len > 39)
 		return String();
 
 	// First part, before possible ::
-	unsigned int i = 0;
-	unsigned int grouplength = 0;
+	size_t i = 0;
+	size_t grouplength = 0;
 
 	Char const* s = short_address.c_str();
 	for (i = 0; i < len + 1; ++i) {
@@ -46,7 +46,7 @@ String do_get_ipv6_long_form(String short_address)
 			}
 
 			out += 4 - grouplength;
-			for (unsigned int j = grouplength; j > 0; --j) {
+			for (size_t j = grouplength; j > 0; --j) {
 				*out++ = s[i - j];
 			}
 			// End of string...
@@ -89,7 +89,7 @@ String do_get_ipv6_long_form(String short_address)
 
 	Char* end_first = out;
 	out = &buffer[38];
-	unsigned int stop = i;
+	size_t stop = i;
 	for (i = len - 1; i > stop; --i) {
 		if (out < end_first) {
 			// Too long
@@ -127,7 +127,7 @@ String do_get_ipv6_long_form(String short_address)
 	out -= 5 - grouplength;
 	out += 2;
 
-	int diff = out - end_first;
+	ptrdiff_t diff = out - end_first;
 	if (diff < 0 || diff % 5) {
 		return String();
 	}
