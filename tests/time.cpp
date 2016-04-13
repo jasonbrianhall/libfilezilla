@@ -10,6 +10,7 @@ class TimeTest final : public CppUnit::TestFixture
 	CPPUNIT_TEST_SUITE(TimeTest);
 	CPPUNIT_TEST(testNow);
 	CPPUNIT_TEST(testPreEpoch);
+	CPPUNIT_TEST(testAlternateMidnight);
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -18,6 +19,8 @@ public:
 
 	void testNow();
 	void testPreEpoch();
+
+	void testAlternateMidnight();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(TimeTest);
@@ -30,8 +33,8 @@ void TimeTest::testNow()
 
 	fz::datetime const t2 = fz::datetime::now();
 
-	CPPUNIT_ASSERT(t1.empty());
-	CPPUNIT_ASSERT(t2.empty());
+	CPPUNIT_ASSERT(!t1.empty());
+	CPPUNIT_ASSERT(!t2.empty());
 	CPPUNIT_ASSERT(t2 > t1);
 
 	auto const diff = t2 - t1;
@@ -48,7 +51,7 @@ void TimeTest::testPreEpoch()
 
 	fz::datetime const t1(fz::datetime::utc, 1957, 10, 4, 19, 28, 34);
 
-	CPPUNIT_ASSERT(t1.empty());
+	CPPUNIT_ASSERT(!t1.empty());
 	CPPUNIT_ASSERT(t1 < now);
 
 	CPPUNIT_ASSERT(t1.get_time_t() < -1);
@@ -64,7 +67,7 @@ void TimeTest::testPreEpoch()
 
 	fz::datetime const t2(fz::datetime::utc, 1969, 12, 31, 23, 59, 59);
 
-	CPPUNIT_ASSERT(t2.empty());
+	CPPUNIT_ASSERT(!t2.empty());
 	CPPUNIT_ASSERT(t2 > t1);
 	CPPUNIT_ASSERT(t2 < now);
 
@@ -75,4 +78,26 @@ void TimeTest::testPreEpoch()
 	CPPUNIT_ASSERT_EQUAL(23, tm2.tm_hour);
 	CPPUNIT_ASSERT_EQUAL(59, tm2.tm_min);
 	CPPUNIT_ASSERT_EQUAL(59, tm2.tm_sec);
+}
+
+void TimeTest::testAlternateMidnight()
+{
+	fz::datetime const t1(fz::datetime::utc, 2016, 4, 13, 0, 0, 0);
+	fz::datetime const t2(fz::datetime::utc, 2016, 4, 12, 24, 0, 0);
+	fz::datetime const t3("2016-04-13 00:00:00", fz::datetime::utc);
+	fz::datetime const t4("2016-04-12 24:00:00", fz::datetime::utc);
+
+	CPPUNIT_ASSERT(!t1.empty());
+	CPPUNIT_ASSERT(!t2.empty());
+	CPPUNIT_ASSERT(!t3.empty());
+	CPPUNIT_ASSERT(!t4.empty());
+
+	CPPUNIT_ASSERT(t1 == t2);
+	CPPUNIT_ASSERT(t1 == t3);
+	CPPUNIT_ASSERT(t1 == t4);
+
+	fz::datetime imbue("2016-04-12", fz::datetime::utc);
+	CPPUNIT_ASSERT(imbue.imbue_time(24, 0, 0));
+	CPPUNIT_ASSERT(t1 == imbue);
+
 }

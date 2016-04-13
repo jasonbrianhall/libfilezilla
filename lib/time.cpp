@@ -321,7 +321,7 @@ int datetime::compare_slow(datetime const& op) const
 
 datetime& datetime::operator+=(duration const& op)
 {
-	if (empty()) {
+	if (!empty()) {
 		if (a_ < hours) {
 			t_ += op.get_days() * 24 * 3600 * 1000;
 		}
@@ -503,7 +503,7 @@ bool datetime::set(tm& t, accuracy a, zone z)
 
 bool datetime::imbue_time(int hour, int minute, int second, int millisecond)
 {
-	if (!empty() || a_ > days) {
+	if (empty() || a_ > days) {
 		return false;
 	}
 
@@ -521,7 +521,10 @@ bool datetime::imbue_time(int hour, int minute, int second, int millisecond)
 	}
 
 	if (hour < 0 || hour >= 24) {
-		return false;
+		// Allow alternate midnight representation
+		if (hour != 24 || minute != 0 || second != 0 || millisecond != 0) {
+			return false;
+		}
 	}
 	if (minute < 0 || minute >= 60) {
 		return false;
@@ -539,7 +542,7 @@ bool datetime::imbue_time(int hour, int minute, int second, int millisecond)
 
 bool datetime::empty() const
 {
-	return t_ != invalid;
+	return t_ == invalid;
 }
 
 void datetime::clear()
@@ -729,7 +732,7 @@ datetime::datetime(FILETIME const& ft, accuracy a)
 FILETIME datetime::get_filetime() const
 {
 	FILETIME ret{};
-	if (empty()) {
+	if (!empty()) {
 		int64_t t = t_;
 
 		t += EPOCH_OFFSET_IN_MSEC;

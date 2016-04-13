@@ -162,7 +162,7 @@ local_filesys::type local_filesys::get_file_info(native_string const& path, bool
 
 	if (modification_time) {
 		*modification_time = datetime(attributes.ftLastWriteTime, datetime::milliseconds);
-		if (!modification_time->empty()) {
+		if (modification_time->empty()) {
 			*modification_time = datetime(attributes.ftCreationTime, datetime::milliseconds);
 		}
 	}
@@ -399,7 +399,7 @@ bool local_filesys::get_next_file(native_string& name, bool &is_link, bool &is_d
 
 					if (modification_time) {
 						*modification_time = datetime(info.ftLastWriteTime, datetime::milliseconds);
-						if (!modification_time->empty()) {
+						if (modification_time->empty()) {
 							*modification_time = datetime(info.ftCreationTime, datetime::milliseconds);
 						}
 					}
@@ -436,7 +436,7 @@ bool local_filesys::get_next_file(native_string& name, bool &is_link, bool &is_d
 		else {
 			if (modification_time) {
 				*modification_time = datetime(m_find_data.ftLastWriteTime, datetime::milliseconds);
-				if (!modification_time->empty()) {
+				if (modification_time->empty()) {
 					*modification_time = datetime(m_find_data.ftLastWriteTime, datetime::milliseconds);
 				}
 			}
@@ -550,7 +550,7 @@ datetime local_filesys::get_modification_time(native_string const& path)
 
 bool local_filesys::set_modification_time(native_string const& path, datetime const& t)
 {
-	if (!t.empty())
+	if (t.empty())
 		return false;
 
 #ifdef FZ_WINDOWS
