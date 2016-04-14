@@ -1,5 +1,7 @@
 #include "libfilezilla/iputils.hpp"
 
+#include <stddef.h>
+
 namespace fz {
 template<typename String, typename Char = typename String::value_type>
 String do_get_ipv6_long_form(String short_address)
