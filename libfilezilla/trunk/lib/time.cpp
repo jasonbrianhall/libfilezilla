@@ -453,7 +453,7 @@ bool datetime::set(SYSTEMTIME const& st, accuracy a, zone z)
 			st2.wMinute = 59;
 			st2.wSecond = 59;
 			st2.wMilliseconds = 999;
-			success = do_set(*this, st, a, z);
+			success = do_set(*this, st2, a, z);
 			if (success) {
 				t_ += 1;
 			}
