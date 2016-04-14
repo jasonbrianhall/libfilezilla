@@ -386,7 +386,21 @@ bool datetime::set(zone z, int year, int month, int day, int hour, int minute, i
 	st.wSecond = second;
 	st.wMilliseconds = millisecond;
 
-	return set(st, a, z);
+	bool success = set(st, a, z);
+	if (!success) {
+		// Check for alternate midnight format
+		if (st.wHour == 24 && !st.wMinute && !st.wSecond && !st.wMilliseconds) {
+			st.wHour = 23;
+			st.wMinute = 59;
+			st.wSecond = 59;
+			st.wMilliseconds = 999;
+			success = set(st, a, z);
+			if (success) {
+				t_ += 1;
+			}
+		}
+	}
+	return success;
 #else
 
 	tm t{};
