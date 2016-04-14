@@ -386,21 +386,7 @@ bool datetime::set(zone z, int year, int month, int day, int hour, int minute, i
 	st.wSecond = second;
 	st.wMilliseconds = millisecond;
 
-	bool success = set(st, a, z);
-	if (!success) {
-		// Check for alternate midnight format
-		if (st.wHour == 24 && !st.wMinute && !st.wSecond && !st.wMilliseconds) {
-			st.wHour = 23;
-			st.wMinute = 59;
-			st.wSecond = 59;
-			st.wMilliseconds = 999;
-			success = set(st, a, z);
-			if (success) {
-				t_ += 1;
-			}
-		}
-	}
-	return success;
+	return set(st, a, z);
 #else
 
 	tm t{};
@@ -434,12 +420,11 @@ bool datetime::set(std::wstring const& str, zone z)
 
 #ifdef FZ_WINDOWS
 
-bool datetime::set(SYSTEMTIME const& st, accuracy a, zone z)
+namespace {
+bool do_set(datetime & dt, SYSTEMTIME const& st, datetime::accuracy a, datetime::zone z)
 {
-	clear();
-
 	FILETIME ft{};
-	if (a >= hours && z == local) {
+	if (a >= datetime::hours && z == datetime::local) {
 		SYSTEMTIME st2{};
 		if (!TzSpecificLocalTimeToSystemTime(0, &st, &st2)) {
 			return false;
@@ -451,7 +436,30 @@ bool datetime::set(SYSTEMTIME const& st, accuracy a, zone z)
 	else if (!SystemTimeToFileTime(&st, &ft)) {
 		return false;
 	}
-	return set(ft, a);
+	return dt.set(ft, a);
+}
+}
+
+bool datetime::set(SYSTEMTIME const& st, accuracy a, zone z)
+{
+	clear();
+
+	bool success = do_set(*this, st, a, z);
+	if (!success) {
+		// Check for alternate midnight format
+		if (st.wHour == 24 && !st.wMinute && !st.wSecond && !st.wMilliseconds) {
+			SYSTEMTIME st2 = st;
+			st2.wHour = 23;
+			st2.wMinute = 59;
+			st2.wSecond = 59;
+			st2.wMilliseconds = 999;
+			success = do_set(*this, st, a, z);
+			if (success) {
+				t_ += 1;
+			}
+		}
+	}
+	return success;
 }
 
 namespace {
