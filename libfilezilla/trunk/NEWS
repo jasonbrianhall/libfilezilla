@@ -1,3 +1,14 @@
+0.5.0 (2016-04-15)
+
+- Handle timestamps where midnight is represented as 24:00:00.000 of the previous day
+- Fix inverted return value of fz::datetime::empty()
+- Increase performance of event loop if not using timers
+- Better compatibility with runtimes that change the src pointer passed to mbsrtowcs or wcsrtombs
+
+0.4.0.1 (2016-02-22)
+
+- Fix compile error in testcase
+
 0.4.0 (2016-02-21)
 
 + Added shared_optional and sparse_optional classes
