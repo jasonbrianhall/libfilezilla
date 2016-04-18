@@ -239,7 +239,7 @@ public:
 	fz::mutex m_;
 	fz::condition cond_;
 
-	fz::timer_id id_;
+	fz::timer_id id_{};
 };
 }
 
