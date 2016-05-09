@@ -1,3 +1,8 @@
+0.5.1 (2016-05-09)
+
++ Add constructore to sparse_optional taking pointers
+- Fix compilation on systems where iconv's second argument is const
+
 0.5.0 (2016-04-15)
 
 - Handle timestamps where midnight is represented as 24:00:00.000 of the previous day
