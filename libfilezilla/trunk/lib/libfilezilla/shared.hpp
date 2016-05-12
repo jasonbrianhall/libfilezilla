@@ -50,6 +50,9 @@ public:
 	bool operator<(shared_optional<T, Init> const& cmp) const;
 	bool operator<(T const& cmp) const;
 
+	/// Only compares the pointers
+	bool is_same(shared_optional<T, Init> const& cmp) const;
+
 	inline bool operator!=(const shared_optional<T, Init>& cmp) const { return !(*this == cmp); }
 	inline bool operator!=(T const& cmp) const { return !(*this == cmp); }
 	/// \}
@@ -103,6 +106,11 @@ template<typename T, bool Init> bool shared_optional<T, Init>::operator==(T cons
 		return false;
 	}
 	return *data_ == cmp;
+}
+
+template<typename T, bool Init> bool shared_optional<T, Init>::is_same(shared_optional<T, Init> const& cmp) const
+{
+	return data_ == cmp.data_;
 }
 
 template<typename T, bool Init> T& shared_optional<T, Init>::get()
