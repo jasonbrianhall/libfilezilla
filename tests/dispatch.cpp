@@ -22,7 +22,7 @@ public:
 CPPUNIT_TEST_SUITE_REGISTRATION(DispatchTest);
 
 namespace {
-struct target {
+struct dispatch_target {
 
 	void a() { ++a_; }
 	void b() { ++b_; }
@@ -54,14 +54,14 @@ typedef fz::simple_event<type4, int, int> T4;
 
 void DispatchTest::testSingle()
 {
-	target t;
+	dispatch_target t;
 
 	T1 const t1{};
-	CPPUNIT_ASSERT(fz::dispatch<T1>(t1, &t, &target::a));
-	CPPUNIT_ASSERT(fz::dispatch<T1>(t1, &t, &target::b));
+	CPPUNIT_ASSERT(fz::dispatch<T1>(t1, &t, &dispatch_target::a));
+	CPPUNIT_ASSERT(fz::dispatch<T1>(t1, &t, &dispatch_target::b));
 
 	T2 const t2{};
-	CPPUNIT_ASSERT(!fz::dispatch<T1>(t2, &t, &target::b));
+	CPPUNIT_ASSERT(!fz::dispatch<T1>(t2, &t, &dispatch_target::b));
 
 	CPPUNIT_ASSERT_EQUAL(t.a_, 1);
 	CPPUNIT_ASSERT_EQUAL(t.b_, 1);
@@ -69,13 +69,13 @@ void DispatchTest::testSingle()
 
 void DispatchTest::testArgs()
 {
-	target t;
+	dispatch_target t;
 
 	T4 const t4(1, 5);
-	CPPUNIT_ASSERT(fz::dispatch<T4>(t4, &t, &target::two));
+	CPPUNIT_ASSERT(fz::dispatch<T4>(t4, &t, &dispatch_target::two));
 
 	T3 const t3{};
-	CPPUNIT_ASSERT(!fz::dispatch<T4>(t3, &t, &target::two));
+	CPPUNIT_ASSERT(!fz::dispatch<T4>(t3, &t, &dispatch_target::two));
 
 	CPPUNIT_ASSERT_EQUAL(t.a_, 1);
 	CPPUNIT_ASSERT_EQUAL(t.b_, 5);
@@ -83,23 +83,23 @@ void DispatchTest::testArgs()
 
 void DispatchTest::testMultiple()
 {
-	target t;
+	dispatch_target t;
 
 	T1 const t1{};
 	T2 const t2{};
 	T3 const t3{};
 	T4 const t4(3, 8);
 
-	CPPUNIT_ASSERT((fz::dispatch<T1, T2, T3>(t1, &t, &target::a, &target::b, &target::c)));
-	CPPUNIT_ASSERT((fz::dispatch<T1, T2, T3>(t2, &t, &target::a, &target::b, &target::c)));
-	CPPUNIT_ASSERT((fz::dispatch<T1, T2, T3>(t3, &t, &target::a, &target::b, &target::c)));
-	CPPUNIT_ASSERT((!fz::dispatch<T1, T2, T3>(t4, &t, &target::a, &target::b, &target::c)));
+	CPPUNIT_ASSERT((fz::dispatch<T1, T2, T3>(t1, &t, &dispatch_target::a, &dispatch_target::b, &dispatch_target::c)));
+	CPPUNIT_ASSERT((fz::dispatch<T1, T2, T3>(t2, &t, &dispatch_target::a, &dispatch_target::b, &dispatch_target::c)));
+	CPPUNIT_ASSERT((fz::dispatch<T1, T2, T3>(t3, &t, &dispatch_target::a, &dispatch_target::b, &dispatch_target::c)));
+	CPPUNIT_ASSERT((!fz::dispatch<T1, T2, T3>(t4, &t, &dispatch_target::a, &dispatch_target::b, &dispatch_target::c)));
 
 	CPPUNIT_ASSERT_EQUAL(t.a_, 1);
 	CPPUNIT_ASSERT_EQUAL(t.b_, 1);
 	CPPUNIT_ASSERT_EQUAL(t.c_, 1);
 
-	CPPUNIT_ASSERT((fz::dispatch<T1, T4>(t4, &t, &target::a, &target::two)));
+	CPPUNIT_ASSERT((fz::dispatch<T1, T4>(t4, &t, &dispatch_target::a, &dispatch_target::two)));
 
 	CPPUNIT_ASSERT_EQUAL(t.a_, 4);
 	CPPUNIT_ASSERT_EQUAL(t.b_, 9);
