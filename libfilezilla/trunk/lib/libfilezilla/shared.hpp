@@ -31,7 +31,12 @@ public:
 
 	void clear();
 
-	/// Gets a reference to the stored object. A new object is created it if is not set.
+	/**
+	 * \brief Gets a reference to the stored object.
+	 *
+	 * A new object is created it if is not set.
+	 * Returned reference is unique, it is not shared.
+	 */
 	T& get();
 
 	const T& operator*() const;
