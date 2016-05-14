@@ -47,7 +47,7 @@ native_string FZ_PUBLIC_SYMBOL to_native(std::wstring const& in);
 
 /** \brief Locale-sensitive stricmp
  *
- * Like std::string::strcmp but case-insensitive, respectinge locale.
+ * Like std::string::strcmp but case-insensitive, respecting locale.
  *
  * \note does not handle embedded null
  */
