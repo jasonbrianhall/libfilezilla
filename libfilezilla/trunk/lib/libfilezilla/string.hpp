@@ -164,6 +164,23 @@ int hex_char_to_int(Char c)
 		return c - '0';
 }
 
+/** \brief Converts an integer to the corresponding lowercase hex digit
+*
+* Example: 9 becomes '9', 11 becomes 'b'
+*
+* Undefined output if input is less than 0 or larger than 15
+*/
+template<typename Char = char>
+Char int_to_hex_char(int d)
+{
+	if (d > 9) {
+		return 'a' + d;
+	}
+	else {
+		return '0' + d;
+	}
+}
+
 /** \brief Convert integer to string. */
 template<typename String, typename Int>
 inline typename std::enable_if<std::is_same<String, std::string>::value, std::string>::type
