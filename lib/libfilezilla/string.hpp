@@ -174,7 +174,7 @@ template<typename Char = char>
 Char int_to_hex_char(int d)
 {
 	if (d > 9) {
-		return 'a' + d;
+		return 'a' + d - 10;
 	}
 	else {
 		return '0' + d;
