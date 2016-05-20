@@ -1,3 +1,8 @@
+0.5.2 (2016-05-20)
+
++ Add fz::shared_optional::is_same that checks whether two instances share the same underlying pointer value, like a shallow equal.
++ Add fz::int_to_hex_char as reverse to fz::hex_char_to_int
+
 0.5.1 (2016-05-09)
 
 + Add constructore to sparse_optional taking pointers
