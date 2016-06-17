@@ -24,6 +24,9 @@ fi
 CXX_COMPILE_STDCXX_14([],[mandatory])
 CHECK_LIBCXX
 
+# To make sure stat.st_size is a 64bit (or larger) value
+AC_SYS_LARGEFILE
+
 # libstdc++ as shipped with GCC 4.7 has a steady clock that isn't steady (who implements such crap?)
 CHECK_STEADY_CLOCK
 

@@ -188,6 +188,8 @@ local_filesys::type local_filesys::get_file_info(native_string const& path, bool
 	}
 
 	struct stat buf;
+	static_assert(sizeof(buf.st_size) >= 8, "The st_size member of struct stat must be 8 bytes or larger.");
+
 	int result = lstat(path.c_str(), &buf);
 	if (result) {
 		is_link = false;
