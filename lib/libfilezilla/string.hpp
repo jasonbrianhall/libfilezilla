@@ -227,6 +227,15 @@ template<> inline wchar_t const* choose_string(char const*, wchar_t const* w) { 
  */
 #define fzS(Char, s) choose_string<Char>(s, L ## s)
 #endif
+
+/// Returns \c in with all occurrences of \c find in the input string replaced with \c replacement
+std::string FZ_PUBLIC_SYMBOL replace_substrings(std::string const& in, std::string const& find, std::string const& replacement);
+std::wstring FZ_PUBLIC_SYMBOL replace_substrings(std::wstring const& in, std::wstring const& find, std::wstring const& replacement);
+
+/// Modifies \c in, replacing all occurrences of \c find with \c replacement
+void FZ_PUBLIC_SYMBOL replace_substrings(std::string& in, std::string const& find, std::string const& replacement);
+void FZ_PUBLIC_SYMBOL replace_substrings(std::wstring& in, std::wstring const& find, std::wstring const& replacement);
+
 }
 
 #endif
