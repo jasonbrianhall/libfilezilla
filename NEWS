@@ -1,3 +1,8 @@
+0.5.3 (2016-06-20)
+
++ Add fz::replace_substrincs to search and replace substrings in std::(w)string
+- Explicitly request large file support on 32bit systems
+
 0.5.2 (2016-05-20)
 
 + Add fz::shared_optional::is_same that checks whether two instances share the same underlying pointer value, like a shallow equal.
