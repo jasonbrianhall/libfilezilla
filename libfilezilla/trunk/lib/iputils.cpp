@@ -171,10 +171,10 @@ bool do_is_routable_address(String const& address)
 				Char const dot = '.';
 				// IPv4 mapped
 				String ipv4 =
-					convert<String>(hex_char_to_int(long_address[30]) * 16 + hex_char_to_int(long_address[31])) + dot +
-					convert<String>(hex_char_to_int(long_address[32]) * 16 + hex_char_to_int(long_address[33])) + dot +
-					convert<String>(hex_char_to_int(long_address[35]) * 16 + hex_char_to_int(long_address[36])) + dot +
-					convert<String>(hex_char_to_int(long_address[37]) * 16 + hex_char_to_int(long_address[38]));
+					toString<String>(hex_char_to_int(long_address[30]) * 16 + hex_char_to_int(long_address[31])) + dot +
+					toString<String>(hex_char_to_int(long_address[32]) * 16 + hex_char_to_int(long_address[33])) + dot +
+					toString<String>(hex_char_to_int(long_address[35]) * 16 + hex_char_to_int(long_address[36])) + dot +
+					toString<String>(hex_char_to_int(long_address[37]) * 16 + hex_char_to_int(long_address[38]));
 
 				return do_is_routable_address(ipv4);
 			}
