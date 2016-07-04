@@ -206,16 +206,6 @@ template<typename String, typename Arg>
 inline typename std::enable_if<std::is_same<String, std::wstring>::value, std::wstring>::type
 toString(Arg&& arg) { return to_wstring(std::forward<Arg>(arg)); };
 
-
-/** \brief Convert integer to string. */
-template<typename String, typename Int>
-inline typename std::enable_if<std::is_same<String, std::string>::value, std::string>::type
-convert(Int i) { return std::to_string(i); };
-
-template<typename String, typename Int>
-inline typename std::enable_if<std::is_same<String, std::wstring>::value, std::wstring>::type
-convert(Int i) { return std::to_wstring(i); };
-
 #if !defined(fzT) || defined(DOXYGEN)
 #ifdef FZ_WINDOWS
 /** \brief Macro for a string literal in system-native character type.\n Note: Macro definition changes depending on platform!
