@@ -122,6 +122,10 @@ parse_start:
 		width += fmt[pos] - '0';
 		++pos;
 	}
+	if (width > 10000) {
+		assert(0);
+		width = 10000;
+	}
 
 	if (fmt[pos] == '$') {
 		// Positional argument, start over
@@ -151,6 +155,13 @@ parse_start:
 
 	String arg = extract_arg<String>(flags, width, type, arg_n++, std::forward<Args>(args)...);
 
+	if (flags & pad_blank) {
+		ret += ' ';
+		if (width) {
+			--width;
+		}
+	}
+
 	if (flags & with_width) {
 		if (arg.size() < width) {
 			if (flags & pad_0) {
@@ -176,7 +187,7 @@ parse_start:
 *
 * Positional arguments
 * Supported flags: 0, ' '
-* Field widths are supported, precision is ignored
+* Field widths are supported as decimal integers not exceeding 10k, precision is ignored
 * Supported types: d, i, u, s
 *
 * Asserts if unsupported types are passed or if the types don't match the arguments. Fails gracefully with NDEBUG.
