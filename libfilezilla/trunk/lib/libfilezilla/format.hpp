@@ -3,8 +3,6 @@
 
 #include "string.hpp"
 
-#include <tuple>
-
 #include <assert.h>
 
 /** \file
@@ -13,6 +11,7 @@
 
 namespace fz {
 
+/// \cond
 namespace detail {
 
 // Converts integral type to desired string type...
@@ -39,18 +38,24 @@ typename std::enable_if_t<!std::is_integral<std::decay_t<Arg>>::value, String> i
 	return String();
 }
 
+
+// Converts argument to string...
+// ... if toString(arg) is valid expression
 template<typename String, typename Arg>
 auto arg_to_string(Arg&& arg) -> decltype(toString<String>(std::forward<Arg>(arg)))
 {
 	return toString<String>(std::forward<Arg>(arg));
 }
 
+// ... assert otherwise
 template<typename String, typename Arg>
 String arg_to_string(...)
 {
 	assert(0);
 	return String();
 }
+
+
 
 template<typename String, typename... Args>
 String extract_arg(char, size_t, typename String::value_type, size_t)
@@ -180,17 +185,28 @@ parse_start:
 }
 
 }
+/// \endcond
 
 /** \brief A simple type-safe sprintf replacement
 *
-* Only implements some of the printf family format specifiers:
+* Only partially implements the format specifiers for the printf family of C functions:
 *
-* Positional arguments
-* Supported flags: 0, ' '
-* Field widths are supported as decimal integers not exceeding 10k, precision is ignored
-* Supported types: d, i, u, s
+* \li Positional arguments
+* \li Supported flags: 0, ' '
+* \li Field widths are supported as decimal integers not exceeding 10k, longer widths are truncated
+* \li precision is ignored
+* \li Supported types: d, i, u, s
+*
+* For string arguments, mixing char*, wchar_t*, std::string and std::wstring is allowed.
 *
 * Asserts if unsupported types are passed or if the types don't match the arguments. Fails gracefully with NDEBUG.
+*
+* Example:
+*
+* \code
+* std::string s = fz::printf("%2$s %1$s", "foo", std::wstring("bar");
+* assert(s == "bar foo"); // This is true
+* \endcode
 */
 template<typename String, typename... Args>
 String sprintf(String const& fmt, Args&&... args)
