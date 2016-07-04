@@ -206,6 +206,7 @@
     <ClInclude Include="libfilezilla\event_handler.hpp" />
     <ClInclude Include="libfilezilla\event_loop.hpp" />
     <ClInclude Include="libfilezilla\file.hpp" />
+    <ClInclude Include="libfilezilla\format.hpp" />
     <ClInclude Include="libfilezilla\iputils.hpp" />
     <ClInclude Include="libfilezilla\libfilezilla.hpp" />
     <ClInclude Include="libfilezilla\local_filesys.hpp" />

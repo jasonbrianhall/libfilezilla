@@ -106,6 +106,14 @@ std::wstring FZ_PUBLIC_SYMBOL to_wstring(std::string const& in);
 /// Returns identity, that way to_wstring can be called with native_string.
 inline std::wstring FZ_PUBLIC_SYMBOL to_wstring(std::wstring const& in) { return in; }
 
+/// Converts from arithmetic type to std::wstring
+template<typename Arg>
+inline typename std::enable_if<std::is_arithmetic<std::decay_t<Arg>>::value, std::wstring>::type to_wstring(Arg && arg)
+{
+	return std::to_wstring(std::forward<Arg>(arg));
+}
+
+
 /** \brief Converts from std::string in UTF-8 into std::wstring
  *
  * \return the converted string on success. On failure an empty string is returned.
@@ -122,6 +130,14 @@ std::string FZ_PUBLIC_SYMBOL to_string(std::wstring const& in);
 
 /// Returns identity, that way to_string can be called with native_string.
 inline std::string FZ_PUBLIC_SYMBOL to_string(std::string const& in) { return in; }
+
+/// Converts from arithmetic type to std::string
+template<typename Arg>
+inline typename std::enable_if<std::is_arithmetic<std::decay_t<Arg>>::value, std::string>::type to_string(Arg && arg)
+{
+	return std::to_string(std::forward<Arg>(arg));
+}
+
 
 /// Returns length of 0-terminated character sequence. Works with both narrow and wide-characters.
 template<typename Char>
@@ -180,6 +196,16 @@ Char int_to_hex_char(int d)
 		return '0' + d;
 	}
 }
+
+/// Calls either fz::to_string or fz::to_wstring depending on the passed template argument
+template<typename String, typename Arg>
+inline typename std::enable_if<std::is_same<String, std::string>::value, std::string>::type
+toString(Arg && arg) { return to_string(std::forward<Arg>(arg)); };
+
+template<typename String, typename Arg>
+inline typename std::enable_if<std::is_same<String, std::wstring>::value, std::wstring>::type
+toString(Arg&& arg) { return to_wstring(std::forward<Arg>(arg)); };
+
 
 /** \brief Convert integer to string. */
 template<typename String, typename Int>
