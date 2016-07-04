@@ -199,12 +199,12 @@ Char int_to_hex_char(int d)
 
 /// Calls either fz::to_string or fz::to_wstring depending on the passed template argument
 template<typename String, typename Arg>
-inline typename std::enable_if<std::is_same<String, std::string>::value, std::string>::type
-toString(Arg && arg) { return to_string(std::forward<Arg>(arg)); };
+inline auto toString(Arg&& arg) -> typename std::enable_if<std::is_same<String, std::string>::value, decltype(to_string(std::forward<Arg>(arg)))>::type
+{ return to_string(std::forward<Arg>(arg)); }
 
 template<typename String, typename Arg>
-inline typename std::enable_if<std::is_same<String, std::wstring>::value, std::wstring>::type
-toString(Arg&& arg) { return to_wstring(std::forward<Arg>(arg)); };
+inline auto toString(Arg&& arg) -> typename std::enable_if<std::is_same<String, std::wstring>::value, decltype(to_wstring(std::forward<Arg>(arg)))>::type
+{ return to_wstring(std::forward<Arg>(arg)); }
 
 #if !defined(fzT) || defined(DOXYGEN)
 #ifdef FZ_WINDOWS
