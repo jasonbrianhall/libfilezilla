@@ -6,6 +6,7 @@ check_PROGRAMS = $(TESTS)
 test_SOURCES =  test.cpp \
 		dispatch.cpp \
 		eventloop.cpp \
+		format.cpp \
 		iputils.cpp \
 		smart_pointer.cpp \
 		string.cpp \
