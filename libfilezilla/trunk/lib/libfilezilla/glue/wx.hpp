@@ -23,6 +23,13 @@ inline native_string to_native(wxString const& in)
 {
 	return to_native(in.ToStdWstring());
 }
+
+template<typename... Args>
+std::wstring sprintf(wxString const& fmt, Args&&... args)
+{
+	return sprintf(fmt.ToStdWstring(), std::forward<Args>(args)...);
+}
+
 }
 
 #endif
