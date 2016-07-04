@@ -30,9 +30,16 @@ typename std::enable_if_t<std::is_integral<std::decay_t<Arg>>::value && Unsigned
 	return toString<String>(arg);
 }
 
-// ... assert if not a integral type
+// ... for strongly typed enums
 template<typename String, bool Unsigned, typename Arg>
-typename std::enable_if_t<!std::is_integral<std::decay_t<Arg>>::value, String> integral_to_string(Arg && arg)
+typename std::enable_if_t<!std::is_integral<std::decay_t<Arg>>::value && std::is_enum<std::decay_t<Arg>>::value, String> integral_to_string(Arg && arg)
+{
+	return integral_to_string<String, Unsigned>(static_cast<std::underlying_type_t<std::decay_t<Arg>>>(arg));
+}
+
+// ... assert otherwise
+template<typename String, bool Unsigned>
+typename String integral_to_string(...)
 {
 	assert(0);
 	return String();
@@ -48,7 +55,7 @@ auto arg_to_string(Arg&& arg) -> decltype(toString<String>(std::forward<Arg>(arg
 }
 
 // ... assert otherwise
-template<typename String, typename Arg>
+template<typename String>
 String arg_to_string(...)
 {
 	assert(0);
