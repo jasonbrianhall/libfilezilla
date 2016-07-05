@@ -3,6 +3,7 @@
 
 #include <wx/string.h>
 
+#include "../format.hpp"
 #include "../string.hpp"
 
 inline std::wstring to_wstring(wxString const& s) { return s.ToStdWstring(); }
