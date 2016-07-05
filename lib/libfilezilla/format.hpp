@@ -39,7 +39,7 @@ typename std::enable_if_t<!std::is_integral<std::decay_t<Arg>>::value && std::is
 
 // ... assert otherwise
 template<typename String, bool Unsigned>
-typename String integral_to_string(...)
+String integral_to_string(...)
 {
 	assert(0);
 	return String();
@@ -82,6 +82,10 @@ String extract_arg(char flags, size_t width, typename String::value_type type, s
 		}
 		else if (type == 'u') {
 			return integral_to_string<String, true>(std::forward<Arg>(arg));
+		}
+		else if (type == 'p') {
+			assert(0);
+			return String();
 		}
 		else {
 			assert(0);
