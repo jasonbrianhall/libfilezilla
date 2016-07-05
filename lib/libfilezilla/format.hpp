@@ -38,8 +38,8 @@ typename std::enable_if_t<!std::is_integral<std::decay_t<Arg>>::value && std::is
 }
 
 // ... assert otherwise
-template<typename String, bool Unsigned>
-String integral_to_string(...)
+template<typename String, bool Unsigned, typename Arg>
+typename std::enable_if_t<!std::is_integral<std::decay_t<Arg>>::value && !std::is_enum<std::decay_t<Arg>>::value, String> integral_to_string(Arg && arg)
 {
 	assert(0);
 	return String();
