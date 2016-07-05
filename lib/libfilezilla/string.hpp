@@ -186,11 +186,11 @@ int hex_char_to_int(Char c)
 *
 * Undefined output if input is less than 0 or larger than 15
 */
-template<typename Char = char>
+template<typename Char = char, bool Lowercase = true>
 Char int_to_hex_char(int d)
 {
 	if (d > 9) {
-		return 'a' + d - 10;
+		return (Lowercase ? 'a' : 'A') + d - 10;
 	}
 	else {
 		return '0' + d;
