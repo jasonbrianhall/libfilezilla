@@ -24,6 +24,11 @@ inline native_string to_native(wxString const& in)
 	return to_native(in.ToStdWstring());
 }
 
+inline std::string to_utf8(wxString const& s)
+{
+	return to_utf8(s.ToStdWstring());
+}
+
 template<typename... Args>
 std::wstring sprintf(wxString const& fmt, Args&&... args)
 {

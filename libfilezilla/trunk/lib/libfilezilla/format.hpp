@@ -63,6 +63,55 @@ String arg_to_string(...)
 }
 
 
+// Converts integral type to hex string with desired string type...
+// ... basic case: simple unsigned value
+template<typename String, bool Lowercase, typename Arg>
+typename std::enable_if_t<std::is_integral<std::decay_t<Arg>>::value && !std::is_enum<std::decay_t<Arg>>::value, String> integral_to_hex_string(Arg && arg)
+{
+	std::decay_t<Arg> v = arg;
+	typename String::value_type buf[sizeof(v) * 2];
+	auto *const end = buf + sizeof(v) * 2;
+	auto *p = end;
+
+	do {
+		*(--p) = fz::int_to_hex_char<typename String::value_type, Lowercase>(v & 0xf);
+		v >>= 4;
+	} while (v);
+
+	return String(p, end);
+}
+
+// ... for enums
+template<typename String, bool Lowercase, typename Arg>
+typename std::enable_if_t<std::is_enum<std::decay_t<Arg>>::value, String> integral_to_hex_string(Arg && arg)
+{
+	return integral_to_hex_string<String, Lowercase>(static_cast<std::underlying_type_t<std::decay_t<Arg>>>(arg));
+}
+
+// ... assert otherwise
+template<typename String, bool Lowercase, typename Arg>
+typename std::enable_if_t<!std::is_integral<std::decay_t<Arg>>::value && !std::is_enum<std::decay_t<Arg>>::value, String> integral_to_hex_string(Arg &&)
+{
+	assert(0);
+	return String();
+}
+
+
+// Converts to pointer to hex string
+template<typename String, typename Arg>
+typename std::enable_if_t<std::is_pointer<std::decay_t<Arg>>::value, String> pointer_to_string(Arg&& arg)
+{
+	return String({'0', 'x'}) + integral_to_hex_string<String, true>(reinterpret_cast<uintptr_t>(arg));
+}
+
+
+template<typename String, typename Arg>
+typename std::enable_if_t<!std::is_pointer<std::decay_t<Arg>>::value, String> pointer_to_string(Arg&& arg)
+{
+	assert(0);
+	return String();
+}
+
 
 template<typename String, typename... Args>
 String extract_arg(char, size_t, typename String::value_type, size_t)
@@ -83,9 +132,14 @@ String extract_arg(char flags, size_t width, typename String::value_type type, s
 		else if (type == 'u') {
 			return integral_to_string<String, true>(std::forward<Arg>(arg));
 		}
+		else if (type == 'x') {
+			return integral_to_hex_string<String, true>(std::forward<Arg>(arg));
+		}
+		else if (type == 'X') {
+			return integral_to_hex_string<String, false>(std::forward<Arg>(arg));
+		}
 		else if (type == 'p') {
-			assert(0);
-			return String();
+			return pointer_to_string<String>(std::forward<Arg>(arg));
 		}
 		else {
 			assert(0);
@@ -206,7 +260,7 @@ parse_start:
 * \li Supported flags: 0, ' '
 * \li Field widths are supported as decimal integers not exceeding 10k, longer widths are truncated
 * \li precision is ignored
-* \li Supported types: d, i, u, s
+* \li Supported types: d, i, u, s, x, X, p
 *
 * For string arguments, mixing char*, wchar_t*, std::string and std::wstring is allowed.
 *
