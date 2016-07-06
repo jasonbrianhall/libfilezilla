@@ -31,6 +31,8 @@ void format_test::test_sprintf()
 	CPPUNIT_ASSERT_EQUAL(std::string("foo bar"), fz::sprintf("foo %s", std::string("bar")));
 	CPPUNIT_ASSERT_EQUAL(std::string("foo bar"), fz::sprintf("foo %s", std::wstring(L"bar")));
 
+	CPPUNIT_ASSERT_EQUAL(std::string("    "), fz::sprintf("%4s", " "));
+
 	CPPUNIT_ASSERT_EQUAL(std::string("0"), fz::sprintf("%d", 0));
 	CPPUNIT_ASSERT_EQUAL(std::string("   0"), fz::sprintf("%4d", 0));
 	CPPUNIT_ASSERT_EQUAL(std::string("0000"), fz::sprintf("%04d", 0));
@@ -70,5 +72,31 @@ void format_test::test_sprintf()
 	CPPUNIT_ASSERT_EQUAL(std::string(" 12345"), fz::sprintf("% 04d", 12345));
 	CPPUNIT_ASSERT_EQUAL(std::string(" 12345"), fz::sprintf("%0 4d", 12345));
 
+	CPPUNIT_ASSERT_EQUAL(std::string("-42"), fz::sprintf("%d", -42));
+	CPPUNIT_ASSERT_EQUAL(std::string("-42"), fz::sprintf("%d", -42));
+	CPPUNIT_ASSERT_EQUAL(std::string("-42"), fz::sprintf("%0d", -42));
+	CPPUNIT_ASSERT_EQUAL(std::string("-42"), fz::sprintf("% d", -42));
+	CPPUNIT_ASSERT_EQUAL(std::string("-42"), fz::sprintf("% 0d", -42));
+
+	CPPUNIT_ASSERT_EQUAL(std::string(" -42"), fz::sprintf("%4d", -42));
+	CPPUNIT_ASSERT_EQUAL(std::string(" -42"), fz::sprintf("%4d", -42));
+	CPPUNIT_ASSERT_EQUAL(std::string("-042"), fz::sprintf("%04d", -42));
+	CPPUNIT_ASSERT_EQUAL(std::string(" -42"), fz::sprintf("% 4d", -42));
+	CPPUNIT_ASSERT_EQUAL(std::string("-042"), fz::sprintf("% 04d", -42));
+
 	CPPUNIT_ASSERT_EQUAL(std::string("foo 7 foo"), fz::sprintf("%2$s %1$d %2$s", 7, "foo"));
+
+	CPPUNIT_ASSERT_EQUAL(std::string("0"), fz::sprintf("%x", 0));
+	CPPUNIT_ASSERT_EQUAL(std::string("23bf0a"), fz::sprintf("%x", 2342666));
+	CPPUNIT_ASSERT_EQUAL(std::string("23BF0A"), fz::sprintf("%X", 2342666));
+	CPPUNIT_ASSERT_EQUAL(std::string("23bf0a"), fz::sprintf("%0x", 2342666));
+	CPPUNIT_ASSERT_EQUAL(std::string("23bf0a"), fz::sprintf("% x", 2342666));
+	CPPUNIT_ASSERT_EQUAL(std::string("23bf0a"), fz::sprintf("% 0x", 2342666));
+
+	CPPUNIT_ASSERT_EQUAL(std::string("   0"), fz::sprintf("%4x", 0));
+	CPPUNIT_ASSERT_EQUAL(std::string("23bf0a"), fz::sprintf("%4x", 2342666));
+	CPPUNIT_ASSERT_EQUAL(std::string("23BF0A"), fz::sprintf("%4X", 2342666));
+	CPPUNIT_ASSERT_EQUAL(std::string("23bf0a"), fz::sprintf("%04x", 2342666));
+	CPPUNIT_ASSERT_EQUAL(std::string("23bf0a"), fz::sprintf("% 4x", 2342666));
+	CPPUNIT_ASSERT_EQUAL(std::string("23bf0a"), fz::sprintf("% 04x", 2342666));
 }
