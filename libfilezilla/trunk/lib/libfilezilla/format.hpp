@@ -90,12 +90,12 @@ typename std::enable_if_t<std::is_integral<std::decay_t<Arg>>::value && !std::is
 template<typename String, bool Unsigned, typename Arg>
 typename std::enable_if_t<std::is_enum<std::decay_t<Arg>>::value, String> integral_to_string(char flags, int width, Arg && arg)
 {
-	return integral_to_string<String, Unsigned>(static_cast<std::underlying_type_t<std::decay_t<Arg>>>(flags, width, arg));
+	return integral_to_string<String, Unsigned>(flags, width, static_cast<std::underlying_type_t<std::decay_t<Arg>>>(arg));
 }
 
 // ... assert otherwise
 template<typename String, bool Unsigned, typename Arg>
-typename std::enable_if_t<!std::is_integral<std::decay_t<Arg>>::value && !std::is_enum<std::decay_t<Arg>>::value, String> integral_to_string(char flags, int width, Arg && arg)
+typename std::enable_if_t<!std::is_integral<std::decay_t<Arg>>::value && !std::is_enum<std::decay_t<Arg>>::value, String> integral_to_string(char, int, Arg &&)
 {
 	assert(0);
 	return String();
