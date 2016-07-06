@@ -14,32 +14,88 @@ namespace fz {
 /// \cond
 namespace detail {
 
+// Get flags
+enum : char {
+	pad_0 = 1,
+	pad_blank = 2,
+	with_width = 4
+};
+
 // Converts integral type to desired string type...
 // ... basic case: simple unsigned value
 template<typename String, bool Unsigned, typename Arg>
-typename std::enable_if_t<std::is_integral<std::decay_t<Arg>>::value && !(Unsigned && std::is_signed<std::decay_t<Arg>>::value), String> integral_to_string(Arg && arg)
+typename std::enable_if_t<std::is_integral<std::decay_t<Arg>>::value && !std::is_enum<std::decay_t<Arg>>::value, String> integral_to_string(char flags, int width, Arg && arg)
 {
-	return toString<String>(arg);
-}
+	std::decay_t<Arg> v = arg;
 
-// ... for signed types, assert if an unsigned types is expected and a negative value is passed
-template<typename String, bool Unsigned, typename Arg>
-typename std::enable_if_t<std::is_integral<std::decay_t<Arg>>::value && Unsigned && std::is_signed<std::decay_t<Arg>>::value, String> integral_to_string(Arg && arg)
-{
-	assert(arg >= 0);
-	return toString<String>(arg);
+	char lead{};
+
+	assert(!Unsigned || !std::is_signed<std::decay_t<Arg>>::value || arg >= 0);
+
+	if (std::is_signed<std::decay_t<Arg>>::value && !(arg >= 0)) {
+		lead = '-';
+	}
+	else if (flags & pad_blank && arg >= 0) {
+		lead = ' ';
+	}
+
+
+	// max decimal digits in b-bit integer is floor((b-1) * log_10(2)) + 1 < b * 0.5 + 1
+	typename String::value_type buf[sizeof(v) * 4 + 1];
+	auto *const end = buf + sizeof(v) * 4 + 1;
+	auto *p = end;
+
+	do {
+		int const mod = std::abs(static_cast<int>(v % 10));
+		*(--p) = '0' + mod;
+		v /= 10;
+	} while (v);
+
+	if (flags & with_width) {
+		if (lead && width > 0) {
+			--width;
+		}
+
+		String ret;
+
+		if (flags & pad_0) {
+			if (lead) {
+				ret += lead;
+			}
+			if (end - p < width) {
+				ret.append(width - (end - p), '0');
+			}
+		}
+		else {
+			if (end - p < width) {
+				ret.append(width - (end - p), ' ');
+			}
+			if (lead) {
+				ret += lead;
+			}
+		}
+
+		ret.append(p, end);
+		return ret;
+	}
+	else {
+		if (lead) {
+			*(--p) = lead;
+		}
+		return String(p, end);
+	}
 }
 
 // ... for strongly typed enums
 template<typename String, bool Unsigned, typename Arg>
-typename std::enable_if_t<!std::is_integral<std::decay_t<Arg>>::value && std::is_enum<std::decay_t<Arg>>::value, String> integral_to_string(Arg && arg)
+typename std::enable_if_t<std::is_enum<std::decay_t<Arg>>::value, String> integral_to_string(char flags, int width, Arg && arg)
 {
-	return integral_to_string<String, Unsigned>(static_cast<std::underlying_type_t<std::decay_t<Arg>>>(arg));
+	return integral_to_string<String, Unsigned>(static_cast<std::underlying_type_t<std::decay_t<Arg>>>(flags, width, arg));
 }
 
 // ... assert otherwise
 template<typename String, bool Unsigned, typename Arg>
-typename std::enable_if_t<!std::is_integral<std::decay_t<Arg>>::value && !std::is_enum<std::decay_t<Arg>>::value, String> integral_to_string(Arg && arg)
+typename std::enable_if_t<!std::is_integral<std::decay_t<Arg>>::value && !std::is_enum<std::decay_t<Arg>>::value, String> integral_to_string(char flags, int width, Arg && arg)
 {
 	assert(0);
 	return String();
@@ -122,33 +178,48 @@ String extract_arg(char, size_t, typename String::value_type, size_t)
 template<typename String, typename Arg, typename... Args>
 String extract_arg(char flags, size_t width, typename String::value_type type, size_t arg_n, Arg&& arg, Args&&...args)
 {
+	String ret;
+
 	if (!arg_n) {
 		if (type == 's') {
-			return arg_to_string<String>(std::forward<Arg>(arg));
+			ret = arg_to_string<String>(std::forward<Arg>(arg));
+			if (flags & with_width && ret.size() < width) {
+				ret = String(width - ret.size(), ' ') + ret;
+			}
 		}
 		else if (type == 'd' || type == 'i') {
-			return integral_to_string<String, false>(std::forward<Arg>(arg));
+			ret = integral_to_string<String, false>(flags, width, std::forward<Arg>(arg));
 		}
 		else if (type == 'u') {
-			return integral_to_string<String, true>(std::forward<Arg>(arg));
+			ret = integral_to_string<String, true>(flags, width, std::forward<Arg>(arg));
 		}
 		else if (type == 'x') {
-			return integral_to_hex_string<String, true>(std::forward<Arg>(arg));
+			ret = integral_to_hex_string<String, true>(std::forward<Arg>(arg));
+			if (flags & with_width && ret.size() < width) {
+				ret = String(width - ret.size(), ' ') + ret;
+			}
 		}
 		else if (type == 'X') {
-			return integral_to_hex_string<String, false>(std::forward<Arg>(arg));
+			ret = integral_to_hex_string<String, false>(std::forward<Arg>(arg));
+			if (flags & with_width && ret.size() < width) {
+				ret = String(width - ret.size(), ' ') + ret;
+			}
 		}
 		else if (type == 'p') {
-			return pointer_to_string<String>(std::forward<Arg>(arg));
+			ret = pointer_to_string<String>(std::forward<Arg>(arg));
+			if (flags & with_width && ret.size() < width) {
+				ret = String(width - ret.size(), ' ') + ret;
+			}
 		}
 		else {
 			assert(0);
-			return String();
 		}
 	}
 	else {
-		return extract_arg<String>(flags, width, type, arg_n - 1, std::forward<Args>(args)...);
+		ret = extract_arg<String>(flags, width, type, arg_n - 1, std::forward<Args>(args)...);
 	}
+
+	return ret;
 }
 
 template<typename String, typename... Args>
@@ -164,12 +235,6 @@ void process_arg(String const& fmt, typename String::size_type & pos, String& re
 	}
 
 parse_start:
-	// Get flags
-	enum : char {
-		pad_0 = 1,
-		pad_blank = 2,
-		with_width = 4
-	};
 	char flags{};
 	while (true) {
 		if (fmt[pos] == '0') {
@@ -223,28 +288,7 @@ parse_start:
 
 	auto const type = fmt[pos++];
 
-	String arg = extract_arg<String>(flags, width, type, arg_n++, std::forward<Args>(args)...);
-
-	if (flags & pad_blank) {
-		ret += ' ';
-		if (width) {
-			--width;
-		}
-	}
-
-	if (flags & with_width) {
-		if (arg.size() < width) {
-			if (flags & pad_0) {
-				ret += String(width - arg.size(), '0');
-			}
-			else {
-				ret += String(width - arg.size(), ' ');
-			}
-		}
-	}
-
-	ret += arg;
-
+	ret += extract_arg<String>(flags, width, type, arg_n++, std::forward<Args>(args)...);
 
 	// Now we're ready to print!
 }
