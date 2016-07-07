@@ -3,6 +3,8 @@
 
 #include "string.hpp"
 
+#include <cstdlib>
+
 #include <assert.h>
 
 /** \file
