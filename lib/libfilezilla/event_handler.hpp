@@ -91,6 +91,11 @@ public:
 		event_loop_.send_event(this, new T(std::forward<Args>(args)...));
 	}
 
+	template<typename T>
+	void send_event(T* evt) {
+		event_loop_.send_event(this, evt);
+	}
+
 	/** \brief Adds a timer, returns the timer id.
 	 *
 	 * Once the interval expires, you get a timer event from the event loop.
