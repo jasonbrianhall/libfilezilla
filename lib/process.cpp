@@ -158,6 +158,12 @@ public:
 		DWORD read = 0;
 		BOOL res = ReadFile(out_.read_, buffer, len, &read, 0);
 		if (!res) {
+#if FZ_WINDOWS
+			// ERROR_BROKEN_PIPE indicated EOF.
+			if (GetLastError() == ERROR_BROKEN_PIPE) {
+				return 0;
+			}
+#endif
 			return -1;
 		}
 		return read;
