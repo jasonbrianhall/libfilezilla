@@ -49,7 +49,7 @@ mutex::mutex(bool recursive)
 {
 #ifdef FZ_WINDOWS
 	(void)recursive; // Critical sections are always recursive
-	InitializeCriticalSection(&m_);
+	InitializeCriticalSectionEx(&m_, 0, CRITICAL_SECTION_NO_DEBUG_INFO);
 #else
 	pthread_mutex_init(&m_, get_mutex_attributes(recursive));
 #endif
