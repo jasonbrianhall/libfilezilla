@@ -1,3 +1,7 @@
+0.6.0 (2016-07-20)
+
++ Add fz::sprintf, a safe replacement for for the C sprintf function
+
 0.5.3 (2016-06-20)
 
 + Add fz::replace_substrings to search and replace substrings in std::(w)string
