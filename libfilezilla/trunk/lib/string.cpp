@@ -99,6 +99,7 @@ typedef std::conditional<std::is_same<decltype(&iconv), iconv_prototype_with_con
 namespace {
 // On some platforms, e.g. those derived from SunOS, iconv does not understand "WCHAR_T", so we
 // need to guess an encoding.
+// On other platforms, WCHAR_T results in iconv() doing endless loops, such as OS X.
 char const* const calc_wchar_t_encoding()
 {
 	auto try_encoding = [](char const* const encoding) -> bool {
@@ -108,37 +109,32 @@ char const* const calc_wchar_t_encoding()
 		}
 		iconv_close(cd);
 		return true;
-		
 	};
-	if (try_encoding("WCHAR_T")) {
-		return "WCHAR_T";
-	}
-	else {
-		// Explicitly specify endianess, otherwise we'll get a BOM prefixed to everything
 
-		int const i = 1;
-		char const* p = reinterpret_cast<char const*>(&i);
-		bool little_endian = p[0] == 1;
+	// Explicitly specify endianess, otherwise we'll get a BOM prefixed to everything
+	int const i = 1;
+	char const* p = reinterpret_cast<char const*>(&i);
+	bool little_endian = p[0] == 1;
 
-		if (sizeof(wchar_t) == 4) {
-			if (little_endian && try_encoding("UTF-32LE")) {
-				return "UTF-32LE";
-			}
-			if (!little_endian && try_encoding("UTF-32BE")) {
-				return "UTF-32BE";
-			}
+	if (sizeof(wchar_t) == 4) {
+		if (little_endian && try_encoding("UTF-32LE")) {
+			return "UTF-32LE";
 		}
-		else if (sizeof(wchar_t) == 2) {
-			if (little_endian && try_encoding("UTF-16LE")) {
-				return "UTF-16LE";
-			}
-			if (!little_endian && try_encoding("UTF-16BE")) {
-				return "UTF-16BE";
-			}
+		if (!little_endian && try_encoding("UTF-32BE")) {
+			return "UTF-32BE";
+		}
+	}
+	else if (sizeof(wchar_t) == 2) {
+		if (little_endian && try_encoding("UTF-16LE")) {
+			return "UTF-16LE";
+		}
+		if (!little_endian && try_encoding("UTF-16BE")) {
+			return "UTF-16BE";
 		}
 	}
 
 	// Oh dear...
+	// WCHAR_T is our last, best hope.
 	return "WCHAR_T";
 }
 
