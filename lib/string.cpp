@@ -161,7 +161,7 @@ std::wstring to_wstring_from_utf8(std::string const& in)
 		if (len > 0) {
 			ret.resize(len);
 			wchar_t* out_p = &ret[0];
-			MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, in_p, len, out_p, len);
+			MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, in_p, static_cast<int>(in.size()), out_p, len);
 		}
 #else
 		iconv_t cd = iconv_open(wchar_t_encoding(), "UTF-8");
@@ -225,7 +225,7 @@ std::string FZ_PUBLIC_SYMBOL to_utf8(std::wstring const& in)
 		if (len > 0) {
 			ret.resize(len);
 			char* out_p = &ret[0];
-			WideCharToMultiByte(CP_UTF8, WC_ERR_INVALID_CHARS, in_p, len, out_p, len, 0, 0);
+			WideCharToMultiByte(CP_UTF8, WC_ERR_INVALID_CHARS, in_p, static_cast<int>(in.size()), out_p, len, 0, 0);
 		}
 #else
 		iconv_t cd = iconv_open("UTF-8", wchar_t_encoding());
