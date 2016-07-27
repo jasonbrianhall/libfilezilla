@@ -1,3 +1,7 @@
+0.6.1 (2016-07-27)
+
+- Fix UTF-8 conversion functions and added a testcase
+
 0.6.0 (2016-07-20)
 
 + Add fz::sprintf, a safe replacement for for the C sprintf function
