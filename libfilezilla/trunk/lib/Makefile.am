@@ -12,6 +12,7 @@ libfilezilla_la_SOURCES = \
 	recursive_remove.cpp \
 	string.cpp \
 	thread.cpp \
+	thread_pool.cpp \
 	time.cpp \
 	util.cpp \
 	version.cpp
@@ -33,6 +34,7 @@ nobase_include_HEADERS = \
 	libfilezilla/shared.hpp \
 	libfilezilla/string.hpp \
 	libfilezilla/thread.hpp \
+	libfilezilla/thread_pool.hpp \
 	libfilezilla/time.hpp \
 	libfilezilla/util.hpp \
 	libfilezilla/version.hpp \
