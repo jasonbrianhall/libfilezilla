@@ -19,7 +19,7 @@ class pooled_thread_impl;
 
 /** \brief Handle for asynchronous tasks
  */
-class async_task final {
+class FZ_PUBLIC_SYMBOL async_task final {
 public:
 	async_task() = default;
 	~async_task();
