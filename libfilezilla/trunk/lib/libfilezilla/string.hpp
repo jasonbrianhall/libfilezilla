@@ -4,6 +4,7 @@
 #include "libfilezilla.hpp"
 
 #include <string>
+#include <vector>
 
 /** \file
  * \brief String types and assorted functions.
