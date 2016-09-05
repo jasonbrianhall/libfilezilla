@@ -252,6 +252,32 @@ std::wstring FZ_PUBLIC_SYMBOL replace_substrings(std::wstring const& in, std::ws
 void FZ_PUBLIC_SYMBOL replace_substrings(std::string& in, std::string const& find, std::string const& replacement);
 void FZ_PUBLIC_SYMBOL replace_substrings(std::wstring& in, std::wstring const& find, std::wstring const& replacement);
 
+/// Tokenizes string. Returns all non-empty substrings
+template<typename String, typename Delim, typename Container = std::vector<String>>
+Container strtok(String const& s, Delim const& delims)
+{
+	Container ret;
+
+	typename String::size_type start{}, pos{};
+	do {
+		pos = s.find_first_of(delims, start);
+
+		// Not found, we're at ends;
+		if (pos == String::npos) {
+			if (start + 1 < s.size()) {
+				ret.emplace_back(s.substr(start));
+			}
+		}
+		else if (pos > start + 1) {
+			// Non-empty substring
+			ret.emplace_back(s.substr(start, pos - start));
+		}
+		start = pos + 1;
+	} while (pos != String::npos);
+
+	return ret;
+}
+
 }
 
 #endif
