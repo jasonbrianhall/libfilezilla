@@ -164,7 +164,7 @@ typename std::enable_if_t<std::is_pointer<std::decay_t<Arg>>::value, String> poi
 
 
 template<typename String, typename Arg>
-typename std::enable_if_t<!std::is_pointer<std::decay_t<Arg>>::value, String> pointer_to_string(Arg&& arg)
+typename std::enable_if_t<!std::is_pointer<std::decay_t<Arg>>::value, String> pointer_to_string(Arg&&)
 {
 	assert(0);
 	return String();
