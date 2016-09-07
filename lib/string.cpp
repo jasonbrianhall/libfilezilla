@@ -287,4 +287,46 @@ void replace_substrings(std::wstring& in, std::wstring const& find, std::wstring
 	do_replace_substrings(in, find, replacement);
 }
 
+namespace {
+std::string::value_type const base64_chars[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+}
+
+std::string FZ_PUBLIC_SYMBOL base64_encode(std::string const& in)
+{
+	std::string ret;
+
+	size_t len = in.size();
+	size_t pos{};
+
+	ret.reserve(((len + 2) / 3) * 4);
+
+	while (len >= 3) {
+		len -= 3;
+		auto const c1 = static_cast<unsigned char>(in[pos++]);
+		auto const c2 = static_cast<unsigned char>(in[pos++]);
+		auto const c3 = static_cast<unsigned char>(in[pos++]);
+
+		ret += base64_chars[(c1 >> 2) & 0x3fu];
+		ret += base64_chars[((c1 & 0x3u) << 4) | ((c2 >> 4) & 0xfu)];
+		ret += base64_chars[((c2 & 0xfu) << 2) | ((c3 >> 6) & 0x3u)];
+		ret += base64_chars[(c3 & 0x3fu)];
+	}
+	if (len) {
+		auto const c1 = static_cast<unsigned char>(in[pos++]);
+		ret += base64_chars[(c1 >> 2) & 0x3fu];
+		if (len == 2) {
+			auto const c2 = static_cast<unsigned char>(in[pos++]);
+			ret += base64_chars[((c1 & 0x3u) << 4) | ((c2 >> 4) & 0xfu)];
+			ret += base64_chars[(c2 & 0xfu) << 2];
+		}
+		else {
+			ret += base64_chars[(c1 & 0x3u) << 4];
+			ret += '=';
+		}
+		ret += '=';
+	}
+
+	return ret;
+}
+
 }

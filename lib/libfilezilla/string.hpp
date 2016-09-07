@@ -279,6 +279,8 @@ Container strtok(String const& s, Delim const& delims)
 	return ret;
 }
 
+std::string FZ_PUBLIC_SYMBOL base64_encode(std::string const& in);
+
 }
 
 #endif
