@@ -12,6 +12,7 @@ class string_test : public CppUnit::TestFixture
 	CPPUNIT_TEST(test_conversion);
 	CPPUNIT_TEST(test_conversion2);
 	CPPUNIT_TEST(test_conversion_utf8);
+	CPPUNIT_TEST(test_base64);
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -21,6 +22,7 @@ public:
 	void test_conversion();
 	void test_conversion2();
 	void test_conversion_utf8();
+	void test_base64();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(string_test);
@@ -74,4 +76,16 @@ void string_test::test_conversion_utf8()
 	std::wstring const w2 = fz::to_wstring_from_utf8(s);
 
 	ASSERT_EQUAL(w, w2);
+}
+
+void string_test::test_base64()
+{
+	CPPUNIT_ASSERT_EQUAL(std::string(""),         fz::base64_encode(""));
+	CPPUNIT_ASSERT_EQUAL(std::string("Zg=="),     fz::base64_encode("f"));
+	CPPUNIT_ASSERT_EQUAL(std::string("Zm8="),     fz::base64_encode("fo"));
+	CPPUNIT_ASSERT_EQUAL(std::string("Zm9v"),     fz::base64_encode("foo"));
+	CPPUNIT_ASSERT_EQUAL(std::string("Zm9vbA=="), fz::base64_encode("fool"));
+	CPPUNIT_ASSERT_EQUAL(std::string("Zm9vbHM="), fz::base64_encode("fools"));
+
+	CPPUNIT_ASSERT_EQUAL(std::string("AAECA/3+/w=="),         fz::base64_encode({0, 1, 2, 3, '\xfd', '\xfe', '\xff'}));
 }
