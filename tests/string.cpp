@@ -87,5 +87,24 @@ void string_test::test_base64()
 	CPPUNIT_ASSERT_EQUAL(std::string("Zm9vbA=="), fz::base64_encode("fool"));
 	CPPUNIT_ASSERT_EQUAL(std::string("Zm9vbHM="), fz::base64_encode("fools"));
 
-	CPPUNIT_ASSERT_EQUAL(std::string("AAECA/3+/w=="),         fz::base64_encode({0, 1, 2, 3, '\xfd', '\xfe', '\xff'}));
+	CPPUNIT_ASSERT_EQUAL(std::string("AAECA/3+/w=="), fz::base64_encode({0, 1, 2, 3, '\xfd', '\xfe', '\xff'}));
+
+	// decode
+	CPPUNIT_ASSERT_EQUAL(std::string(""),      fz::base64_decode(""));
+	CPPUNIT_ASSERT_EQUAL(std::string("f"),     fz::base64_decode("Zg=="));
+	CPPUNIT_ASSERT_EQUAL(std::string("fo"),    fz::base64_decode("Zm8="));
+	CPPUNIT_ASSERT_EQUAL(std::string("foo"),   fz::base64_decode("Zm9v"));
+	CPPUNIT_ASSERT_EQUAL(std::string("fool"),  fz::base64_decode("Zm9vbA=="));
+	CPPUNIT_ASSERT_EQUAL(std::string("fools"), fz::base64_decode("Zm9vbHM="));
+
+	CPPUNIT_ASSERT_EQUAL(std::string({0, 1, 2, 3, '\xfd', '\xfe', '\xff'}), fz::base64_decode("AAECA/3+/w=="));
+
+	// with whitespace
+	CPPUNIT_ASSERT_EQUAL(std::string("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."),
+						 fz::base64_decode(" TG9yZW0gaXBzdW0gZG9sb3Igc2l0I\nGFtZXQsIGNvbnNlY3Rld\rHVyIGFkaXBpc2NpbmcgZWxpd \tCwgc2VkIGRvIGVpdXNtb2QgdGVtcG9yIGluY2lkaWR1bnQgdXQgbGFib3JlIGV0IGRvbG9yZSBtYWduYSBhbGlxdWEu "));
+
+	// invalid
+	CPPUNIT_ASSERT_EQUAL(std::string(""), fz::base64_decode("Zm9vbHM=="));
+	CPPUNIT_ASSERT_EQUAL(std::string(""), fz::base64_decode("Zm9vb==="));
+	CPPUNIT_ASSERT_EQUAL(std::string(""), fz::base64_decode("Zm9vbHM=Zg=="));
 }
