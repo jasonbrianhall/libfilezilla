@@ -100,7 +100,7 @@ namespace {
 // On some platforms, e.g. those derived from SunOS, iconv does not understand "WCHAR_T", so we
 // need to guess an encoding.
 // On other platforms, WCHAR_T results in iconv() doing endless loops, such as OS X.
-char const* const calc_wchar_t_encoding()
+char const* calc_wchar_t_encoding()
 {
 	auto try_encoding = [](char const* const encoding) -> bool {
 		iconv_t cd = iconv_open(encoding, "UTF-8");
