@@ -279,7 +279,12 @@ Container strtok(String const& s, Delim const& delims)
 	return ret;
 }
 
+
+/// \brief Encodes raw input string to base64
 std::string FZ_PUBLIC_SYMBOL base64_encode(std::string const& in);
+
+/// \brief Decodes base64, ignores whitespace. Returns empty string on invalid input.
+std::string FZ_PUBLIC_SYMBOL base64_decode(std::string const& in);
 
 }
 
