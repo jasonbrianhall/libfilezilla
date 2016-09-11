@@ -201,11 +201,15 @@ Char int_to_hex_char(int d)
 /// Calls either fz::to_string or fz::to_wstring depending on the passed template argument
 template<typename String, typename Arg>
 inline auto toString(Arg&& arg) -> typename std::enable_if<std::is_same<String, std::string>::value, decltype(to_string(std::forward<Arg>(arg)))>::type
-{ return to_string(std::forward<Arg>(arg)); }
+{
+	return to_string(std::forward<Arg>(arg));
+}
 
 template<typename String, typename Arg>
 inline auto toString(Arg&& arg) -> typename std::enable_if<std::is_same<String, std::wstring>::value, decltype(to_wstring(std::forward<Arg>(arg)))>::type
-{ return to_wstring(std::forward<Arg>(arg)); }
+{
+	return to_wstring(std::forward<Arg>(arg));
+}
 
 #if !defined(fzT) || defined(DOXYGEN)
 #ifdef FZ_WINDOWS
@@ -223,7 +227,7 @@ inline auto toString(Arg&& arg) -> typename std::enable_if<std::is_same<String, 
 #endif
 #endif
 
-/// Returns the function argument of the type matching the template argument. \sa fzS
+ /// Returns the function argument of the type matching the template argument. \sa fzS
 template<typename Char>
 Char const* choose_string(char const* c, wchar_t const* w);
 
@@ -245,7 +249,7 @@ template<> inline wchar_t const* choose_string(char const*, wchar_t const* w) { 
 #define fzS(Char, s) choose_string<Char>(s, L ## s)
 #endif
 
-/// Returns \c in with all occurrences of \c find in the input string replaced with \c replacement
+ /// Returns \c in with all occurrences of \c find in the input string replaced with \c replacement
 std::string FZ_PUBLIC_SYMBOL replaced_substrings(std::string const& in, std::string const& find, std::string const& replacement);
 std::wstring FZ_PUBLIC_SYMBOL replaced_substrings(std::wstring const& in, std::wstring const& find, std::wstring const& replacement);
 
@@ -285,6 +289,34 @@ std::string FZ_PUBLIC_SYMBOL base64_encode(std::string const& in);
 
 /// \brief Decodes base64, ignores whitespace. Returns empty string on invalid input.
 std::string FZ_PUBLIC_SYMBOL base64_decode(std::string const& in);
+
+// Converts string to integral type T. If string is not convertible, T() is returned.
+template<typename T, typename String>
+T to_integral(String const& s)
+{
+	T ret{};
+
+	auto it = s.cbegin();
+	if (it != s.cend() && (*it == '-' || *it == '+')) {
+		++it;
+	}
+
+	for (; it != s.cend(); ++it) {
+		auto const& c = *it;
+		if (c < '0' || c > '9') {
+			return T();
+		}
+		ret *= 10;
+		ret += c - '0';
+	}
+
+	if (!s.empty() && s.front() == '-') {
+		return ret *= static_cast<T>(-1);
+	}
+	else {
+		return ret;
+	}
+}
 
 }
 
