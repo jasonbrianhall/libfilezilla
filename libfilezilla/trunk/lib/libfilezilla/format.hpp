@@ -20,7 +20,9 @@ namespace detail {
 enum : char {
 	pad_0 = 1,
 	pad_blank = 2,
-	with_width = 4
+	with_width = 4,
+	left_align = 8,
+	always_sign = 16
 };
 
 // Converts integral type to desired string type...
@@ -37,10 +39,12 @@ typename std::enable_if_t<std::is_integral<std::decay_t<Arg>>::value && !std::is
 	if (std::is_signed<std::decay_t<Arg>>::value && !(arg >= 0)) {
 		lead = '-';
 	}
+	else if (std::is_signed<std::decay_t<Arg>>::value && flags & always_sign) {
+		lead = '+';
+	}
 	else if (flags & pad_blank && arg >= 0) {
 		lead = ' ';
 	}
-
 
 	// max decimal digits in b-bit integer is floor((b-1) * log_10(2)) + 1 < b * 0.5 + 1
 	typename String::value_type buf[sizeof(v) * 4 + 1];
@@ -67,17 +71,21 @@ typename std::enable_if_t<std::is_integral<std::decay_t<Arg>>::value && !std::is
 			if (end - p < width) {
 				ret.append(width - (end - p), '0');
 			}
+			ret.append(p, end);
 		}
 		else {
-			if (end - p < width) {
+			if (end - p < width && !(flags & left_align)) {
 				ret.append(width - (end - p), ' ');
 			}
 			if (lead) {
 				ret += lead;
 			}
+			ret.append(p, end);
+			if (end - p < width && flags & left_align) {
+				ret.append(width - (end - p), ' ');
+			}
 		}
 
-		ret.append(p, end);
 		return ret;
 	}
 	else {
@@ -177,6 +185,19 @@ String extract_arg(char, size_t, typename String::value_type, size_t)
 	return String();
 }
 
+template<typename String>
+void pad_arg(String& s, char flags, size_t width)
+{
+	if (flags & with_width && s.size() < width) {
+		if (flags & left_align) {
+			s += String(width - s.size(), ' ');
+		}
+		else {
+			s = String(width - s.size(), ' ') + s;
+		}
+	}
+}
+
 template<typename String, typename Arg, typename... Args>
 String extract_arg(char flags, size_t width, typename String::value_type type, size_t arg_n, Arg&& arg, Args&&...args)
 {
@@ -185,9 +206,7 @@ String extract_arg(char flags, size_t width, typename String::value_type type, s
 	if (!arg_n) {
 		if (type == 's') {
 			ret = arg_to_string<String>(std::forward<Arg>(arg));
-			if (flags & with_width && ret.size() < width) {
-				ret = String(width - ret.size(), ' ') + ret;
-			}
+			pad_arg(ret, flags, width);
 		}
 		else if (type == 'd' || type == 'i') {
 			ret = integral_to_string<String, false>(flags, width, std::forward<Arg>(arg));
@@ -197,21 +216,15 @@ String extract_arg(char flags, size_t width, typename String::value_type type, s
 		}
 		else if (type == 'x') {
 			ret = integral_to_hex_string<String, true>(std::forward<Arg>(arg));
-			if (flags & with_width && ret.size() < width) {
-				ret = String(width - ret.size(), ' ') + ret;
-			}
+			pad_arg(ret, flags, width);
 		}
 		else if (type == 'X') {
 			ret = integral_to_hex_string<String, false>(std::forward<Arg>(arg));
-			if (flags & with_width && ret.size() < width) {
-				ret = String(width - ret.size(), ' ') + ret;
-			}
+			pad_arg(ret, flags, width);
 		}
 		else if (type == 'p') {
 			ret = pointer_to_string<String>(std::forward<Arg>(arg));
-			if (flags & with_width && ret.size() < width) {
-				ret = String(width - ret.size(), ' ') + ret;
-			}
+			pad_arg(ret, flags, width);
 		}
 		else {
 			assert(0);
@@ -244,6 +257,14 @@ parse_start:
 		}
 		else if (fmt[pos] == ' ') {
 			flags |= pad_blank;
+		}
+		else if (fmt[pos] == '-') {
+			flags &= ~pad_0;
+			flags |= left_align;
+		}
+		else if (fmt[pos] == '+') {
+			flags &= ~pad_blank;
+			flags |= always_sign;
 		}
 		else {
 			break;
@@ -303,7 +324,7 @@ parse_start:
 * Only partially implements the format specifiers for the printf family of C functions:
 *
 * \li Positional arguments
-* \li Supported flags: 0, ' '
+* \li Supported flags: 0, ' ', -, +
 * \li Field widths are supported as decimal integers not exceeding 10k, longer widths are truncated
 * \li precision is ignored
 * \li Supported types: d, i, u, s, x, X, p

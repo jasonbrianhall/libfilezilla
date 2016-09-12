@@ -99,4 +99,18 @@ void format_test::test_sprintf()
 	CPPUNIT_ASSERT_EQUAL(std::string("23bf0a"), fz::sprintf("%04x", 2342666));
 	CPPUNIT_ASSERT_EQUAL(std::string("23bf0a"), fz::sprintf("% 4x", 2342666));
 	CPPUNIT_ASSERT_EQUAL(std::string("23bf0a"), fz::sprintf("% 04x", 2342666));
+
+	CPPUNIT_ASSERT_EQUAL(std::string("77     "), fz::sprintf("%-7d", 77));
+	CPPUNIT_ASSERT_EQUAL(std::string("-77    "), fz::sprintf("%-7d", -77));
+	CPPUNIT_ASSERT_EQUAL(std::string(" 77    "), fz::sprintf("% -7d", 77));
+	CPPUNIT_ASSERT_EQUAL(std::string("-77    "), fz::sprintf("% -7d", -77));
+	CPPUNIT_ASSERT_EQUAL(std::string(" 77    "), fz::sprintf("%- 7d", 77));
+	CPPUNIT_ASSERT_EQUAL(std::string("-77    "), fz::sprintf("%- 7d", -77));
+	CPPUNIT_ASSERT_EQUAL(std::string("ok     "), fz::sprintf("%- 7s", "ok"));
+	CPPUNIT_ASSERT_EQUAL(std::string("hello"), fz::sprintf("%-3s", "hello"));
+
+	CPPUNIT_ASSERT_EQUAL(std::string("    +77"), fz::sprintf("%+7d", 77));
+	CPPUNIT_ASSERT_EQUAL(std::string("    -77"), fz::sprintf("%+7d", -77));
+	CPPUNIT_ASSERT_EQUAL(std::string("+77    "), fz::sprintf("%+-7d", 77));
+	CPPUNIT_ASSERT_EQUAL(std::string("-77    "), fz::sprintf("%+-7d", -77));
 }
