@@ -246,7 +246,7 @@ template<> inline wchar_t const* choose_string(char const*, wchar_t const* w) { 
  *   }
  * \endcode
  */
-#define fzS(Char, s) choose_string<Char>(s, L ## s)
+#define fzS(Char, s) fz::choose_string<Char>(s, L ## s)
 #endif
 
  /// Returns \c in with all occurrences of \c find in the input string replaced with \c replacement
