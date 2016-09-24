@@ -1,3 +1,10 @@
+0.7.0 (2016-09-24)
+
++ Add fz::base64_decode and fz::base64_encode
++ Add fz::strtok string tokenizer
++ Added non-throwing fz::to_integral
++ Implemented + (always sign) and - (left align) flags for fz::sprintf
+
 0.6.1 (2016-07-27)
 
 - Fix UTF-8 conversion functions and added a testcase
