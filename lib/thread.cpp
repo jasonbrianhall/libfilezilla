@@ -88,7 +88,10 @@ bool thread::run()
 		impl_->handle_ = reinterpret_cast<HANDLE>(_beginthreadex(0, 0, thread_proc, impl_, 0, 0));
 	}
 
-	if (impl_->handle_ == INVALID_HANDLE_VALUE) {
+	// _beginthreadex returns 0 on error, whereas _beginthread returns -1
+	// According to MSDN, _beginthreadex can also return -1 if invalid parameters are passed to it,
+	// so we check that as well.
+	if (!impl_->handle_ || impl_->handle_ == INVALID_HANDLE_VALUE) {
 		delete impl_;
 		impl_ = 0;
 	}
