@@ -1,3 +1,8 @@
+0.7.1 (2016-10-03)
+
+- OS X: Work around a nasty bug in XCode where programs explicitly compiled for older versions of OS X were silently pulling in features exclusive to the new version, resulting in crashes at runtime
+- MSW: Fix detection of thread creation failures
+
 0.7.0 (2016-09-24)
 
 + Add fz::base64_decode and fz::base64_encode
