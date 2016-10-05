@@ -92,6 +92,7 @@ void format_test::test_sprintf()
 	CPPUNIT_ASSERT_EQUAL(std::string("23bf0a"), fz::sprintf("%0x", 2342666));
 	CPPUNIT_ASSERT_EQUAL(std::string("23bf0a"), fz::sprintf("% x", 2342666));
 	CPPUNIT_ASSERT_EQUAL(std::string("23bf0a"), fz::sprintf("% 0x", 2342666));
+	CPPUNIT_ASSERT_EQUAL(std::string("0a"), fz::sprintf("%02x", 10));
 
 	CPPUNIT_ASSERT_EQUAL(std::string("   0"), fz::sprintf("%4x", 0));
 	CPPUNIT_ASSERT_EQUAL(std::string("23bf0a"), fz::sprintf("%4x", 2342666));

@@ -193,7 +193,7 @@ void pad_arg(String& s, char flags, size_t width)
 			s += String(width - s.size(), ' ');
 		}
 		else {
-			s = String(width - s.size(), ' ') + s;
+			s = String(width - s.size(), (flags & pad_0) ? '0' : ' ') + s;
 		}
 	}
 }
