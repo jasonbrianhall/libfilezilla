@@ -318,6 +318,18 @@ T to_integral(String const& s)
 	}
 }
 
+/// \brief Returns true iff the string only has characters in the 7-bit ASCII range
+template<typename String>
+bool str_is_ascii(String const& s) {
+	for (auto const& c : s) {
+		if (static_cast<std::make_unsigned_t<typename String::value_type>>(c) > 127) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
 }
 
 #endif
