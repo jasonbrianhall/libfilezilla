@@ -330,6 +330,28 @@ bool str_is_ascii(String const& s) {
 	return true;
 }
 
+/// \brief Return passed string with all leading and trailing whitespace removed
+template<typename String>
+String trimmed(String const& s) {
+	size_t const first = s.find_first_not_of(fzS(typename String::value_type, " \r\n\t"));
+	if (first == String::npos) {
+		return String();
+	}
+	else {
+		// Cannot be npos
+		size_t const last = s.find_last_not_of(fzS(typename String::value_type, " \r\n\t"));
+
+		return s.substr(first, last - first + 1);
+	}
+}
+
+
+/// \brief Remove all leading and trailing whitespace from string
+template<typename String>
+void trim(String & s) {
+	s = trimmed(s);
+}
+
 }
 
 #endif
