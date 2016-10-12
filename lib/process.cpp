@@ -13,7 +13,7 @@ void reset_handle(HANDLE& handle)
 		CloseHandle(handle);
 		handle = INVALID_HANDLE_VALUE;
 	}
-};
+}
 
 bool uninherit(HANDLE& handle)
 {
