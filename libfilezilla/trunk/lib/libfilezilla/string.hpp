@@ -83,6 +83,18 @@ Char tolower_ascii(Char c) {
 template<>
 std::wstring::value_type FZ_PUBLIC_SYMBOL tolower_ascii(std::wstring::value_type c);
 
+/// \brief Converts ASCII lowercase characters to uppercase as if C-locale is used.
+template<typename Char>
+Char toupper_ascii(Char c) {
+	if (c >= 'a' && c <= 'z') {
+		return c + ('A' - 'a');
+	}
+	return c;
+}
+
+template<>
+std::wstring::value_type FZ_PUBLIC_SYMBOL toupper_ascii(std::wstring::value_type c);
+
 /** \brief tr_tolower_ascii does for strings what tolower_ascii does for individual characters
  */
  // Note: For UTF-8 strings it works on individual octets!
@@ -92,6 +104,16 @@ String str_tolower_ascii(String const& s)
 	String ret = s;
 	for (auto& c : ret) {
 		c = tolower_ascii(c);
+	}
+	return ret;
+}
+
+template<typename String>
+String str_toupper_ascii(String const& s)
+{
+	String ret = s;
+	for (auto& c : ret) {
+		c = toupper_ascii(c);
 	}
 	return ret;
 }
