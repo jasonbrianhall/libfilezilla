@@ -72,6 +72,18 @@ std::wstring::value_type tolower_ascii(std::wstring::value_type c)
 	return c;
 }
 
+template<>
+std::wstring::value_type toupper_ascii(std::wstring::value_type c)
+{
+	if (c >= 'a' && c <= 'z') {
+		return c + ('A' - 'a');
+	}
+	else if (c == 0x130 || c == 0x131) {
+		c = 'I';
+	}
+	return c;
+}
+
 std::wstring to_wstring(std::string const& in)
 {
 	std::mbstate_t ps{};
