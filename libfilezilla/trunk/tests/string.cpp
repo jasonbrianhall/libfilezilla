@@ -13,6 +13,7 @@ class string_test : public CppUnit::TestFixture
 	CPPUNIT_TEST(test_conversion2);
 	CPPUNIT_TEST(test_conversion_utf8);
 	CPPUNIT_TEST(test_base64);
+	CPPUNIT_TEST(test_trim);
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -23,6 +24,7 @@ public:
 	void test_conversion2();
 	void test_conversion_utf8();
 	void test_base64();
+	void test_trim();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(string_test);
@@ -107,4 +109,18 @@ void string_test::test_base64()
 	CPPUNIT_ASSERT_EQUAL(std::string(""), fz::base64_decode("Zm9vbHM=="));
 	CPPUNIT_ASSERT_EQUAL(std::string(""), fz::base64_decode("Zm9vb==="));
 	CPPUNIT_ASSERT_EQUAL(std::string(""), fz::base64_decode("Zm9vbHM=Zg=="));
+}
+
+void string_test::test_trim()
+{
+	CPPUNIT_ASSERT_EQUAL(std::string("foo"), fz::trimmed(std::string("foo")));
+	CPPUNIT_ASSERT_EQUAL(std::string("foo"), fz::trimmed(std::string(" foo")));
+	CPPUNIT_ASSERT_EQUAL(std::string("foo"), fz::trimmed(std::string("\t foo")));
+	CPPUNIT_ASSERT_EQUAL(std::string("foo"), fz::trimmed(std::string("foo ")));
+	CPPUNIT_ASSERT_EQUAL(std::string("foo"), fz::trimmed(std::string("foo \n")));
+	CPPUNIT_ASSERT_EQUAL(std::string("foo"), fz::trimmed(std::string(" foo\n")));
+	CPPUNIT_ASSERT_EQUAL(std::string("foo"), fz::trimmed(std::string("\t foo\r")));
+	CPPUNIT_ASSERT_EQUAL(std::string("foo"), fz::trimmed(std::string(" foo  ")));
+	CPPUNIT_ASSERT_EQUAL(std::string("foo"), fz::trimmed(std::string("\t foo  ")));
+	CPPUNIT_ASSERT_EQUAL(std::string(""), fz::trimmed(std::string(" \t\r \n \t")));
 }
