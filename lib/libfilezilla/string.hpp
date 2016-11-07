@@ -190,17 +190,40 @@ std::string FZ_PUBLIC_SYMBOL to_utf8(std::wstring const& in);
  *
  * Example: '9' becomes 9, 'b' becomes 11, 'D' becomes 13
  *
- * Undefined output if input is not a valid hex digit.
+ * Returns -1 if input is not a valid hex digit.
  */
 template<typename Char>
 int hex_char_to_int(Char c)
 {
-	if (c >= 'a')
+	if (c >= 'a' && c <= 'z') {
 		return c - 'a' + 10;
-	if (c >= 'A')
+	}
+	if (c >= 'A' && c <= 'Z') {
 		return c - 'A' + 10;
-	else
+	}
+	else if (c >= '0' && c <= '9') {
 		return c - '0';
+	}
+	return -1;
+}
+
+template<typename String>
+std::vector<uint8_t> hex_decode(String const& in)
+{
+	std::vector<uint8_t> ret;
+	if (in.size() % 2) {
+		ret.reserve(in.size() / 2);
+		for (size_t i = 0; i < in.size(); i += 2) {
+			int high = hex_char_to_int(in[i]);
+			int low = hex_char_to_int(in[i + 1]);
+			if (high == -1 || low == -1) {
+				return std::vector<uint8_t>();
+			}
+			ret.push_back(static_cast<uint8_t>((high << 4) + low));
+		}
+	}
+
+	return ret;
 }
 
 /** \brief Converts an integer to the corresponding lowercase hex digit
@@ -218,6 +241,20 @@ Char int_to_hex_char(int d)
 	else {
 		return '0' + d;
 	}
+}
+
+template<typename String, typename InString, bool Lowercase = true>
+String hex_encode(InString const& data)
+{
+	static_assert(sizeof(typename InString::value_type) == 1, "Input must be a container of 8 bit values");
+	String ret;
+	ret.reserve(data.size() * 2);
+	for (auto const& c : data) {
+		ret.push_back(int_to_hex_char<typename String::value_type, Lowercase>(static_cast<unsigned char>(c) >> 4));
+		ret.push_back(int_to_hex_char<typename String::value_type, Lowercase>(static_cast<unsigned char>(c) & 0xf));
+	}
+
+	return ret;
 }
 
 /// Calls either fz::to_string or fz::to_wstring depending on the passed template argument
