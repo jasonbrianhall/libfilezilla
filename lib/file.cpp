@@ -128,6 +128,11 @@ bool file::opened() const
 	return hFile_ != INVALID_HANDLE_VALUE;
 }
 
+bool remove_file(fz::native_string const& name)
+{
+	return DeleteFileW(name.c_str()) != 0;
+}
+
 #else
 
 bool file::open(native_string const& f, mode m, creation_flags d)
@@ -232,6 +237,11 @@ int64_t file::write(void const* buf, int64_t count)
 bool file::opened() const
 {
 	return fd_ != -1;
+}
+
+bool remove_file(fz::native_string const& name)
+{
+	return unlink(name.c_str()) == 0;
 }
 
 #endif

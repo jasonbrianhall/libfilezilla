@@ -132,5 +132,7 @@ private:
 #endif
 };
 
+bool FZ_PUBLIC_SYMBOL remove_file(native_string const& name);
+
 }
 #endif
