@@ -351,7 +351,7 @@ std::string FZ_PUBLIC_SYMBOL base64_decode(std::string const& in);
 
 // Converts string to integral type T. If string is not convertible, T() is returned.
 template<typename T, typename String>
-T to_integral(String const& s)
+T to_integral(String const& s, T const errorval = T())
 {
 	T ret{};
 
@@ -360,10 +360,14 @@ T to_integral(String const& s)
 		++it;
 	}
 
+	if (it == s.cend()) {
+		return errorval;
+	}
+
 	for (; it != s.cend(); ++it) {
 		auto const& c = *it;
 		if (c < '0' || c > '9') {
-			return T();
+			return errorval;
 		}
 		ret *= 10;
 		ret += c - '0';
