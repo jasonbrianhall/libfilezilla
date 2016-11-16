@@ -211,7 +211,7 @@ template<typename String>
 std::vector<uint8_t> hex_decode(String const& in)
 {
 	std::vector<uint8_t> ret;
-	if (in.size() % 2) {
+	if (!(in.size() % 2)) {
 		ret.reserve(in.size() / 2);
 		for (size_t i = 0; i < in.size(); i += 2) {
 			int high = hex_char_to_int(in[i]);
