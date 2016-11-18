@@ -56,4 +56,9 @@ list_LDADD += $(libdeps)
 list_DEPENDENCIES = ../lib/libfilezilla.la
 
 
-dist_noinst_DATA = demo_timer_fizzbuzz.vcxproj demo_process.vcxproj demo_events.vcxproj examples.txt
+dist_noinst_DATA = \
+	demo_events.vcxproj \
+	demo_list.vcxproj \
+	demo_process.vcxproj \
+	demo_timer_fizzbuzz.vcxproj \
+	examples.txt
