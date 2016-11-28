@@ -1,3 +1,9 @@
+0.9.0 (2016-11-28)
+
++ Added parameter to fz::to_integral to specify which value is returned on error.
++ Added fz::remove_file
++ Added fz::hex_encode and fz::hex_decode
+
 0.8.0 (2016-10-25)
 
 + Added fz::str_toupper_ascii to complement fz::str_tolower_ascii
