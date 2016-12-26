@@ -7,7 +7,7 @@
  * functions handling IP addresses
  */
 
-class smart_pointer_test : public CppUnit::TestFixture
+class smart_pointer_test final : public CppUnit::TestFixture
 {
 	CPPUNIT_TEST_SUITE(smart_pointer_test);
 	CPPUNIT_TEST(test_optional);

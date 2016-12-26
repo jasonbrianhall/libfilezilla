@@ -40,8 +40,9 @@ bool recursive_remove::remove(std::list<native_string> dirsToVisit)
 		if (!dir.empty() && local_filesys::is_separator(dir.back())) {
 			dir.pop_back();
 		}
-		if (local_filesys::get_file_type(dir) == local_filesys::unknown)
+		if (local_filesys::get_file_type(dir) == local_filesys::unknown) {
 			continue;
+		}
 
 		wcscpy(p, dir.c_str());
 		p += dir.size() + 1;
@@ -115,16 +116,18 @@ bool recursive_remove::remove(std::list<native_string> dirsToVisit)
 
 			native_string const fullName = path + fzT("/") + file;
 
-			if (local_filesys::get_file_type(fullName) == local_filesys::dir)
+			if (local_filesys::get_file_type(fullName) == local_filesys::dir) {
 				dirsToVisit.push_back(fullName);
-			else
+			}
+			else {
 				filesToDelete.push_back(fullName);
+			}
 		}
 		fs.end_find_files();
 
 		// Delete all files and links in current directory enumerated before
-		for (auto const& file : filesToDelete) {
-			if (unlink(file.c_str()) != 0) {
+		for (auto const& filename : filesToDelete) {
+			if (unlink(filename.c_str()) != 0) {
 				success = false;
 			}
 		}

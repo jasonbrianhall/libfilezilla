@@ -6,7 +6,7 @@
  * string functions
  */
 
-class string_test : public CppUnit::TestFixture
+class string_test final : public CppUnit::TestFixture
 {
 	CPPUNIT_TEST_SUITE(string_test);
 	CPPUNIT_TEST(test_conversion);

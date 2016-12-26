@@ -2,7 +2,7 @@
 
 #include <cppunit/extensions/HelperMacros.h>
 
-class DispatchTest : public CppUnit::TestFixture
+class DispatchTest final : public CppUnit::TestFixture
 {
 	CPPUNIT_TEST_SUITE(DispatchTest);
 	CPPUNIT_TEST(testSingle);

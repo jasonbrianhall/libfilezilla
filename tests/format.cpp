@@ -6,7 +6,7 @@
  * string formatting functions
  */
 
-class format_test : public CppUnit::TestFixture
+class format_test final : public CppUnit::TestFixture
 {
 	CPPUNIT_TEST_SUITE(format_test);
 	CPPUNIT_TEST(test_sprintf);
