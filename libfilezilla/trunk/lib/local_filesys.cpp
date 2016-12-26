@@ -40,8 +40,9 @@ local_filesys::type local_filesys::get_file_type(native_string const& path, bool
 
 #ifdef FZ_WINDOWS
 	DWORD result = GetFileAttributes(path.c_str());
-	if (result == INVALID_FILE_ATTRIBUTES)
+	if (result == INVALID_FILE_ATTRIBUTES) {
 		return unknown;
+	}
 
 	bool is_dir = (result & FILE_ATTRIBUTE_DIRECTORY) != 0;
 
@@ -80,15 +81,16 @@ local_filesys::type local_filesys::get_file_type(native_string const& path, bool
 			return link;
 		}
 
-		int result = stat(path.c_str(), &buf);
+		result = stat(path.c_str(), &buf);
 		if (result) {
 			return unknown;
 		}
 	}
 #endif
 
-	if (S_ISDIR(buf.st_mode))
+	if (S_ISDIR(buf.st_mode)) {
 		return dir;
+	}
 
 	return file;
 #endif
@@ -108,12 +110,15 @@ local_filesys::type local_filesys::get_file_info(native_string const& path, bool
 	WIN32_FILE_ATTRIBUTE_DATA attributes;
 	BOOL result = GetFileAttributesEx(fixed_path.c_str(), GetFileExInfoStandard, &attributes);
 	if (!result) {
-		if (size)
+		if (size) {
 			*size = -1;
-		if (mode)
+		}
+		if (mode) {
 			*mode = 0;
-		if (modification_time)
+		}
+		if (modification_time) {
 			*modification_time = datetime();
+		}
 		return unknown;
 	}
 
@@ -135,28 +140,34 @@ local_filesys::type local_filesys::get_file_info(native_string const& path, bool
 					}
 				}
 
-				if (mode)
+				if (mode) {
 					*mode = (int)info.dwFileAttributes;
+				}
 
 				if (info.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
-					if (size)
+					if (size) {
 						*size = -1;
+					}
 					return dir;
 				}
 
-				if (size)
+				if (size) {
 					*size = make_int64fzT(info.nFileSizeHigh, info.nFileSizeLow);
+				}
 
 				return file;
 			}
 		}
 
-		if (size)
+		if (size) {
 			*size = -1;
-		if (mode)
+		}
+		if (mode) {
 			*mode = 0;
-		if (modification_time)
+		}
+		if (modification_time) {
 			*modification_time = datetime();
+		}
 		return is_dir ? dir : unknown;
 	}
 
@@ -167,17 +178,20 @@ local_filesys::type local_filesys::get_file_info(native_string const& path, bool
 		}
 	}
 
-	if (mode)
+	if (mode) {
 		*mode = (int)attributes.dwFileAttributes;
+	}
 
 	if (is_dir) {
-		if (size)
+		if (size) {
 			*size = -1;
+		}
 		return dir;
 	}
 	else {
-		if (size)
+		if (size) {
 			*size = make_int64fzT(attributes.nFileSizeHigh, attributes.nFileSizeLow);
+		}
 		return file;
 	}
 #else
@@ -193,26 +207,32 @@ local_filesys::type local_filesys::get_file_info(native_string const& path, bool
 	int result = lstat(path.c_str(), &buf);
 	if (result) {
 		is_link = false;
-		if (size)
+		if (size) {
 			*size = -1;
-		if (mode)
+		}
+		if (mode) {
 			*mode = -1;
-		if (modification_time)
+		}
+		if (modification_time) {
 			*modification_time = datetime();
+		}
 		return unknown;
 	}
 
 #ifdef S_ISLNK
 	if (S_ISLNK(buf.st_mode)) {
 		is_link = true;
-		int result = stat(path.c_str(), &buf);
+		result = stat(path.c_str(), &buf);
 		if (result) {
-			if (size)
+			if (size) {
 				*size = -1;
-			if (mode)
+			}
+			if (mode) {
 				*mode = -1;
-			if (modification_time)
+			}
+			if (modification_time) {
 				*modification_time = datetime();
+			}
 			return unknown;
 		}
 	}
@@ -220,20 +240,24 @@ local_filesys::type local_filesys::get_file_info(native_string const& path, bool
 #endif
 		is_link = false;
 
-	if (modification_time)
+	if (modification_time) {
 		*modification_time = datetime(buf.st_mtime, datetime::seconds);
+	}
 
-	if (mode)
+	if (mode) {
 		*mode = buf.st_mode & 0x777;
+	}
 
 	if (S_ISDIR(buf.st_mode)) {
-		if (size)
+		if (size) {
 			*size = -1;
+		}
 		return dir;
 	}
 
-	if (size)
+	if (size) {
 		*size = buf.st_size;
+	}
 
 	return file;
 #endif
@@ -523,16 +547,16 @@ bool local_filesys::get_next_file(native_string& name, bool &is_link, bool &is_d
 }
 
 #ifndef FZ_WINDOWS
-void local_filesys::alloc_path_buffer(char const* file)
+void local_filesys::alloc_path_buffer(char const* filename)
 {
-	int len = strlen(file);
+	int len = strlen(filename);
 	int pathlen = m_file_part - m_raw_path;
 
 	if (len + pathlen >= m_buffer_length) {
 		m_buffer_length = (len + pathlen) * 2;
 		char* tmp = new char[m_buffer_length];
 		memcpy(tmp, m_raw_path, pathlen);
-		delete[] m_raw_path;
+		delete [] m_raw_path;
 		m_raw_path = tmp;
 		m_file_part = m_raw_path + pathlen;
 	}

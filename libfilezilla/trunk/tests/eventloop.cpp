@@ -3,7 +3,7 @@
 
 #include <cppunit/extensions/HelperMacros.h>
 
-class EventloopTest : public CppUnit::TestFixture
+class EventloopTest final : public CppUnit::TestFixture
 {
 	CPPUNIT_TEST_SUITE(EventloopTest);
 	CPPUNIT_TEST(testSimple);

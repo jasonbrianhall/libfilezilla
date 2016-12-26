@@ -6,7 +6,7 @@
  * functions handling IP addresses
  */
 
-class ip_address_test : public CppUnit::TestFixture
+class ip_address_test final : public CppUnit::TestFixture
 {
 	CPPUNIT_TEST_SUITE(ip_address_test);
 	CPPUNIT_TEST(test_addresses);

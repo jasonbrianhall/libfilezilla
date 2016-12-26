@@ -88,7 +88,7 @@ public:
 
 private:
 #ifndef FZ_WINDOWS
-	void alloc_path_buffer(char const* file); // Ensures m_raw_path is large enough to hold path and filename
+	void alloc_path_buffer(char const* filename); // Ensures m_raw_path is large enough to hold path and filename
 #endif
 
 	// State for directory enumeration
