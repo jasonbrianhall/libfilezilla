@@ -329,11 +329,11 @@ Container strtok(String const& s, Delim const& delims)
 
 		// Not found, we're at ends;
 		if (pos == String::npos) {
-			if (start + 1 < s.size()) {
+			if (start < s.size()) {
 				ret.emplace_back(s.substr(start));
 			}
 		}
-		else if (pos > start + 1) {
+		else if (pos > start) {
 			// Non-empty substring
 			ret.emplace_back(s.substr(start, pos - start));
 		}
