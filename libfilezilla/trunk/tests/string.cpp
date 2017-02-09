@@ -14,6 +14,7 @@ class string_test final : public CppUnit::TestFixture
 	CPPUNIT_TEST(test_conversion_utf8);
 	CPPUNIT_TEST(test_base64);
 	CPPUNIT_TEST(test_trim);
+	CPPUNIT_TEST(test_strtok);
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -25,6 +26,7 @@ public:
 	void test_conversion_utf8();
 	void test_base64();
 	void test_trim();
+	void test_strtok();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(string_test);
@@ -32,7 +34,7 @@ CPPUNIT_TEST_SUITE_REGISTRATION(string_test);
 void string_test::test_conversion()
 {
 	std::string const s("hello world!");
-	
+
 	std::wstring const w = fz::to_wstring(s);
 
 	CPPUNIT_ASSERT_EQUAL(s.size(), w.size());
@@ -123,4 +125,25 @@ void string_test::test_trim()
 	CPPUNIT_ASSERT_EQUAL(std::string("foo"), fz::trimmed(std::string(" foo  ")));
 	CPPUNIT_ASSERT_EQUAL(std::string("foo"), fz::trimmed(std::string("\t foo  ")));
 	CPPUNIT_ASSERT_EQUAL(std::string(""), fz::trimmed(std::string(" \t\r \n \t")));
+}
+
+void string_test::test_strtok()
+{
+	auto tokens = fz::strtok<std::string>("hello world", ' ');
+	CPPUNIT_ASSERT_EQUAL(size_t(2), tokens.size());
+	CPPUNIT_ASSERT_EQUAL(std::string("hello"), tokens[0]);
+	CPPUNIT_ASSERT_EQUAL(std::string("world"), tokens[1]);
+
+	tokens = fz::strtok<std::string>(" hello   world  ", " eo");
+	CPPUNIT_ASSERT_EQUAL(size_t(4), tokens.size());
+	CPPUNIT_ASSERT_EQUAL(std::string("h"), tokens[0]);
+	CPPUNIT_ASSERT_EQUAL(std::string("ll"), tokens[1]);
+	CPPUNIT_ASSERT_EQUAL(std::string("w"), tokens[2]);
+	CPPUNIT_ASSERT_EQUAL(std::string("rld"), tokens[3]);
+
+	tokens = fz::strtok<std::string>("a b c", ' ');
+	CPPUNIT_ASSERT_EQUAL(size_t(3), tokens.size());
+	CPPUNIT_ASSERT_EQUAL(std::string("a"), tokens[0]);
+	CPPUNIT_ASSERT_EQUAL(std::string("b"), tokens[1]);
+	CPPUNIT_ASSERT_EQUAL(std::string("c"), tokens[2]);
 }
