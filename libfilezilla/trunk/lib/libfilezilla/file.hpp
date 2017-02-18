@@ -90,6 +90,9 @@ public:
 	 */
 	int64_t seek(int64_t offset, seek_mode m);
 
+	/** \brief Get Current position in file */
+	int64_t position() { return seek(0, current); }
+
 	/** \brief Truncate the file to the current position of the file pointer.
 	 *
 	 * Despite its name, this function can extend the size of the file
