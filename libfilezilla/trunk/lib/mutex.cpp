@@ -3,7 +3,13 @@
 #ifndef FZ_WINDOWS
 #include <errno.h>
 #include <sys/time.h>
+
+#ifdef FZ_MAC
+#include <pthread_spis.h>
 #endif
+
+#endif
+
 
 #ifndef FZ_WINDOWS
 namespace {
@@ -14,6 +20,12 @@ pthread_mutexattr_t* init_mutexattr()
 	static pthread_mutexattr_t attr;
 	pthread_mutexattr_init(&attr);
 	pthread_mutexattr_settype(&attr, type);
+
+#ifdef FZ_MAC
+	// We don't want slow fairness, we want speed.
+	// Since other platforms aren't fair, this has no drawbacks.
+	pthread_mutexattr_setpolicy_np(&attr, _PTHREAD_MUTEX_POLICY_FIRSTFIT);
+#endif
 	return &attr;
 }
 
