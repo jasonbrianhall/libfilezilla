@@ -4,7 +4,7 @@
 #include <memory>
 
 /** \file
-* \brief Declares the shared_optionsl and shared_value template classes.
+* \brief Declares the shared_optional and shared_value template classes.
 */
 namespace fz {
 
