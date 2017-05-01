@@ -22,6 +22,8 @@ class pooled_thread_impl;
 class FZ_PUBLIC_SYMBOL async_task final {
 public:
 	async_task() = default;
+
+	/// If task has not been detached, calls join
 	~async_task();
 
 	async_task(async_task const&) = delete;
@@ -30,11 +32,14 @@ public:
 	async_task(async_task && other) noexcept;
 	async_task& operator=(async_task && other) noexcept;
 
-	/// Wait for the task to finish
+	/// Wait for the task to finish, adds the now idle thread back into the pool
 	void join();
 
 	/// Check whether it's a spawned, unjoined task.
 	explicit operator bool() const { return impl_ != 0; }
+
+	/// Detach the running thread from the task. Once done, the thread adds itself back into the pool
+	void detach();
 
 private:
 	friend class thread_pool;
