@@ -11,6 +11,7 @@ public:
 	pooled_thread_impl(thread_pool & pool)
 		: m_(pool.m_)
 		, pool_(pool)
+	    , detached_()
 	{}
 
 	virtual ~pooled_thread_impl()
@@ -27,7 +28,13 @@ public:
 				l.unlock();
 				f_();
 				l.lock();
-				task_cond_.signal(l);
+				if (detached_) {
+					f_ = std::function<void()>();
+					pool_.idle_.push_back(this);
+				}
+				else {
+					task_cond_.signal(l);
+				}
 			}
 		}
 	}
@@ -44,6 +51,7 @@ public:
 	condition task_cond_;
 	thread_pool& pool_;
 
+	bool detached_{};
 private:
 	bool quit_{};
 };
@@ -65,7 +73,6 @@ async_task::~async_task()
 	join();
 }
 
-
 void async_task::join()
 {
 	if (impl_) {
@@ -77,7 +84,19 @@ void async_task::join()
 	}
 }
 
-
+void async_task::detach()
+{
+	if (impl_) {
+		scoped_lock l(impl_->m_);
+		if (impl_->task_cond_.signalled(l)) {
+			join();
+		}
+		else {
+			impl_->detached_ = true;
+			impl_ = 0;
+		}
+	}
+}
 
 thread_pool::thread_pool()
 {
@@ -121,6 +140,7 @@ async_task thread_pool::spawn(std::function<void()> const& f)
 
 	ret.impl_ = t;
 	t->f_ = f;
+	t->detached_ = false;
 	t->thread_cond_.signal(l);
 
 	return ret;
